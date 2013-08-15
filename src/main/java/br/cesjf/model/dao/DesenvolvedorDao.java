@@ -1,0 +1,135 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package br.cesjf.model.dao;
+
+import br.cesjf.model.dao.exceptions.NonexistentEntityException;
+import br.cesjf.model.entites.Desenvolvedor;
+import java.io.Serializable;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+/**
+ *
+ * @author heitor.filho
+ */
+public class DesenvolvedorDao implements Serializable {
+
+    
+    private EntityManagerFactory emf = null;
+
+    public EntityManager getEntityManager() {
+        return emf.createEntityManager();
+    }
+
+    public void create(Desenvolvedor desenvolvedor) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            em.persist(desenvolvedor);
+            em.getTransaction().commit();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public void edit(Desenvolvedor desenvolvedor) throws NonexistentEntityException, Exception {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            desenvolvedor = em.merge(desenvolvedor);
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            String msg = ex.getLocalizedMessage();
+            if (msg == null || msg.length() == 0) {
+                Integer id = desenvolvedor.getIdDesenv();
+                if (findDesenvolvedor(id) == null) {
+                    throw new NonexistentEntityException("The desenvolvedor with id " + id + " no longer exists.");
+                }
+            }
+            throw ex;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public void destroy(Long id) throws NonexistentEntityException {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            Desenvolvedor desenvolvedor;
+            try {
+                desenvolvedor = em.getReference(Desenvolvedor.class, id);
+                desenvolvedor.getIdDesenv();
+            } catch (EntityNotFoundException enfe) {
+                throw new NonexistentEntityException("The desenvolvedor with id " + id + " no longer exists.", enfe);
+            }
+            em.remove(desenvolvedor);
+            em.getTransaction().commit();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public List<Desenvolvedor> findDesenvolvedorEntities() {
+        return findDesenvolvedorEntities(true, -1, -1);
+    }
+
+    public List<Desenvolvedor> findDesenvolvedorEntities(int maxResults, int firstResult) {
+        return findDesenvolvedorEntities(false, maxResults, firstResult);
+    }
+
+    private List<Desenvolvedor> findDesenvolvedorEntities(boolean all, int maxResults, int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Desenvolvedor.class));
+            Query q = em.createQuery(cq);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public Desenvolvedor findDesenvolvedor(Integer id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(Desenvolvedor.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public int getDesenvolvedorCount() {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            Root<Desenvolvedor> rt = cq.from(Desenvolvedor.class);
+            cq.select(em.getCriteriaBuilder().count(rt));
+            Query q = em.createQuery(cq);
+            return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+}

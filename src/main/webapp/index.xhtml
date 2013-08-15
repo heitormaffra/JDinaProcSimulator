@@ -9,6 +9,12 @@
     <h:body>
         <p:layout fullPage="true">
             <p:layoutUnit position="center">
+                <h:form>
+                    <p:menubar>
+                        <p:menuitem value="Desenvolvedor" url="#{request.contextPath}/../desenvolvedor.jsf" />
+                        <p:menuitem value="Welcome" url="#{request.contextPath}/../welcomePrimefaces.jsf" />
+                    </p:menubar>
+                </h:form>
                 <h:outputText value="Gráfico"/>
                 <p:lineChart value="#{indexBean.model}" legendPosition="e" style="width: 50%"/>
             </p:layoutUnit>
