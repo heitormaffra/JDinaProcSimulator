@@ -9,23 +9,28 @@
     <h:body>
         <p:layout fullPage="true">
             <p:layoutUnit position="center">
-                <h:form>
-                    <div>
-                        <h:outputText value="Nome: "/>
-                        <h:inputText value="#{desenvolvedor.nomeDesenv}"/>
-                    </div>
-                    
-                    <div>
-                    <h:outputText value="Experiência: "/>
-                    <h:inputText value="#{desenvolvedor.expeDesenv}"/>
-                    </div>
-                    
-                    <div>
-                        <p:commandButton
-                            value="Salvar"
-                            onclick="#{desenvolvedor.criaDesenv()}" />
-                    </div>
-                    
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <h:form id="frmDesenv">
+                    <table>
+                        <tr>
+                            <td>
+                                <h:outputText value="Nome: "/>
+                            </td>
+                            <td>
+                                <h:inputText value="#{desenvolvedor.nomeDesenv}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText value="Experiência: "/>
+                            </td>
+                            <td>
+                                <h:inputText value="#{desenvolvedor.expeDesenv}"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <p:commandButton value="Salvar"
+                                     actionListener="#{desenvolvedor.criaDesenv()}"/>
                 </h:form>
             </p:layoutUnit>
         </p:layout>

@@ -7,6 +7,7 @@ package br.cesjf.model.dao;
 import br.cesjf.model.dao.exceptions.NonexistentEntityException;
 import br.cesjf.model.entites.Desenvolvedor;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,22 +20,20 @@ import javax.persistence.criteria.Root;
  *
  * @author heitor.filho
  */
-public class DesenvolvedorDao implements Serializable {
-
+public class DesenvolvedorDao extends GenericDao {
     
-    private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
-
-    public void create(Desenvolvedor desenvolvedor) {
+    public boolean create(Desenvolvedor desenvolvedor) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(desenvolvedor);
             em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            return false;
+
+
         } finally {
             if (em != null) {
                 em.close();
@@ -131,5 +130,4 @@ public class DesenvolvedorDao implements Serializable {
             em.close();
         }
     }
-    
 }

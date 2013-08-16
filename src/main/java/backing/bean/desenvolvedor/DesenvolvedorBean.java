@@ -6,8 +6,10 @@ package backing.bean.desenvolvedor;
 
 import br.cesjf.model.dao.DesenvolvedorDao;
 import br.cesjf.model.entites.Desenvolvedor;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -61,8 +63,14 @@ public class DesenvolvedorBean {
         desenv.setExpDesenv(expeDesenv);
 
         DesenvolvedorDao desenvDao = new DesenvolvedorDao();
-
-        desenvDao.create(desenv);
+        boolean create = desenvDao.create(desenv);
+        
+        if(create == false){
+            errorMessageSave();
+        }
     }
     
+    public void errorMessageSave(){
+        FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao salvar registro."));  
+    }
 }
