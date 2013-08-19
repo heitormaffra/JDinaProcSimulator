@@ -4,8 +4,11 @@
  */
 package backing.bean.desenvolvedor;
 
+//import br.cesjf.model.dao.DesenvolvedorDao;
+//import br.cesjf.model.entites.Desenvolvedor;
 import br.cesjf.model.dao.DesenvolvedorDao;
 import br.cesjf.model.entites.Desenvolvedor;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -20,10 +23,22 @@ import javax.faces.context.FacesContext;
 public class DesenvolvedorBean {
 
     private String nomeDesenv;
-    private Double expeDesenv;
+    private Float expeDesenv;
+    private List<Desenvolvedor> desenv;
+
+    public List<Desenvolvedor> getDesenv() {
+        DesenvolvedorDao desevDao = new DesenvolvedorDao();
+        desenv = desevDao.findDesenvolvedorEntities();
+        return desenv;
+    }
+
+    public void setDesenv(List<Desenvolvedor> desenv) {
+        this.desenv = desenv;
+    }
 
     /**
      * Returna o nome do desenvolvedor
+     *
      * @return nomeDesenv
      */
     public String getNomeDesenv() {
@@ -32,7 +47,8 @@ public class DesenvolvedorBean {
 
     /**
      * Seta o nome do desenvolvedor.
-     * @param nomeDesenv 
+     *
+     * @param nomeDesenv
      */
     public void setNomeDesenv(String nomeDesenv) {
         this.nomeDesenv = nomeDesenv;
@@ -40,17 +56,19 @@ public class DesenvolvedorBean {
 
     /**
      * Retorna o valor da experiência do desenvolvedor
+     *
      * @return expeDesenv
      */
-    public Double getExpeDesenv() {
+    public Float getExpeDesenv() {
         return expeDesenv;
     }
 
     /**
      * Setar valor para experiência do desenvolvedor.
-     * @param expeDesenv 
+     *
+     * @param expeDesenv
      */
-    public void setExpeDesenv(Double expeDesenv) {
+    public void setExpeDesenv(Float expeDesenv) {
         this.expeDesenv = expeDesenv;
     }
 
@@ -59,18 +77,16 @@ public class DesenvolvedorBean {
      */
     public void criaDesenv() {
         Desenvolvedor desenv = new Desenvolvedor();
-        desenv.setNomeDesenv(nomeDesenv);
+        desenv.setNmDsenv(nomeDesenv);
         desenv.setExpDesenv(expeDesenv);
 
         DesenvolvedorDao desenvDao = new DesenvolvedorDao();
         boolean create = desenvDao.create(desenv);
-        
-        if(create == false){
-            errorMessageSave();
+
+        if (create == false) {
+            FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao salvar registro."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + nomeDesenv + " salvo com sucesso!"));
         }
-    }
-    
-    public void errorMessageSave(){
-        FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao salvar registro."));  
     }
 }

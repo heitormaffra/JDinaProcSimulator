@@ -1,0 +1,17 @@
+<ui:component xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui">
+    <h:form>
+        <p:menubar styleClass="menu-portal-cte">
+            <p:menuitem value="Home" url="#{request.contextPath}/../index.jsf" />
+            <p:submenu label="Desenvolvedor">
+                <p:menuitem value="Cadastrar" url="#{request.contextPath}/../desenvolvedor.jsf" />
+                <p:menuitem value="Visualizar" url="#{request.contextPath}/../desenvolvedorListagem.jsf" />
+            </p:submenu>
+            <p:submenu label="Atividade">
+                <p:menuitem value="Cadastrar" url="#{request.contextPath}/../atividade.jsf" />
+                <p:menuitem value="Visualizar" url="#{request.contextPath}/../atividadeListagem.jsf" />
+            </p:submenu>
+        </p:menubar>
+    </h:form>
+</ui:component>

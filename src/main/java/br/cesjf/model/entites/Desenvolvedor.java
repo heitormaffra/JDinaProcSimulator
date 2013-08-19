@@ -20,38 +20,42 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author heitor.filho
+ * @author heitormaffra
  */
 @Entity
-@Table(name = "DESENVOLVEDOR")
+@Table(name = "desenvolvedor")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Desenvolvedor.findAll", query = "SELECT d FROM Desenvolvedor d"),
-    @NamedQuery(name = "Desenvolvedor.findByNmDesenv", query = "SELECT d FROM Desenvolvedor d WHERE d.nmDesenv = :nmDesenv"),
     @NamedQuery(name = "Desenvolvedor.findByIdDesenv", query = "SELECT d FROM Desenvolvedor d WHERE d.idDesenv = :idDesenv"),
+    @NamedQuery(name = "Desenvolvedor.findByNmDsenv", query = "SELECT d FROM Desenvolvedor d WHERE d.nmDsenv = :nmDsenv"),
     @NamedQuery(name = "Desenvolvedor.findByExpDesenv", query = "SELECT d FROM Desenvolvedor d WHERE d.expDesenv = :expDesenv")})
 public class Desenvolvedor implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ID_DESENV")
     private Integer idDesenv;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 500)
-    @Column(name = "NM_DESENV")
-    private String nomeDesenv;
+    @Size(min = 1, max = 150)
+    @Column(name = "NM_DSENV")
+    private String nmDsenv;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "EXP_DESENV")
-    private Double expDesenv;
+    private Float expDesenv;
 
-    public String getNomeDesenv() {
-        return nomeDesenv;
+    public Desenvolvedor() {
     }
 
-    public void setNomeDesenv(String nomeDesenv) {
-        this.nomeDesenv = nomeDesenv;
+    public Desenvolvedor(Integer idDesenv) {
+        this.idDesenv = idDesenv;
+    }
+
+    public Desenvolvedor(Integer idDesenv, String nmDsenv) {
+        this.idDesenv = idDesenv;
+        this.nmDsenv = nmDsenv;
     }
 
     public Integer getIdDesenv() {
@@ -62,11 +66,45 @@ public class Desenvolvedor implements Serializable {
         this.idDesenv = idDesenv;
     }
 
-    public Double getExpDesenv() {
+    public String getNmDsenv() {
+        return nmDsenv;
+    }
+
+    public void setNmDsenv(String nmDsenv) {
+        this.nmDsenv = nmDsenv;
+    }
+
+    public Float getExpDesenv() {
         return expDesenv;
     }
 
-    public void setExpDesenv(Double expDesenv) {
+    public void setExpDesenv(Float expDesenv) {
         this.expDesenv = expDesenv;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idDesenv != null ? idDesenv.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Desenvolvedor)) {
+            return false;
+        }
+        Desenvolvedor other = (Desenvolvedor) object;
+        if ((this.idDesenv == null && other.idDesenv != null) || (this.idDesenv != null && !this.idDesenv.equals(other.idDesenv))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "br.cesjf.model.entites.Desenvolvedor[ idDesenv=" + idDesenv + " ]";
+    }
+    
 }

@@ -5,7 +5,7 @@
 package br.cesjf.model.dao;
 
 import br.cesjf.model.dao.exceptions.NonexistentEntityException;
-import br.cesjf.model.entites.Desenvolvedor;
+import br.cesjf.model.entites.Atividade;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -17,20 +17,15 @@ import javax.persistence.criteria.Root;
  *
  * @author heitormaffra
  */
-public class DesenvolvedorDao extends GenericDao {
+public class AtividadeDao extends GenericDao{
 
-    public boolean create(Desenvolvedor desenvolvedor) {
+    public void create(Atividade atividade) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(desenvolvedor);
+            em.persist(atividade);
             em.getTransaction().commit();
-            return true;
-        } catch (Exception e) {
-            return false;
-
-
         } finally {
             if (em != null) {
                 em.close();
@@ -38,19 +33,19 @@ public class DesenvolvedorDao extends GenericDao {
         }
     }
 
-    public void edit(Desenvolvedor desenvolvedor) throws NonexistentEntityException, Exception {
+    public void edit(Atividade atividade) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            desenvolvedor = em.merge(desenvolvedor);
+            atividade = em.merge(atividade);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = desenvolvedor.getIdDesenv();
-                if (findDesenvolvedor(id) == null) {
-                    throw new NonexistentEntityException("The desenvolvedor with id " + id + " no longer exists.");
+                Integer id = atividade.getIdAtivd();
+                if (findAtividade(id) == null) {
+                    throw new NonexistentEntityException("The atividade with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -66,14 +61,14 @@ public class DesenvolvedorDao extends GenericDao {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Desenvolvedor desenvolvedor;
+            Atividade atividade;
             try {
-                desenvolvedor = em.getReference(Desenvolvedor.class, id);
-                desenvolvedor.getIdDesenv();
+                atividade = em.getReference(Atividade.class, id);
+                atividade.getIdAtivd();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The desenvolvedor with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The atividade with id " + id + " no longer exists.", enfe);
             }
-            em.remove(desenvolvedor);
+            em.remove(atividade);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -82,19 +77,19 @@ public class DesenvolvedorDao extends GenericDao {
         }
     }
 
-    public List<Desenvolvedor> findDesenvolvedorEntities() {
-        return findDesenvolvedorEntities(true, -1, -1);
+    public List<Atividade> findAtividadeEntities() {
+        return findAtividadeEntities(true, -1, -1);
     }
 
-    public List<Desenvolvedor> findDesenvolvedorEntities(int maxResults, int firstResult) {
-        return findDesenvolvedorEntities(false, maxResults, firstResult);
+    public List<Atividade> findAtividadeEntities(int maxResults, int firstResult) {
+        return findAtividadeEntities(false, maxResults, firstResult);
     }
 
-    private List<Desenvolvedor> findDesenvolvedorEntities(boolean all, int maxResults, int firstResult) {
+    private List<Atividade> findAtividadeEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Desenvolvedor.class));
+            cq.select(cq.from(Atividade.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -106,20 +101,20 @@ public class DesenvolvedorDao extends GenericDao {
         }
     }
 
-    public Desenvolvedor findDesenvolvedor(Integer id) {
+    public Atividade findAtividade(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Desenvolvedor.class, id);
+            return em.find(Atividade.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getDesenvolvedorCount() {
+    public int getAtividadeCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Desenvolvedor> rt = cq.from(Desenvolvedor.class);
+            Root<Atividade> rt = cq.from(Atividade.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

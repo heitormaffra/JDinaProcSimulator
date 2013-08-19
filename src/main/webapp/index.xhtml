@@ -2,19 +2,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         <p:layout fullPage="true">
             <p:layoutUnit position="center">
-                <h:form>
-                    <p:menubar>
-                        <p:menuitem value="Desenvolvedor" url="#{request.contextPath}/../desenvolvedor.jsf" />
-                        <p:menuitem value="Welcome" url="#{request.contextPath}/../welcomePrimefaces.jsf" />
-                    </p:menubar>
-                </h:form>
+               <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
                 <h:outputText value="Gráfico"/>
                 <p:lineChart value="#{indexBean.model}" legendPosition="e" style="width: 50%"/>
             </p:layoutUnit>

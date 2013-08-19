@@ -8,56 +8,86 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author heitor.filho
+ * @author heitormaffra
  */
 @Entity
-@Table(name = "ATIVIDADE")
+@Table(name = "atividade")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Atividade.findAll", query = "SELECT a FROM Atividade a"),
+    @NamedQuery(name = "Atividade.findByIdAtivd", query = "SELECT a FROM Atividade a WHERE a.idAtivd = :idAtivd"),
+    @NamedQuery(name = "Atividade.findByNmAtivd", query = "SELECT a FROM Atividade a WHERE a.nmAtivd = :nmAtivd"),
+    @NamedQuery(name = "Atividade.findByIdDesenv", query = "SELECT a FROM Atividade a WHERE a.idDesenv = :idDesenv")})
 public class Atividade implements Serializable {
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_ATIV")
-    private Integer idAtiv;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "NM_ATIV")
-    private double nmAtiv;
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    
-    @Column(name = "nm_ativi")
-    private String nomeAtiv;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "ID_ATIVD")
+    private Integer idAtivd;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "NM_ATIVD")
+    private String nmAtivd;
+    @Size(max = 45)
+    @Column(name = "ID_DESENV")
+    private String idDesenv;
 
-    public String getNomeAtiv() {
-        return nomeAtiv;
+    public Atividade() {
     }
 
-    public void setNomeAtiv(String nomeAtiv) {
-        this.nomeAtiv = nomeAtiv;
+    public Atividade(Integer idAtivd) {
+        this.idAtivd = idAtivd;
     }
 
-    public Long getId() {
-        return id;
+    public Atividade(Integer idAtivd, String nmAtivd) {
+        this.idAtivd = idAtivd;
+        this.nmAtivd = nmAtivd;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Integer getIdAtivd() {
+        return idAtivd;
+    }
+
+    public void setIdAtivd(Integer idAtivd) {
+        this.idAtivd = idAtivd;
+    }
+
+    public String getNmAtivd() {
+        return nmAtivd;
+    }
+
+    public void setNmAtivd(String nmAtivd) {
+        this.nmAtivd = nmAtivd;
+    }
+
+    public String getIdDesenv() {
+        return idDesenv;
+    }
+
+    public void setIdDesenv(String idDesenv) {
+        this.idDesenv = idDesenv;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idAtivd != null ? idAtivd.hashCode() : 0);
         return hash;
     }
 
@@ -68,7 +98,7 @@ public class Atividade implements Serializable {
             return false;
         }
         Atividade other = (Atividade) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idAtivd == null && other.idAtivd != null) || (this.idAtivd != null && !this.idAtivd.equals(other.idAtivd))) {
             return false;
         }
         return true;
@@ -76,36 +106,7 @@ public class Atividade implements Serializable {
 
     @Override
     public String toString() {
-        return "br.cesjf.model.entites.Atividade[ id=" + id + " ]";
+        return "br.cesjf.model.entites.Atividade[ idAtivd=" + idAtivd + " ]";
     }
-
-    public Atividade() {
-    }
-
-    public Atividade(Integer idAtiv) {
-        this.idAtiv = idAtiv;
-    }
-
-    public Atividade(Integer idAtiv, double nmAtiv) {
-        this.idAtiv = idAtiv;
-        this.nmAtiv = nmAtiv;
-    }
-
-    public Integer getIdAtiv() {
-        return idAtiv;
-    }
-
-    public void setIdAtiv(Integer idAtiv) {
-        this.idAtiv = idAtiv;
-    }
-
-    public double getNmAtiv() {
-        return nmAtiv;
-    }
-
-    public void setNmAtiv(double nmAtiv) {
-        this.nmAtiv = nmAtiv;
-    }
-
     
 }
