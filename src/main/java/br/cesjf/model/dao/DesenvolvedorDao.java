@@ -19,6 +19,11 @@ import javax.persistence.criteria.Root;
  */
 public class DesenvolvedorDao extends GenericDao {
 
+    /**
+     *
+     * @param desenvolvedor
+     * @return
+     */
     public boolean create(Desenvolvedor desenvolvedor) {
         EntityManager em = null;
         try {
@@ -38,6 +43,12 @@ public class DesenvolvedorDao extends GenericDao {
         }
     }
 
+    /**
+     *
+     * @param desenvolvedor
+     * @throws NonexistentEntityException
+     * @throws Exception
+     */
     public void edit(Desenvolvedor desenvolvedor) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -61,6 +72,11 @@ public class DesenvolvedorDao extends GenericDao {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @throws NonexistentEntityException
+     */
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -82,10 +98,20 @@ public class DesenvolvedorDao extends GenericDao {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Desenvolvedor> findDesenvolvedorEntities() {
         return findDesenvolvedorEntities(true, -1, -1);
     }
 
+    /**
+     *
+     * @param maxResults
+     * @param firstResult
+     * @return
+     */
     public List<Desenvolvedor> findDesenvolvedorEntities(int maxResults, int firstResult) {
         return findDesenvolvedorEntities(false, maxResults, firstResult);
     }
@@ -106,6 +132,11 @@ public class DesenvolvedorDao extends GenericDao {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Desenvolvedor findDesenvolvedor(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -115,6 +146,10 @@ public class DesenvolvedorDao extends GenericDao {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDesenvolvedorCount() {
         EntityManager em = getEntityManager();
         try {

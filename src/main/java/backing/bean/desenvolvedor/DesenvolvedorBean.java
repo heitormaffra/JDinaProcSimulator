@@ -25,13 +25,41 @@ public class DesenvolvedorBean {
     private String nomeDesenv;
     private Float expeDesenv;
     private List<Desenvolvedor> desenv;
+    
+    private List<Desenvolvedor> desenvs;
 
+    /**
+     *
+     * @return
+     */
+    public List<Desenvolvedor> getDesenvs() {
+        DesenvolvedorDao desenvDao = new DesenvolvedorDao();
+        desenvs = desenvDao.findDesenvolvedorEntities();
+        return desenvs;
+    }
+
+    /**
+     *
+     * @param desenvs
+     */
+    public void setDesenvs(List<Desenvolvedor> desenvs) {
+        this.desenvs = desenvs;
+    }
+
+    /**
+     *
+     * @return
+     */
     public List<Desenvolvedor> getDesenv() {
         DesenvolvedorDao desevDao = new DesenvolvedorDao();
         desenv = desevDao.findDesenvolvedorEntities();
         return desenv;
     }
 
+    /**
+     *
+     * @param desenv
+     */
     public void setDesenv(List<Desenvolvedor> desenv) {
         this.desenv = desenv;
     }
@@ -89,4 +117,6 @@ public class DesenvolvedorBean {
             FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + nomeDesenv + " salvo com sucesso!"));
         }
     }
+    
+    
 }

@@ -19,20 +19,37 @@ import javax.persistence.criteria.Root;
  */
 public class AtividadeDao extends GenericDao{
 
-    public void create(Atividade atividade) {
+    /**
+     *
+     * @param atividade
+     * @return
+     */
+    public boolean create(Atividade atividade) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(atividade);
             em.getTransaction().commit();
-        } finally {
+            return true;
+        } catch(Exception e){
+            return false;
+            
+        }
+        finally {
             if (em != null) {
                 em.close();
             }
+            return true;
         }
     }
 
+    /**
+     *
+     * @param atividade
+     * @throws NonexistentEntityException
+     * @throws Exception
+     */
     public void edit(Atividade atividade) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -56,6 +73,11 @@ public class AtividadeDao extends GenericDao{
         }
     }
 
+    /**
+     *
+     * @param id
+     * @throws NonexistentEntityException
+     */
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -77,10 +99,20 @@ public class AtividadeDao extends GenericDao{
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Atividade> findAtividadeEntities() {
         return findAtividadeEntities(true, -1, -1);
     }
 
+    /**
+     *
+     * @param maxResults
+     * @param firstResult
+     * @return
+     */
     public List<Atividade> findAtividadeEntities(int maxResults, int firstResult) {
         return findAtividadeEntities(false, maxResults, firstResult);
     }
@@ -101,6 +133,11 @@ public class AtividadeDao extends GenericDao{
         }
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Atividade findAtividade(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -110,6 +147,10 @@ public class AtividadeDao extends GenericDao{
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public int getAtividadeCount() {
         EntityManager em = getEntityManager();
         try {

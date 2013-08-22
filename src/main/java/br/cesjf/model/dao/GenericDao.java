@@ -15,14 +15,24 @@ public class GenericDao {
 
     private EntityManager emg = null;
 
+    /**
+     *
+     */
     public GenericDao() {
         //emg = Persistence.createEntityManagerFactory("persistence").createEntityManager();
     }
 
+    /**
+     *
+     */
     protected void createEntityManager() {
         //emg = Persistence.createEntityManagerFactory("persistence").createEntityManager();
     }
     
+    /**
+     *
+     * @return
+     */
     public EntityManager getEntityManager(){
         if(emg==null || !emg.isOpen()){
             emg = Persistence.createEntityManagerFactory("persistence").createEntityManager();

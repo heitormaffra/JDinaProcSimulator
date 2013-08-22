@@ -51,6 +51,10 @@ public class IndexBean {
 
     private CartesianChartModel model;
 
+    /**
+     *
+     * @throws Exception
+     */
     public IndexBean() throws Exception {
 
 
@@ -190,6 +194,10 @@ public class IndexBean {
         //System.out.println("Simulating done!");
     }
 
+    /**
+     *
+     * @return
+     */
     public CartesianChartModel getModel() {
         return model;
     }

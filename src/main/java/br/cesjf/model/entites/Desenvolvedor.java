@@ -5,6 +5,7 @@
 package br.cesjf.model.entites;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,10 +14,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,6 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Desenvolvedor.findByNmDsenv", query = "SELECT d FROM Desenvolvedor d WHERE d.nmDsenv = :nmDsenv"),
     @NamedQuery(name = "Desenvolvedor.findByExpDesenv", query = "SELECT d FROM Desenvolvedor d WHERE d.expDesenv = :expDesenv")})
 public class Desenvolvedor implements Serializable {
+    @OneToMany(mappedBy = "idDesenv")
+    private List<Atividade> atividadeList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,38 +51,74 @@ public class Desenvolvedor implements Serializable {
     @Column(name = "EXP_DESENV")
     private Float expDesenv;
 
+    /**
+     *
+     */
     public Desenvolvedor() {
     }
 
+    /**
+     *
+     * @param idDesenv
+     */
     public Desenvolvedor(Integer idDesenv) {
         this.idDesenv = idDesenv;
     }
 
+    /**
+     *
+     * @param idDesenv
+     * @param nmDsenv
+     */
     public Desenvolvedor(Integer idDesenv, String nmDsenv) {
         this.idDesenv = idDesenv;
         this.nmDsenv = nmDsenv;
     }
 
+    /**
+     *
+     * @return
+     */
     public Integer getIdDesenv() {
         return idDesenv;
     }
 
+    /**
+     *
+     * @param idDesenv
+     */
     public void setIdDesenv(Integer idDesenv) {
         this.idDesenv = idDesenv;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getNmDsenv() {
         return nmDsenv;
     }
 
+    /**
+     *
+     * @param nmDsenv
+     */
     public void setNmDsenv(String nmDsenv) {
         this.nmDsenv = nmDsenv;
     }
 
+    /**
+     *
+     * @return
+     */
     public Float getExpDesenv() {
         return expDesenv;
     }
 
+    /**
+     *
+     * @param expDesenv
+     */
     public void setExpDesenv(Float expDesenv) {
         this.expDesenv = expDesenv;
     }
@@ -105,6 +146,23 @@ public class Desenvolvedor implements Serializable {
     @Override
     public String toString() {
         return "br.cesjf.model.entites.Desenvolvedor[ idDesenv=" + idDesenv + " ]";
+    }
+
+    /**
+     *
+     * @return
+     */
+    @XmlTransient
+    public List<Atividade> getAtividadeList() {
+        return atividadeList;
+    }
+
+    /**
+     *
+     * @param atividadeList
+     */
+    public void setAtividadeList(List<Atividade> atividadeList) {
+        this.atividadeList = atividadeList;
     }
     
 }
