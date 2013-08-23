@@ -32,7 +32,7 @@ public class DesenvolvedorBean {
      *
      * @return
      */
-    public List<Desenvolvedor> getDesenvs() {
+    public List<Desenvolvedor> getDesenvolvedores() {
         DesenvolvedorDao desenvDao = new DesenvolvedorDao();
         desenvs = desenvDao.findDesenvolvedorEntities();
         return desenvs;

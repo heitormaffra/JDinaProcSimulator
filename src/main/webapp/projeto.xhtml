@@ -1,12 +1,52 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Projeto</title>
+        <link type="text/css" rel="stylesheet" href="css/style.css"/>
+        <link type="text/css" rel="stylesheet" href="css/default.css"/>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <p:layout fullPage="true">
+            <p:layoutUnit position="center">
+                <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
+                <ui:include src="WEB-INF/comps/geral/menu.xhtml" /> 
+                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <h:form id="frmDesenv">
+                    <table>
+                        <tr>
+                            <td>
+                                <h:outputText value="Nome: "/>
+                            </td>
+                            <td>
+                                <h:inputText value="#{projetoBean.nomeProjeto}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText value="Atividades: "/>
+                            </td>
+                            <td>
+                                <p:selectManyMenu id="dese" 
+                                                 style="width: 200px;"
+                                                 value="#{projetoBean.atividades}" >
+                                    <f:selectItems value="#{atividade.atividades}" 
+                                                   var="desenv"
+                                                   itemValue="#{desenv.idAtivd}"
+                                                   itemLabel="#{desenv.nmAtivd}"/>
+                                </p:selectManyMenu>
+                            </td>
+                        </tr>
+                    </table>
+                    <p:commandButton value="Salvar"
+                                     actionListener="#{projetoBean.criarProjeto()}"/>
+                </h:form>
+            </p:layoutUnit>
+        </p:layout>
     </h:body>
 </html>
 

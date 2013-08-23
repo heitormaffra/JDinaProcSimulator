@@ -5,10 +5,12 @@
 package br.cesjf.model.entites;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,6 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Desenvolvedor.findByExpDesenv", query = "SELECT d FROM Desenvolvedor d WHERE d.expDesenv = :expDesenv")})
 public class Desenvolvedor implements Serializable {
     @OneToMany(mappedBy = "idDesenv")
+    private Collection<Equipe> equipeCollection;
+    @OneToMany(mappedBy = "idDesenv", fetch = FetchType.LAZY)
     private List<Atividade> atividadeList;
     private static final long serialVersionUID = 1L;
     @Id
@@ -163,6 +167,15 @@ public class Desenvolvedor implements Serializable {
      */
     public void setAtividadeList(List<Atividade> atividadeList) {
         this.atividadeList = atividadeList;
+    }
+
+    @XmlTransient
+    public Collection<Equipe> getEquipeCollection() {
+        return equipeCollection;
+    }
+
+    public void setEquipeCollection(Collection<Equipe> equipeCollection) {
+        this.equipeCollection = equipeCollection;
     }
     
 }

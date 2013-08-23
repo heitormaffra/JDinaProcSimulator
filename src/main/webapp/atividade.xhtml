@@ -6,12 +6,14 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Cadastro de Desenv.</title>
+        <link type="text/css" rel="stylesheet" href="css/style.css"/>
+        <link type="text/css" rel="stylesheet" href="css/default.css"/>
     </h:head>
     <h:body>
         <p:layout fullPage="true">
             <p:layoutUnit position="center">
                 <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
+                <ui:include src="WEB-INF/comps/geral/menu.xhtml" />
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <h:form id="frmDesenv">
                     <table>
@@ -38,8 +40,8 @@
                             <td>
                                 <p:selectOneMenu id="dese" 
                                                  style="width: 200px;"
-                                                 value="#{atividade.desenv}" >
-                                    <f:selectItems value="#{desenvolvedor.desenvs}" 
+                                                 value="#{atividade.idDesenvolvedor}" >
+                                    <f:selectItems value="#{desenvolvedor.desenvolvedores}" 
                                                    var="desenv"
                                                    itemValue="#{desenv.idDesenv}"
                                                    itemLabel="#{desenv.nmDsenv}"/>

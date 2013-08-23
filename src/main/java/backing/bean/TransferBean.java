@@ -11,6 +11,7 @@ import br.cesjf.util.Equipe;
 import br.cesjf.util.Precedente;
 import br.cesjf.util.Producao;
 import br.cesjf.util.Trabalho;
+import java.io.Serializable;
 import javax.faces.bean.SessionScoped;
 
 /**
@@ -18,7 +19,7 @@ import javax.faces.bean.SessionScoped;
  * @author heitormaffra
  */
 @SessionScoped
-public class TransferBean {
+public class TransferBean implements Serializable {
     Projeto projeto;
     Atividade atividade;
     Desenvolvedor desenv;
@@ -26,6 +27,16 @@ public class TransferBean {
     Precedente precedente;
     Producao producao;
     Trabalho trabalho;
+    
+    public void cleanFields(){
+        producao = null;
+        atividade = null;
+        desenv = null;
+        equipe = null;
+        precedente = null;
+        producao = null;
+        trabalho = null;
+    }
 
     /**
      *

@@ -7,14 +7,16 @@
     <h:head>
         <title>Facelet Title</title>
         <link type="text/css" rel="stylesheet" href="css/style.css"/>
+        <link type="text/css" rel="stylesheet" href="css/default.css"/>
     </h:head>
     <h:body>
         <p:layout fullPage="true">
             <p:layoutUnit position="center">
-               <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
-               <ui:include src="WEB-INF/comps/geral/menu.xhtml" />
-                <h:outputText value="Gráfico"/>
-                <p:lineChart value="#{indexBean.model}" legendPosition="e" style="width: 50%"/>
+                <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
+                <ui:include src="WEB-INF/comps/geral/menu.xhtml" />
+                <p:commandButton id="btnContinuar"
+                                 value="Criar Simulação"
+                                 actionListener="#{indexBean.btnComecaWizard()}"/>
             </p:layoutUnit>
         </p:layout>
 

@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import backing.bean.TransferBean;
 import br.cesjf.model.dao.AtividadeDao;
+import br.cesjf.model.dao.DesenvolvedorDao;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -26,6 +28,35 @@ public class AtividadeBean {
      private Desenvolvedor desenv;
      private Projeto projeto;
      private TransferBean transferBean;
+     private List<Atividade> atividades;
+     private Integer idAtividade;
+     private Integer idDesenvolvedor;
+
+    public Integer getIdDesenvolvedor() {
+        return idDesenvolvedor;
+    }
+
+    public void setIdDesenvolvedor(Integer idDesenvolvedor) {
+        this.idDesenvolvedor = idDesenvolvedor;
+    }
+
+    public List<Atividade> getAtividades() {
+        AtividadeDao atividadeDao = new AtividadeDao();
+        atividades = atividadeDao.findAtividadeEntities();
+        return atividades;
+    }
+
+    public void setAtividades(List<Atividade> atividades) {
+        this.atividades = atividades;
+    }
+
+    public Integer getIdAtividade() {
+        return idAtividade;
+    }
+
+    public void setIdAtividade(Integer idAtividade) {
+        this.idAtividade = idAtividade;
+    } 
 
     /**
      *
@@ -95,11 +126,15 @@ public class AtividadeBean {
      *
      */
     public void criarAtividade(){
+        
+        DesenvolvedorDao desenvDao = new DesenvolvedorDao();
+        desenv = desenvDao.findDesenvolvedor(idDesenvolvedor);
+        
         Atividade atividade = new Atividade();
         atividade.setNmAtivd(nomeAtividade);
-        atividade.setIdDesenv(desenv);
-        atividade.setIdProjeto(projeto);
-        transferBean.setAtividade(atividade);
+        atividade.setDesenvolvedor(desenv);
+        atividade.setIdProjeto(null);
+        
         AtividadeDao ativdDao = new AtividadeDao();
         boolean status = ativdDao.create(atividade);
         if(status == false){

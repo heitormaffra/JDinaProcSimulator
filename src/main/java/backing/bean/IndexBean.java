@@ -4,6 +4,7 @@
  */
 package backing.bean;
 
+import action.control.FlowPagesControl;
 import br.ufjf.mmc.jynacore.JynaSimulableModel;
 import br.ufjf.mmc.jynacore.JynaSimulation;
 import br.ufjf.mmc.jynacore.JynaSimulationData;
@@ -36,8 +37,12 @@ import br.ufjf.mmc.jynacore.metamodel.instance.MetaModelInstance;
 import br.ufjf.mmc.jynacore.metamodel.instance.impl.DefaultMetaModelInstance;
 import br.ufjf.mmc.jynacore.metamodel.simulator.impl.DefaultMetaModelInstanceEulerMethod;
 import br.ufjf.mmc.jynacore.metamodel.simulator.impl.DefaultMetaModelInstanceSimulation;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
@@ -48,11 +53,12 @@ import org.primefaces.model.chart.ChartSeries;
 @ViewScoped
 @ManagedBean(name = "indexBean")
 public class IndexBean {
+    
+    TransferBean transfer;
 
-    private CartesianChartModel model;
 
     /**
-     *
+     * Bean de Index, responsável pelas ações da view index.xhtml
      * @throws Exception
      */
     public IndexBean() throws Exception {
@@ -170,12 +176,6 @@ public class IndexBean {
             //System.out.println(cii.getClassInstance().getName() + "." + cii.getName() + "| Valor: "+ jv.getValue());
             System.out.println("Nome: " + jv.getName() + "| Valor: " + jv.getValue());
 
-            model = new CartesianChartModel();
-            ChartSeries valor = new ChartSeries();
-            valor.setLabel("Atividade");
-            valor.set(cii.getName(), jv.getValue());
-            model.addSeries(valor);
-
         }
     }
 
@@ -193,12 +193,19 @@ public class IndexBean {
         }
         //System.out.println("Simulating done!");
     }
-
+    
     /**
-     *
-     * @return
+     * Retorna a página de seleção de projetos, para iniciar o wizard para simulação
+     * de projetos
+     * @return redirect
      */
-    public CartesianChartModel getModel() {
-        return model;
+    public void btnComecaWizard(){
+        
+        try {  
+            FacesContext.getCurrentInstance().getExternalContext().redirect("selecionarProjeto.jsf");
+        } catch (IOException ex) {
+            Logger.getLogger(IndexBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }

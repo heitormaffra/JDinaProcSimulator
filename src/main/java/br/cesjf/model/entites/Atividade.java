@@ -170,16 +170,16 @@ public class Atividade implements Serializable {
      *
      * @return
      */
-    public Desenvolvedor getIdDesenv() {
+    public Desenvolvedor getDesenvolvedor() {
         return idDesenv;
     }
 
     /**
      *
-     * @param idDesenv
+     * @param desenvolvedor
      */
-    public void setIdDesenv(Desenvolvedor idDesenv) {
-        this.idDesenv = idDesenv;
+    public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
+        this.idDesenv = desenvolvedor;
     }
     
 }
