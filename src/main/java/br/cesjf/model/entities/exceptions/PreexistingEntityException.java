@@ -1,4 +1,4 @@
-package br.cesjf.model.entites.exceptions;
+package br.cesjf.model.entities.exceptions;
 
 public class PreexistingEntityException extends Exception {
     public PreexistingEntityException(String message, Throwable cause) {

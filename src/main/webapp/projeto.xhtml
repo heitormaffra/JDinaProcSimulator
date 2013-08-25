@@ -26,21 +26,6 @@
                                 <h:inputText value="#{projetoBean.nomeProjeto}"/>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <h:outputText value="Atividades: "/>
-                            </td>
-                            <td>
-                                <p:selectManyMenu id="dese" 
-                                                 style="width: 200px;"
-                                                 value="#{projetoBean.atividades}" >
-                                    <f:selectItems value="#{atividade.atividades}" 
-                                                   var="desenv"
-                                                   itemValue="#{desenv.idAtivd}"
-                                                   itemLabel="#{desenv.nmAtivd}"/>
-                                </p:selectManyMenu>
-                            </td>
-                        </tr>
                     </table>
                     <p:commandButton value="Salvar"
                                      actionListener="#{projetoBean.criarProjeto()}"/>

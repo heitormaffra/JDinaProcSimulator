@@ -4,17 +4,19 @@
  */
 package backing.bean.atividade;
 
-import br.cesjf.model.entites.Atividade;
-import br.cesjf.model.entites.Desenvolvedor;
-import br.cesjf.model.entites.Projeto;
+import br.cesjf.model.entities.Atividade;
+import br.cesjf.model.entities.Desenvolvedor;
+import br.cesjf.model.entities.Projeto;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import backing.bean.TransferBean;
 import br.cesjf.model.dao.AtividadeDao;
 import br.cesjf.model.dao.DesenvolvedorDao;
+import br.cesjf.model.dao.ProjetoDao;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 
 /**
  *
@@ -27,10 +29,27 @@ public class AtividadeBean {
      private Double duracao;
      private Desenvolvedor desenv;
      private Projeto projeto;
-     private TransferBean transferBean;
      private List<Atividade> atividades;
      private Integer idAtividade;
      private Integer idDesenvolvedor;
+     private Integer idProjeto;
+     private Atividade atividade;
+
+    public Atividade getAtividade() {
+        return atividade;
+    }
+
+    public void setAtividade(Atividade atividade) {
+        this.atividade = atividade;
+    }
+
+    public Integer getIdProjeto() {
+        return idProjeto;
+    }
+
+    public void setIdProjeto(Integer idProjeto) {
+        this.idProjeto = idProjeto;
+    }
 
     public Integer getIdDesenvolvedor() {
         return idDesenvolvedor;
@@ -132,7 +151,8 @@ public class AtividadeBean {
         
         Atividade atividade = new Atividade();
         atividade.setNmAtivd(nomeAtividade);
-        atividade.setDesenvolvedor(desenv);
+        atividade.setIdDesenv(desenv);
+        atividade.setDuracaoAtivid(duracao);
         atividade.setIdProjeto(null);
         
         AtividadeDao ativdDao = new AtividadeDao();
@@ -143,5 +163,16 @@ public class AtividadeBean {
             FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Registro salvo com sucesso!"));
         }
     }
-     
+    
+    public String findAtividadefindById(ValueChangeEvent event) {
+        
+        Integer idAtividade = event != null ? (Integer) event.getNewValue() : null;
+        AtividadeDao atividadeDao = new AtividadeDao();
+        if (idAtividade != null) {
+            setAtividade(atividadeDao.findAtividade(idAtividade));
+        } else {
+            setAtividade(null);
+        }
+        return null;
+    }
 }

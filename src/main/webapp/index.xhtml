@@ -3,10 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>Facelet Title</title>
-        <link type="text/css" rel="stylesheet" href="css/style.css"/>
+        <link type="text/css" rel="stylesheet" href="css/syntaxhighlighter/syntaxhighlighter.css"/>
         <link type="text/css" rel="stylesheet" href="css/default.css"/>
     </h:head>
     <h:body>
@@ -14,12 +15,41 @@
             <p:layoutUnit position="center">
                 <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
                 <ui:include src="WEB-INF/comps/geral/menu.xhtml" />
-                <p:commandButton id="btnContinuar"
-                                 value="Criar Simulação"
-                                 actionListener="#{indexBean.btnComecaWizard()}"/>
+                <div style="margin-left: 220px;">
+                    <h1 class="title ui-widget-header ui-corner-all">Tela Inicial</h1>
+
+                    <h:form>  
+
+                        <p:growl id="growl" sticky="true" showDetail="true"/>  
+
+                        <p:wizard flowListener="#{indexBean.onFlowProcess}" style="width: 90%;">  
+
+                            <p:tab id="projeto" title="Projeto">  
+
+                                <p:panel header="Selecionar Projeto">  
+
+                                    <h:messages errorClass="error"/>  
+
+                                    <ui:include src="WEB-INF/comps/includes/selecionarProjeto.xhtml" />
+
+                                </p:panel>  
+                            </p:tab>  
+
+                            <p:tab id="address" title="Atividade">  
+                                <p:panel header="Adress Details">  
+
+                                    <h:messages errorClass="error"/>  
+                                    <ui:include src="WEB-INF/comps/includes/selecionarAtividade.xhtml" />
+                                      
+                                </p:panel>  
+                            </p:tab>  
+
+                        </p:wizard>  
+
+                    </h:form>  
+                </div>
             </p:layoutUnit>
         </p:layout>
-
     </h:body>
 </html>
 

@@ -5,6 +5,9 @@
 package backing.bean;
 
 import action.control.FlowPagesControl;
+import br.cesjf.model.entities.Atividade;
+import br.cesjf.model.entities.Desenvolvedor;
+import br.cesjf.model.entities.Projeto;
 import br.ufjf.mmc.jynacore.JynaSimulableModel;
 import br.ufjf.mmc.jynacore.JynaSimulation;
 import br.ufjf.mmc.jynacore.JynaSimulationData;
@@ -40,9 +43,12 @@ import br.ufjf.mmc.jynacore.metamodel.simulator.impl.DefaultMetaModelInstanceSim
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import org.primefaces.event.FlowEvent;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
@@ -54,158 +60,62 @@ import org.primefaces.model.chart.ChartSeries;
 @ManagedBean(name = "indexBean")
 public class IndexBean {
     
-    TransferBean transfer;
-
-
-    /**
-     * Bean de Index, responsável pelas ações da view index.xhtml
-     * @throws Exception
-     */
-    public IndexBean() throws Exception {
-
-
-
-        //Modelo de Domínio
-        MetaModel domainModel = new DefaultMetaModel();
-        domainModel.setName("Projeto de Software Simples");
-
-        //Classe Desenvolvedor
-        MetaModelClass developer = new DefaultMetaModelClass();
-        developer.setName("Heitor");
-
-        MetaModelClassProperty experience = new DefaultMetaModelClassProperty();
-        experience.setName("experiência");
-        experience.setDefaultValue(2.0);
-        developer.put(experience);
-
-        MetaModelClassAuxiliary productivity = new DefaultMetaModelClassAuxiliary();
-        productivity.setName("Produtividade");
-        productivity.setExpression(new DefaultNameExpression("experiência"));
-        developer.put(productivity);
-
-        domainModel.put(developer);
-
-        //Classe Atividade
-        MetaModelClass activity = new DefaultMetaModelClass();
-        activity.setName("Atividade");
-
-        MetaModelClassProperty duration = new DefaultMetaModelClassProperty();
-        duration.setName("duração");
-        duration.setDefaultValue(25.0);
-        activity.put(duration);
-
-        MetaModelClassStock timeToConclude = new DefaultMetaModelClassStock();
-        timeToConclude.setName("Tempo para concluir");
-        timeToConclude.setExpression(new DefaultNameExpression("duração"));
-        activity.put(timeToConclude);
-
-        MetaModelClassAuxiliary production = new DefaultMetaModelClassAuxiliary();
-        production.setName("Produção");
-        production.setExpression(new DefaultNumberConstantExpression(1.0));
-        activity.put(production);
-
-        MetaModelClassRate work = new DefaultMetaModelClassRate();
-        work.setName("Trabalho");
-        work.setSource(timeToConclude);
-        Expression workExp = new DefaultExpression();
-        workExp.setLeftOperand(new DefaultNameExpression("Produção"));
-        workExp.setRightOperand(new DefaultNameExpression("Tempo para concluir"));
-        work.setExpression(workExp);
-        activity.put(work);
-
-        domainModel.put(activity);
-
-        MetaModelRelation team = new DefaultMetaModelSingleRelation();
-        team.setName("Equipe");
-        team.setTarget(developer);
-        domainModel.put(team);
-
-        MetaModelRelation precedence = new DefaultMetaModelMultiRelation();
-        precedence.setName("Precedente");
-        precedence.setSource(activity);
-        precedence.setTarget(activity);
-        domainModel.put(precedence);
-
-        MetaModelInstance modelInstance = new DefaultMetaModelInstance();
-        modelInstance.setMetaModel(domainModel);
-
-
-        JynaSimulation simulation = new DefaultMetaModelInstanceSimulation();
-        JynaSimulationProfile profile = new DefaultSimulationProfile();
-        JynaSimulationMethod method = new DefaultMetaModelInstanceEulerMethod();
-        JynaSimulableModel instance;
-        DefaultSimulationData data = new DefaultSimulationData();
-
-        instance = modelInstance;
-        profile.setInitialTime(0.0);
-        profile.setFinalTime(500.0);
-        profile.setTimeLimits(1000, 10.0);
-        int skip = 10;
-
-        simulation.setMethod(method);
-        simulation.setProfile(profile);
-        data.removeAll();
-        data.clearAll();
-
-        simulation.setModel(instance);
-        simulation.setSimulationData(
-                (JynaSimulationData) data);
-        simulation.reset();
-
-        data.register(1.0);
-        runSimulation(simulation, skip);
-
-//        model = new CartesianChartModel();
-//        ChartSeries boys = new ChartSeries();
-//        boys.setLabel("Boys");
-//        boys.set("2004", 120);
-//        boys.set("2005", 100);
-//        ChartSeries girls = new ChartSeries();
-//        girls.setLabel("Girls");
-//        girls.set("2004", 52);
-//        girls.set("2005", 60);
-//        model.addSeries(boys);
-//        model.addSeries(girls);
-        for (JynaValued jv : instance.getAllJynaValued()) {
-            System.out.println(jv.getValue());
-            ClassInstanceItem cii = (ClassInstanceItem) jv;
-            if (cii.getName().equals("")) {
-                data.add(cii.getClassInstance().getName() + "." + cii.getName(), jv);
-                System.out.println(cii.getClassInstance().getName() + "." + cii.getName() + "\n");
-            }
-            //System.out.println(cii.getClassInstance().getName() + "." + cii.getName() + "| Valor: "+ jv.getValue());
-            System.out.println("Nome: " + jv.getName() + "| Valor: " + jv.getValue());
-
-        }
-    }
-
-    private static void runSimulation(JynaSimulation simulation, int skip) throws Exception {
-        //simulation.run();
-        int steps = simulation.getProfile().getTimeSteps();
-
-
-        System.out.println("Simulating with " + simulation.getProfile().getTimeSteps() + " iterations. Interval " + simulation.getProfile().getTimeInterval() + " to " + simulation.getProfile().getFinalTime());
-        for (int i = 0; i < steps; i++) {
-            simulation.step();
-            if (i % skip == 0) {
-                simulation.register();
-            }
-        }
-        //System.out.println("Simulating done!");
+    public IndexBean() {
+        projeto = new Projeto();
+        atividade = new Atividade();
     }
     
-    /**
-     * Retorna a página de seleção de projetos, para iniciar o wizard para simulação
-     * de projetos
-     * @return redirect
-     */
-    public void btnComecaWizard(){
-        
-        try {  
-            FacesContext.getCurrentInstance().getExternalContext().redirect("selecionarProjeto.jsf");
-        } catch (IOException ex) {
-            Logger.getLogger(IndexBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+     private static final Logger logger = Logger.getLogger(IndexBean.class.getName());  
+     private boolean skip; 
+     private Projeto projeto;
+     private Atividade atividade;
+     private Desenvolvedor desenvolvedor;
+
+    public Atividade getAtividade() {
+        return atividade;
     }
+
+    public void setAtividade(Atividade atividade) {
+        this.atividade = atividade;
+    }
+
+    public Desenvolvedor getDesenvolvedor() {
+        return desenvolvedor;
+    }
+
+    public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
+        this.desenvolvedor = desenvolvedor;
+    }
+
+    public Projeto getProjeto() {
+        return projeto;
+    }
+
+    public void setProjeto(Projeto projeto) {
+        this.projeto = projeto;
+    }
+    
+    public boolean isSkip() {  
+        return skip;  
+    }  
+    
+    public void save(ActionEvent actionEvent) {  
+        //Persist user  
+          
+        FacesMessage msg = new FacesMessage("Successful", "Welcome :");  
+        FacesContext.getCurrentInstance().addMessage(null, msg);  
+    }  
+     
+     public String onFlowProcess(FlowEvent event) {  
+        logger.info("Current wizard step:" + event.getOldStep());  
+        logger.info("Next step:" + event.getNewStep());  
+          
+        if(skip) {  
+            skip = false;   //reset in case user goes back  
+            return "confirm";  
+        }  
+        else {  
+            return event.getNewStep();  
+        }  
+    }  
 }

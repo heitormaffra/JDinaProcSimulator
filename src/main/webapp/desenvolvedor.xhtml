@@ -13,29 +13,34 @@
             <p:layoutUnit position="center">
                 <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
                 <ui:include src="WEB-INF/comps/geral/menu.xhtml" />
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <h:form id="frmDesenv">
-                    <table>
-                        <tr>
-                            <td>
-                                <h:outputText value="Nome: "/>
-                            </td>
-                            <td>
-                                <h:inputText value="#{desenvolvedor.nomeDesenv}"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <h:outputText value="Experiência: "/>
-                            </td>
-                            <td>
-                                <h:inputText value="#{desenvolvedor.expeDesenv}"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <p:commandButton value="Salvar"
-                                     actionListener="#{desenvolvedor.criaDesenv()}"/>
-                </h:form>
+                <div style="margin-left: 220px;">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <h1 class="title ui-widget-header ui-corner-all">Cadastro de Desenvolvedor</h1>
+                    <p:panel style="width: 70%;">
+                        <h:form id="frmDesenv">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <h:outputText value="Nome: "/>
+                                    </td>
+                                    <td>
+                                        <h:inputText value="#{desenvolvedor.nomeDesenv}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h:outputText value="Experiência: "/>
+                                    </td>
+                                    <td>
+                                        <h:inputText value="#{desenvolvedor.expeDesenv}"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p:commandButton value="Salvar"
+                                             actionListener="#{desenvolvedor.criaDesenv()}"/>
+                        </h:form>
+                    </p:panel>
+                </div>
             </p:layoutUnit>
         </p:layout>
     </h:body>

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.cesjf.model.entites;
+package br.cesjf.model.entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -30,17 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Atividade.findAll", query = "SELECT a FROM Atividade a"),
     @NamedQuery(name = "Atividade.findByIdAtivd", query = "SELECT a FROM Atividade a WHERE a.idAtivd = :idAtivd"),
-    @NamedQuery(name = "Atividade.findByNmAtivd", query = "SELECT a FROM Atividade a WHERE a.nmAtivd = :nmAtivd")})
+    @NamedQuery(name = "Atividade.findByNmAtivd", query = "SELECT a FROM Atividade a WHERE a.nmAtivd = :nmAtivd"),
+    @NamedQuery(name = "Atividade.findByDuracaoAtivid", query = "SELECT a FROM Atividade a WHERE a.duracaoAtivid = :duracaoAtivid")})
 public class Atividade implements Serializable {
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "DURACAO_ATIVID")
-    private Double duracaoAtivid;
-    @JoinColumn(name = "ID_PROJETO", referencedColumnName = "ID_PROJETO")
-    @ManyToOne
-    private Projeto idProjeto;
-    @JoinColumn(name = "ID_DESENV", referencedColumnName = "ID_DESENV")
-    @ManyToOne
-    private Desenvolvedor idDesenv;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,61 +44,66 @@ public class Atividade implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "NM_ATIVD")
     private String nmAtivd;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "DURACAO_ATIVID")
+    private Double duracaoAtivid;
+    @JoinColumn(name = "ID_PROJETO", referencedColumnName = "ID_PROJETO")
+    @ManyToOne
+    private Projeto idProjeto;
+    @JoinColumn(name = "ID_DESENV", referencedColumnName = "ID_DESENV")
+    @ManyToOne
+    private Desenvolvedor idDesenv;
 
-    /**
-     *
-     */
     public Atividade() {
     }
 
-    /**
-     *
-     * @param idAtivd
-     */
     public Atividade(Integer idAtivd) {
         this.idAtivd = idAtivd;
     }
 
-    /**
-     *
-     * @param idAtivd
-     * @param nmAtivd
-     */
     public Atividade(Integer idAtivd, String nmAtivd) {
         this.idAtivd = idAtivd;
         this.nmAtivd = nmAtivd;
     }
 
-    /**
-     *
-     * @return
-     */
     public Integer getIdAtivd() {
         return idAtivd;
     }
 
-    /**
-     *
-     * @param idAtivd
-     */
     public void setIdAtivd(Integer idAtivd) {
         this.idAtivd = idAtivd;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getNmAtivd() {
         return nmAtivd;
     }
 
-    /**
-     *
-     * @param nmAtivd
-     */
     public void setNmAtivd(String nmAtivd) {
         this.nmAtivd = nmAtivd;
+    }
+
+    public Double getDuracaoAtivid() {
+        return duracaoAtivid;
+    }
+
+    public void setDuracaoAtivid(Double duracaoAtivid) {
+        this.duracaoAtivid = duracaoAtivid;
+    }
+
+    public Projeto getIdProjeto() {
+        return idProjeto;
+    }
+
+    public void setIdProjeto(Projeto idProjeto) {
+        this.idProjeto = idProjeto;
+    }
+
+    public Desenvolvedor getIdDesenv() {
+        return idDesenv;
+    }
+
+    public void setIdDesenv(Desenvolvedor idDesenv) {
+        this.idDesenv = idDesenv;
     }
 
     @Override
@@ -131,55 +128,7 @@ public class Atividade implements Serializable {
 
     @Override
     public String toString() {
-        return "br.cesjf.model.entites.Atividade[ idAtivd=" + idAtivd + " ]";
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Double getDuracaoAtivid() {
-        return duracaoAtivid;
-    }
-
-    /**
-     *
-     * @param duracaoAtivid
-     */
-    public void setDuracaoAtivid(Double duracaoAtivid) {
-        this.duracaoAtivid = duracaoAtivid;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Projeto getIdProjeto() {
-        return idProjeto;
-    }
-
-    /**
-     *
-     * @param idProjeto
-     */
-    public void setIdProjeto(Projeto idProjeto) {
-        this.idProjeto = idProjeto;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Desenvolvedor getDesenvolvedor() {
-        return idDesenv;
-    }
-
-    /**
-     *
-     * @param desenvolvedor
-     */
-    public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
-        this.idDesenv = desenvolvedor;
+        return "action.control.Atividade[ idAtivd=" + idAtivd + " ]";
     }
     
 }

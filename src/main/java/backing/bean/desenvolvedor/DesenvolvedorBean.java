@@ -7,7 +7,7 @@ package backing.bean.desenvolvedor;
 //import br.cesjf.model.dao.DesenvolvedorDao;
 //import br.cesjf.model.entites.Desenvolvedor;
 import br.cesjf.model.dao.DesenvolvedorDao;
-import br.cesjf.model.entites.Desenvolvedor;
+import br.cesjf.model.entities.Desenvolvedor;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;

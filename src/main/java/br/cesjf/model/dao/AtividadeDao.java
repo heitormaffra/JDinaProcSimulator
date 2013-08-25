@@ -5,19 +5,23 @@
 package br.cesjf.model.dao;
 
 import br.cesjf.model.dao.exceptions.NonexistentEntityException;
-import br.cesjf.model.entites.Atividade;
-import java.util.List;
-import javax.persistence.EntityManager;
+import br.cesjf.model.entities.Atividade;
+import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import br.cesjf.model.entities.Projeto;
+import br.cesjf.model.entities.Desenvolvedor;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  *
  * @author heitormaffra
  */
-public class AtividadeDao extends GenericDao{
+public class AtividadeDao extends GenericDao {
 
     /**
      *
@@ -29,33 +33,71 @@ public class AtividadeDao extends GenericDao{
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Projeto idProjeto = atividade.getIdProjeto();
+            if (idProjeto != null) {
+                idProjeto = em.getReference(idProjeto.getClass(), idProjeto.getIdProjeto());
+                atividade.setIdProjeto(idProjeto);
+            }
+            Desenvolvedor idDesenv = atividade.getIdDesenv();
+            if (idDesenv != null) {
+                idDesenv = em.getReference(idDesenv.getClass(), idDesenv.getIdDesenv());
+                atividade.setIdDesenv(idDesenv);
+            }
             em.persist(atividade);
+            if (idProjeto != null) {
+                idProjeto.getAtividadeCollection().add(atividade);
+                idProjeto = em.merge(idProjeto);
+            }
+            if (idDesenv != null) {
+                idDesenv.getAtividadeCollection().add(atividade);
+                idDesenv = em.merge(idDesenv);
+            }
             em.getTransaction().commit();
             return true;
-        } catch(Exception e){
+        } catch (Exception e) {
             return false;
-            
-        }
-        finally {
+        } finally {
             if (em != null) {
                 em.close();
             }
-            return true;
         }
     }
 
-    /**
-     *
-     * @param atividade
-     * @throws NonexistentEntityException
-     * @throws Exception
-     */
     public void edit(Atividade atividade) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Atividade persistentAtividade = em.find(Atividade.class, atividade.getIdAtivd());
+            Projeto idProjetoOld = persistentAtividade.getIdProjeto();
+            Projeto idProjetoNew = atividade.getIdProjeto();
+            Desenvolvedor idDesenvOld = persistentAtividade.getIdDesenv();
+            Desenvolvedor idDesenvNew = atividade.getIdDesenv();
+            if (idProjetoNew != null) {
+                idProjetoNew = em.getReference(idProjetoNew.getClass(), idProjetoNew.getIdProjeto());
+                atividade.setIdProjeto(idProjetoNew);
+            }
+            if (idDesenvNew != null) {
+                idDesenvNew = em.getReference(idDesenvNew.getClass(), idDesenvNew.getIdDesenv());
+                atividade.setIdDesenv(idDesenvNew);
+            }
             atividade = em.merge(atividade);
+            if (idProjetoOld != null && !idProjetoOld.equals(idProjetoNew)) {
+                idProjetoOld.getAtividadeCollection().remove(atividade);
+                idProjetoOld = em.merge(idProjetoOld);
+            }
+            if (idProjetoNew != null && !idProjetoNew.equals(idProjetoOld)) {
+                idProjetoNew.getAtividadeCollection().add(atividade);
+                idProjetoNew = em.merge(idProjetoNew);
+            }
+            if (idDesenvOld != null && !idDesenvOld.equals(idDesenvNew)) {
+                idDesenvOld.getAtividadeCollection().remove(atividade);
+                idDesenvOld = em.merge(idDesenvOld);
+            }
+            if (idDesenvNew != null && !idDesenvNew.equals(idDesenvOld)) {
+                idDesenvNew.getAtividadeCollection().add(atividade);
+                idDesenvNew = em.merge(idDesenvNew);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -73,11 +115,6 @@ public class AtividadeDao extends GenericDao{
         }
     }
 
-    /**
-     *
-     * @param id
-     * @throws NonexistentEntityException
-     */
     public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -90,6 +127,16 @@ public class AtividadeDao extends GenericDao{
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The atividade with id " + id + " no longer exists.", enfe);
             }
+            Projeto idProjeto = atividade.getIdProjeto();
+            if (idProjeto != null) {
+                idProjeto.getAtividadeCollection().remove(atividade);
+                idProjeto = em.merge(idProjeto);
+            }
+            Desenvolvedor idDesenv = atividade.getIdDesenv();
+            if (idDesenv != null) {
+                idDesenv.getAtividadeCollection().remove(atividade);
+                idDesenv = em.merge(idDesenv);
+            }
             em.remove(atividade);
             em.getTransaction().commit();
         } finally {
@@ -99,20 +146,10 @@ public class AtividadeDao extends GenericDao{
         }
     }
 
-    /**
-     *
-     * @return
-     */
     public List<Atividade> findAtividadeEntities() {
         return findAtividadeEntities(true, -1, -1);
     }
 
-    /**
-     *
-     * @param maxResults
-     * @param firstResult
-     * @return
-     */
     public List<Atividade> findAtividadeEntities(int maxResults, int firstResult) {
         return findAtividadeEntities(false, maxResults, firstResult);
     }
@@ -133,11 +170,6 @@ public class AtividadeDao extends GenericDao{
         }
     }
 
-    /**
-     *
-     * @param id
-     * @return
-     */
     public Atividade findAtividade(Integer id) {
         EntityManager em = getEntityManager();
         try {
@@ -147,10 +179,6 @@ public class AtividadeDao extends GenericDao{
         }
     }
 
-    /**
-     *
-     * @return
-     */
     public int getAtividadeCount() {
         EntityManager em = getEntityManager();
         try {
@@ -163,5 +191,4 @@ public class AtividadeDao extends GenericDao{
             em.close();
         }
     }
-    
 }

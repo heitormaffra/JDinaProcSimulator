@@ -5,11 +5,10 @@
 package backing.bean.projeto;
 
 import br.cesjf.model.dao.AtividadeDao;
-import br.cesjf.model.entites.Projeto;
+import br.cesjf.model.entities.Projeto;
 import br.cesjf.model.dao.ProjetoDao;
-import br.cesjf.model.entites.Atividade;
-import br.cesjf.model.entites.exceptions.PreexistingEntityException;
-import java.util.ArrayList;
+import br.cesjf.model.entities.Atividade;
+import br.cesjf.model.entities.exceptions.PreexistingEntityException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,15 +98,9 @@ public class ProjetoBean {
     }
     
     public void criarProjeto(){
-        AtividadeDao ativiDao = new AtividadeDao();
-        
-        for(int i=0; i<atividades.size(); i++){
-            atividades.add(ativiDao.findAtividade(idAtividade));
-        }
-        
+
         projeto = new Projeto();
         projeto.setNmProjeto(nomeProjeto);
-        projeto.setAtividadeList(atividades);
         
         ProjetoDao projetoDao = new ProjetoDao();
         try {

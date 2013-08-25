@@ -4,9 +4,9 @@
  */
 package backing.bean;
 
-import br.cesjf.model.entites.Atividade;
-import br.cesjf.model.entites.Desenvolvedor;
-import br.cesjf.model.entites.Projeto;
+import br.cesjf.model.entities.Atividade;
+import br.cesjf.model.entities.Desenvolvedor;
+import br.cesjf.model.entities.Projeto;
 import br.cesjf.util.Equipe;
 import br.cesjf.util.Precedente;
 import br.cesjf.util.Producao;

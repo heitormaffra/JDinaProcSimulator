@@ -1,4 +1,4 @@
-package br.cesjf.model.entites.exceptions;
+package br.cesjf.model.entities.exceptions;
 
 public class NonexistentEntityException extends Exception {
     public NonexistentEntityException(String message, Throwable cause) {

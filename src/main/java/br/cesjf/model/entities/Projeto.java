@@ -2,14 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.cesjf.model.entites;
+package br.cesjf.model.entities;
 
-import br.cesjf.model.entites.Atividade;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -37,6 +38,7 @@ public class Projeto implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID_PROJETO")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idProjeto;
     @Basic(optional = false)
     @NotNull
@@ -44,79 +46,43 @@ public class Projeto implements Serializable {
     @Column(name = "NM_PROJETO")
     private String nmProjeto;
     @OneToMany(mappedBy = "idProjeto")
-    private List<Atividade> atividadeList;
+    private Collection<Atividade> atividadeCollection;
 
-    /**
-     *
-     */
     public Projeto() {
     }
 
-    /**
-     *
-     * @param idProjeto
-     */
     public Projeto(Integer idProjeto) {
         this.idProjeto = idProjeto;
     }
 
-    /**
-     *
-     * @param idProjeto
-     * @param nmProjeto
-     */
     public Projeto(Integer idProjeto, String nmProjeto) {
         this.idProjeto = idProjeto;
         this.nmProjeto = nmProjeto;
     }
 
-    /**
-     *
-     * @return
-     */
     public Integer getIdProjeto() {
         return idProjeto;
     }
 
-    /**
-     *
-     * @param idProjeto
-     */
     public void setIdProjeto(Integer idProjeto) {
         this.idProjeto = idProjeto;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getNmProjeto() {
         return nmProjeto;
     }
 
-    /**
-     *
-     * @param nmProjeto
-     */
     public void setNmProjeto(String nmProjeto) {
         this.nmProjeto = nmProjeto;
     }
 
-    /**
-     *
-     * @return
-     */
     @XmlTransient
-    public List<Atividade> getAtividadeList() {
-        return atividadeList;
+    public Collection<Atividade> getAtividadeCollection() {
+        return atividadeCollection;
     }
 
-    /**
-     *
-     * @param atividadeList
-     */
-    public void setAtividadeList(List<Atividade> atividadeList) {
-        this.atividadeList = atividadeList;
+    public void setAtividadeCollection(Collection<Atividade> atividadeCollection) {
+        this.atividadeCollection = atividadeCollection;
     }
 
     @Override
@@ -141,7 +107,7 @@ public class Projeto implements Serializable {
 
     @Override
     public String toString() {
-        return "backing.bean.Projeto[ idProjeto=" + idProjeto + " ]";
+        return "action.control.Projeto[ idProjeto=" + idProjeto + " ]";
     }
     
 }

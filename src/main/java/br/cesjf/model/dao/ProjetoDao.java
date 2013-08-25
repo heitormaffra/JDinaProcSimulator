@@ -4,18 +4,20 @@
  */
 package br.cesjf.model.dao;
 
-import br.cesjf.model.dao.GenericDao;
-import br.cesjf.model.entites.Atividade;
-import br.cesjf.model.entites.Projeto;
-import br.cesjf.model.entites.exceptions.NonexistentEntityException;
-import br.cesjf.model.entites.exceptions.PreexistingEntityException;
+import br.cesjf.model.dao.exceptions.NonexistentEntityException;
+import br.cesjf.model.dao.exceptions.PreexistingEntityException;
+import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import br.cesjf.model.entities.Atividade;
+import br.cesjf.model.entities.Projeto;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  *
@@ -24,27 +26,27 @@ import javax.persistence.EntityManager;
 public class ProjetoDao extends GenericDao{
 
     public void create(Projeto projeto) throws PreexistingEntityException, Exception {
-        if (projeto.getAtividadeList() == null) {
-            projeto.setAtividadeList(new ArrayList<Atividade>());
+        if (projeto.getAtividadeCollection() == null) {
+            projeto.setAtividadeCollection(new ArrayList<Atividade>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<Atividade> attachedAtividadeList = new ArrayList<Atividade>();
-            for (Atividade atividadeListAtividadeToAttach : projeto.getAtividadeList()) {
-                atividadeListAtividadeToAttach = em.getReference(atividadeListAtividadeToAttach.getClass(), atividadeListAtividadeToAttach.getIdAtivd());
-                attachedAtividadeList.add(atividadeListAtividadeToAttach);
+            Collection<Atividade> attachedAtividadeCollection = new ArrayList<Atividade>();
+            for (Atividade atividadeCollectionAtividadeToAttach : projeto.getAtividadeCollection()) {
+                atividadeCollectionAtividadeToAttach = em.getReference(atividadeCollectionAtividadeToAttach.getClass(), atividadeCollectionAtividadeToAttach.getIdAtivd());
+                attachedAtividadeCollection.add(atividadeCollectionAtividadeToAttach);
             }
-            projeto.setAtividadeList(attachedAtividadeList);
+            projeto.setAtividadeCollection(attachedAtividadeCollection);
             em.persist(projeto);
-            for (Atividade atividadeListAtividade : projeto.getAtividadeList()) {
-                Projeto oldIdProjetoOfAtividadeListAtividade = atividadeListAtividade.getIdProjeto();
-                atividadeListAtividade.setIdProjeto(projeto);
-                atividadeListAtividade = em.merge(atividadeListAtividade);
-                if (oldIdProjetoOfAtividadeListAtividade != null) {
-                    oldIdProjetoOfAtividadeListAtividade.getAtividadeList().remove(atividadeListAtividade);
-                    oldIdProjetoOfAtividadeListAtividade = em.merge(oldIdProjetoOfAtividadeListAtividade);
+            for (Atividade atividadeCollectionAtividade : projeto.getAtividadeCollection()) {
+                Projeto oldIdProjetoOfAtividadeCollectionAtividade = atividadeCollectionAtividade.getIdProjeto();
+                atividadeCollectionAtividade.setIdProjeto(projeto);
+                atividadeCollectionAtividade = em.merge(atividadeCollectionAtividade);
+                if (oldIdProjetoOfAtividadeCollectionAtividade != null) {
+                    oldIdProjetoOfAtividadeCollectionAtividade.getAtividadeCollection().remove(atividadeCollectionAtividade);
+                    oldIdProjetoOfAtividadeCollectionAtividade = em.merge(oldIdProjetoOfAtividadeCollectionAtividade);
                 }
             }
             em.getTransaction().commit();
@@ -66,30 +68,30 @@ public class ProjetoDao extends GenericDao{
             em = getEntityManager();
             em.getTransaction().begin();
             Projeto persistentProjeto = em.find(Projeto.class, projeto.getIdProjeto());
-            List<Atividade> atividadeListOld = persistentProjeto.getAtividadeList();
-            List<Atividade> atividadeListNew = projeto.getAtividadeList();
-            List<Atividade> attachedAtividadeListNew = new ArrayList<Atividade>();
-            for (Atividade atividadeListNewAtividadeToAttach : atividadeListNew) {
-                atividadeListNewAtividadeToAttach = em.getReference(atividadeListNewAtividadeToAttach.getClass(), atividadeListNewAtividadeToAttach.getIdAtivd());
-                attachedAtividadeListNew.add(atividadeListNewAtividadeToAttach);
+            Collection<Atividade> atividadeCollectionOld = persistentProjeto.getAtividadeCollection();
+            Collection<Atividade> atividadeCollectionNew = projeto.getAtividadeCollection();
+            Collection<Atividade> attachedAtividadeCollectionNew = new ArrayList<Atividade>();
+            for (Atividade atividadeCollectionNewAtividadeToAttach : atividadeCollectionNew) {
+                atividadeCollectionNewAtividadeToAttach = em.getReference(atividadeCollectionNewAtividadeToAttach.getClass(), atividadeCollectionNewAtividadeToAttach.getIdAtivd());
+                attachedAtividadeCollectionNew.add(atividadeCollectionNewAtividadeToAttach);
             }
-            atividadeListNew = attachedAtividadeListNew;
-            projeto.setAtividadeList(atividadeListNew);
+            atividadeCollectionNew = attachedAtividadeCollectionNew;
+            projeto.setAtividadeCollection(atividadeCollectionNew);
             projeto = em.merge(projeto);
-            for (Atividade atividadeListOldAtividade : atividadeListOld) {
-                if (!atividadeListNew.contains(atividadeListOldAtividade)) {
-                    atividadeListOldAtividade.setIdProjeto(null);
-                    atividadeListOldAtividade = em.merge(atividadeListOldAtividade);
+            for (Atividade atividadeCollectionOldAtividade : atividadeCollectionOld) {
+                if (!atividadeCollectionNew.contains(atividadeCollectionOldAtividade)) {
+                    atividadeCollectionOldAtividade.setIdProjeto(null);
+                    atividadeCollectionOldAtividade = em.merge(atividadeCollectionOldAtividade);
                 }
             }
-            for (Atividade atividadeListNewAtividade : atividadeListNew) {
-                if (!atividadeListOld.contains(atividadeListNewAtividade)) {
-                    Projeto oldIdProjetoOfAtividadeListNewAtividade = atividadeListNewAtividade.getIdProjeto();
-                    atividadeListNewAtividade.setIdProjeto(projeto);
-                    atividadeListNewAtividade = em.merge(atividadeListNewAtividade);
-                    if (oldIdProjetoOfAtividadeListNewAtividade != null && !oldIdProjetoOfAtividadeListNewAtividade.equals(projeto)) {
-                        oldIdProjetoOfAtividadeListNewAtividade.getAtividadeList().remove(atividadeListNewAtividade);
-                        oldIdProjetoOfAtividadeListNewAtividade = em.merge(oldIdProjetoOfAtividadeListNewAtividade);
+            for (Atividade atividadeCollectionNewAtividade : atividadeCollectionNew) {
+                if (!atividadeCollectionOld.contains(atividadeCollectionNewAtividade)) {
+                    Projeto oldIdProjetoOfAtividadeCollectionNewAtividade = atividadeCollectionNewAtividade.getIdProjeto();
+                    atividadeCollectionNewAtividade.setIdProjeto(projeto);
+                    atividadeCollectionNewAtividade = em.merge(atividadeCollectionNewAtividade);
+                    if (oldIdProjetoOfAtividadeCollectionNewAtividade != null && !oldIdProjetoOfAtividadeCollectionNewAtividade.equals(projeto)) {
+                        oldIdProjetoOfAtividadeCollectionNewAtividade.getAtividadeCollection().remove(atividadeCollectionNewAtividade);
+                        oldIdProjetoOfAtividadeCollectionNewAtividade = em.merge(oldIdProjetoOfAtividadeCollectionNewAtividade);
                     }
                 }
             }
@@ -122,10 +124,10 @@ public class ProjetoDao extends GenericDao{
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The projeto with id " + id + " no longer exists.", enfe);
             }
-            List<Atividade> atividadeList = projeto.getAtividadeList();
-            for (Atividade atividadeListAtividade : atividadeList) {
-                atividadeListAtividade.setIdProjeto(null);
-                atividadeListAtividade = em.merge(atividadeListAtividade);
+            Collection<Atividade> atividadeCollection = projeto.getAtividadeCollection();
+            for (Atividade atividadeCollectionAtividade : atividadeCollection) {
+                atividadeCollectionAtividade.setIdProjeto(null);
+                atividadeCollectionAtividade = em.merge(atividadeCollectionAtividade);
             }
             em.remove(projeto);
             em.getTransaction().commit();

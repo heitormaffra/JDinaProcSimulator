@@ -2,23 +2,22 @@
               xmlns:h="http://java.sun.com/jsf/html"
               xmlns:p="http://primefaces.org/ui">
     <h:form>
-        <p:tieredMenu styleClass="menu">  
-            <p:menuitem value="Home" 
-                        url="#{request.contextPath}/../index.jsf"
-                        style="border: 0;" />
-            <p:submenu label="Cadastro" 
-                       style="padding-left: 0px; padding-right: 0px;"> 
-                <p:menuitem value="Desenvolvedor" 
-                            url="#{request.contextPath}/../desenvolvedor.jsf"
-                            style="padding-left: 0px; padding-right: 0px;" />  
-                <p:menuitem value="Atividade" 
-                            url="#{request.contextPath}/../atividade.jsf"
-                            style="padding-left: 0px; padding-right: 0px;" />
-                <p:menuitem value="Projeto" 
-                            url="#{request.contextPath}/../projeto.jsf"
-                            style="padding-left: 0px; padding-right: 0px;" />
+        <p:tieredMenu style="width:180px" styleClass="ui-menu ui-tieredmenu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix">
+            <p:submenu label="Cadastro" >
+                <p:menuitem value="Desenvolvedor" styleClass="ui-menu-child"  url="#{request.contextPath}/../desenvolvedor.jsf"  />
+                <p:menuitem value="Atividade" url="#{request.contextPath}/../atividade.jsf" />
+                <p:menuitem value="Projeto" url="#{request.contextPath}/../projeto.jsf" />
+            </p:submenu>
+            <p:submenu label="Non-Ajax Menuitem" >
+                <p:menuitem value="Delete" url="#{request.contextPath}/../desenvolvedor.jsf" />
+            </p:submenu>
+            <p:separator />
+            <p:submenu label="Navigations">
+                <p:submenu label="Prime Links">
+                    <p:menuitem value="Prime" url="http://www.prime.com.tr" title="xxx"/>
+                    <p:menuitem value="PrimeFaces" url="http://www.primefaces.org" />
+                </p:submenu>
             </p:submenu>
         </p:tieredMenu>
     </h:form>
-
 </ui:component>

@@ -1,4 +1,4 @@
-package br.cesjf.model.entites.exceptions;
+package br.cesjf.model.entities.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;

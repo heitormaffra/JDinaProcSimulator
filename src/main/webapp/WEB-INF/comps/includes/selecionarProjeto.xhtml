@@ -1,0 +1,16 @@
+<ui:component xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://java.sun.com/jsf/core">
+    <h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">  
+        <h:outputText value="Projeto: " />  
+        <p:selectOneMenu id="prjWizard" 
+                         style="width: 200px;"
+                         value="#{indexBean.projeto.idProjeto}" >
+            <f:selectItems value="#{projetoBean.projetos}" 
+                           var="projs"
+                           itemValue="#{projs.idProjeto}"
+                           itemLabel="#{projs.nmProjeto}"/>
+        </p:selectOneMenu>
+    </h:panelGrid>  
+</ui:component>

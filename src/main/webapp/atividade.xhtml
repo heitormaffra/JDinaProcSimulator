@@ -14,44 +14,62 @@
             <p:layoutUnit position="center">
                 <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
                 <ui:include src="WEB-INF/comps/geral/menu.xhtml" />
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <h:form id="frmDesenv">
-                    <table>
-                        <tr>
-                            <td>
-                                <h:outputText value="Nome: "/>
-                            </td>
-                            <td>
-                                <h:inputText value="#{atividade.nomeAtividade}"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <h:outputText value="Duração: "/>
-                            </td>
-                            <td>
-                                <h:inputText value="#{atividade.duracao}"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <h:outputText value="Desenvolvedor Resp.: "/>
-                            </td>
-                            <td>
-                                <p:selectOneMenu id="dese" 
-                                                 style="width: 200px;"
-                                                 value="#{atividade.idDesenvolvedor}" >
-                                    <f:selectItems value="#{desenvolvedor.desenvolvedores}" 
-                                                   var="desenv"
-                                                   itemValue="#{desenv.idDesenv}"
-                                                   itemLabel="#{desenv.nmDsenv}"/>
-                                </p:selectOneMenu>
-                            </td>
-                        </tr>
-                    </table>
-                    <p:commandButton value="Salvar"
-                                     actionListener="#{atividade.criarAtividade()}"/>
-                </h:form>
+                <div style="margin-left: 250px;">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <h1 class="title ui-widget-header ui-corner-all">Cadastro de Atividades</h1>
+                    <h:form id="frmDesenv">
+                        <table>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Nome: "/>
+                                </td>
+                                <td>
+                                    <h:inputText styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all" value="#{atividade.nomeAtividade}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Duração: "/>
+                                </td>
+                                <td>
+                                    <h:inputText styleClass="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all" value="#{atividade.duracao}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Desenvolvedor Resp.: "/>
+                                </td>
+                                <td>
+                                    <p:selectOneMenu id="dese" 
+                                                     style="width: 200px;"
+                                                     value="#{atividade.idDesenvolvedor}" >
+                                        <f:selectItems value="#{desenvolvedor.desenvolvedores}" 
+                                                       var="desenv"
+                                                       itemValue="#{desenv.idDesenv}"
+                                                       itemLabel="#{desenv.nmDsenv}"/>
+                                    </p:selectOneMenu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Projeto: "/>
+                                </td>
+                                <td>
+                                    <p:selectOneMenu id="prj" 
+                                                     style="width: 200px;"
+                                                     value="#{atividade.idProjeto}" >
+                                        <f:selectItems value="#{projetoBean.projetos}" 
+                                                       var="projs"
+                                                       itemValue="#{projs.idProjeto}"
+                                                       itemLabel="#{projs.nmProjeto}"/>
+                                    </p:selectOneMenu>
+                                </td>
+                            </tr>
+                        </table>
+                        <p:commandButton value="Salvar"
+                                         actionListener="#{atividade.criarAtividade()}"/>
+                    </h:form>
+                </div>
             </p:layoutUnit>
         </p:layout>
     </h:body>
