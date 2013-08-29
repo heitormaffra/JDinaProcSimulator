@@ -46,20 +46,33 @@
                                 </p:panel>  
                             </p:tab> 
 
-                            <p:tab id="atividade" title="Atividade">  
+                            <p:tab id="desenvolvedor" title="Desenvolvedor">  
 
-                                <p:panel header="Selecionar Atividade">  
+                                <p:panel header="Selecionar Desenvolvedor">  
 
                                     <h:messages errorClass="error"/>  
 
-                                    <ui:include src="WEB-INF/comps/includes/selecionarAtividade.xhtml" />
+                                    <ui:include src="WEB-INF/comps/includes/selecionarDesenvolvedor.xhtml" />
 
                                 </p:panel>  
                             </p:tab>
 
                         </p:wizard>  
+                    </h:form>
+                    <p:dialog header="Portal-CTe" 
+                              widgetVar="addNewDesenv"
+                              id="desenvDlg"
+                              resizable="false"
+                              modal="true"
+                              width="360">
+                        <h:form id="frmExpeditionType">
+                            <h:outputText value="Nome"/>
+                            <p:inputText value="#{desenvolvedor.nome}"/>
+                            <h:outputText value="Experiência"/>
+                            <p:inputText value="#{desenvolvedor.artefato}"/>
 
-                    </h:form>  
+                        </h:form>
+                    </p:dialog>
                 </div>
             </p:layoutUnit>
         </p:layout>
