@@ -1,0 +1,50 @@
+<ui:component xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://java.sun.com/jsf/core">
+    <h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">  
+        <p:panel id="panelResultSearch" style="margin: 0; border: none;">
+            <p:dataTable id="desenvolvedorView"
+                         style="text-align: center;"
+                         paginator="true"
+                         rows="8"
+                         paginatorAlwaysVisible="false"
+                         paginatorPosition="bottom"
+                         widgetVar="expeditionNoteView"                                     
+                         var="desenvolvedor"                                      
+                         value="#{indexBean.desenvolvedores}"
+                         emptyMessage="Nenhum desenvolvedor encontrado."> 
+                <p:column headerText="Desenvolvedor" >
+                    <h:outputText value="#{desenvolvedor.nome}" />
+                </p:column>
+                <p:column headerText="Experiência" >
+                    <h:outputText value="#{desenvolvedor.artefato}" />
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+    </h:panelGrid>
+
+    <p:dialog header="Portal-CTe" 
+              widgetVar="addNewDesenv"
+              id="desenvDlg"
+              resizable="false"
+              modal="true"
+              width="360">
+        <h:form id="frmInputDesev">
+            <h:outputText value="Nome"/>
+            <p:inputText value="#{desenvolvedor.nome}"/>
+            <h:outputText value="Experiência"/>
+            <p:inputText value="#{desenvolvedor.artefato}"/>
+
+        </h:form>
+    </p:dialog>
+
+    <p:commandButton value="Adicionar" 
+                     process="@all"
+                     onclick="desenvolvedorView.getPaginator().setPage(0);"
+                     action="#{indexBean.addNewDesenvRow()}"
+                     update="desenvolvedorView"/>
+    <p:commandButton value="Add Desenv"
+                     onclick="PF('addNewDesenv').show();"/>
+
+</ui:component>
