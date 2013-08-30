@@ -1,4 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/dinaprocsimulator">
-  <Resource auth="Container" driverClassName="org.h2.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="dinaprocsimu" password="admin" type="javax.sql.DataSource" url="jdbc:h2:dinaprocsimu" username="admin"/>
+<Context antiJARLocking="true" path="/dinaProcSimulator">
 </Context>
