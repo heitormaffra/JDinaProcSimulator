@@ -31,13 +31,29 @@ public class IndexBean {
     private List<String> atividades;
     private List<MetaModel> desenvolvedores;
     private DataModel desenvModel;
+    private String nomeDesenv;
+    private Double artefatoDesenv;
 
     public IndexBean() {
         desenvolvedores = new ArrayList<MetaModel>();
     }
-    
-    
 
+    public String getNomeDesenv() {
+        return nomeDesenv;
+    }
+
+    public void setNomeDesenv(String nomeDesenv) {
+        this.nomeDesenv = nomeDesenv;
+    }
+
+    public Double getArtefatoDesenv() {
+        return artefatoDesenv;
+    }
+
+    public void setArtefatoDesenv(Double artefatoDesenv) {
+        this.artefatoDesenv = artefatoDesenv;
+    }
+    
     public DataModel getDesenvModel() {
         return desenvModel;
     }
@@ -94,7 +110,15 @@ public class IndexBean {
         desenvModel = new ListDataModel(desenvolvedores);
     }
     
+    DataModel model;
+    
     public final void addNewDesenvRow(){
-        desenvolvedores.add(new MetaModel("Heitor", 1.0));
+        MetaModel meta = new MetaModel(nomeDesenv, new Double(artefatoDesenv));
+        desenvolvedores.add(meta);
+       model = new ListDataModel(desenvolvedores);
+    }
+    
+    public DataModel getDesenvolvedoresList() {
+        return model;
     }
 }

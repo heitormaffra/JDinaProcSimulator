@@ -23,7 +23,7 @@ import javax.faces.context.FacesContext;
 public class DesenvolvedorBean {
 
     private String nomeDesenv;
-    private Float expeDesenv;
+    private Double artefato;
     private List<Desenvolvedor> desenv;
     
     private List<Desenvolvedor> desenvs;
@@ -87,17 +87,17 @@ public class DesenvolvedorBean {
      *
      * @return expeDesenv
      */
-    public Float getExpeDesenv() {
-        return expeDesenv;
+    public Double getArtefato() {
+        return artefato;
     }
 
     /**
      * Setar valor para experiência do desenvolvedor.
      *
-     * @param expeDesenv
+     * @param getArtefato
      */
-    public void setExpeDesenv(Float expeDesenv) {
-        this.expeDesenv = expeDesenv;
+    public void getArtefato(Double expeDesenv) {
+        this.artefato = expeDesenv;
     }
 
     /**
@@ -106,7 +106,7 @@ public class DesenvolvedorBean {
     public void criaDesenv() {
         Desenvolvedor desenv = new Desenvolvedor();
         desenv.setNmDsenv(nomeDesenv);
-        desenv.setExpDesenv(expeDesenv);
+//        desenv.setExpDesenv(artefato);
 
         DesenvolvedorDao desenvDao = new DesenvolvedorDao();
         boolean create = desenvDao.create(desenv);

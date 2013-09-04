@@ -11,14 +11,14 @@
                          paginatorAlwaysVisible="false"
                          paginatorPosition="bottom"
                          widgetVar="expeditionNoteView"                                     
-                         var="desenvolvedor"                                      
-                         value="#{indexBean.desenvolvedores}"
+                         var="d"                                      
+                         value="#{indexBean.desenvolvedoresList}"
                          emptyMessage="Nenhum desenvolvedor encontrado."> 
                 <p:column headerText="Desenvolvedor" >
-                    <h:outputText value="#{desenvolvedor.nome}" />
+                    <h:outputText value="#{d.nome}" />
                 </p:column>
                 <p:column headerText="Experiência" >
-                    <h:outputText value="#{desenvolvedor.artefato}" />
+                    <h:outputText value="#{d.artefato}" />
                 </p:column>
             </p:dataTable>
         </p:panel>
@@ -31,19 +31,24 @@
               modal="true"
               width="360">
         <h:form id="frmInputDesev">
+
             <h:outputText value="Nome"/>
-            <p:inputText value="#{desenvolvedor.nome}"/>
+            <p:inputText value="#{indexBean.nomeDesenv}"/>
             <h:outputText value="Experiência"/>
-            <p:inputText value="#{desenvolvedor.artefato}"/>
+            <p:inputText value="#{indexBean.artefatoDesenv}"/>
+            <p:commandButton id="submitButton" 
+                             value="Submit" 
+                             update=":desenvolvedorView" 
+                             oncomplete="PF('addNewDesenv').hide();"
+                             action="#{indexBean.addNewDesenvRow()}"/>
+            <!--            <p:commandButton value="Adicionar" 
+                                         process="@all"
+                                         onclick="desenvolvedorView.getPaginator().setPage(0);"
+                                         action="#{indexBean.addNewDesenvRow()}"
+                                         oncomplete="PF('addNewDesenv').hide();"/>-->
 
         </h:form>
     </p:dialog>
-
-    <p:commandButton value="Adicionar" 
-                     process="@all"
-                     onclick="desenvolvedorView.getPaginator().setPage(0);"
-                     action="#{indexBean.addNewDesenvRow()}"
-                     update="desenvolvedorView"/>
     <p:commandButton value="Add Desenv"
                      onclick="PF('addNewDesenv').show();"/>
 
