@@ -16,19 +16,19 @@
                              value="Submit"
                              update=":frmTbl"/>
 
-            <p:dataTable id="valores" var="data" value="" filteredValue="">                      
+            <p:dataTable id="valores" var="jynaValues" value="" filteredValue="">                      
                 <p:columns value="#{indexBean.columns}" var="column" columnIndexVar="colIndex">  
                     <f:facet name="header">  
                         #{column.header}  
                     </f:facet>
-                    algo
+                    #{column.property} 
                 </p:columns>  
 
             </p:dataTable>
             <p:lineChart id="linear" value="#{indexBean.linearModel}"
                          legendPosition="e"  
                          title="Linear Chart"
-                         style="height:300px"
+                         style="height:300px; width: 800px;"
                          rendered="#{indexBean.linearModel != null}"/>
         </h:form>
     </h:body>

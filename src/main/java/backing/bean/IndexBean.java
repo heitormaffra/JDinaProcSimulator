@@ -78,6 +78,15 @@ public class IndexBean {
     private Double artefatoDesenv;
     private List<ColumnModel> columns = new ArrayList<ColumnModel>();
     private CartesianChartModel linearModel;
+    private List<JynaSimulationData> data;
+
+    public List<JynaSimulationData> getData() {
+        return data;
+    }
+
+    public void setData(List<JynaSimulationData> data) {
+        this.data = data;
+    }
 
     public IndexBean() {
         desenvolvedores = new ArrayList<MetaModel>();
@@ -184,6 +193,7 @@ public class IndexBean {
 
     public void realizaSimulacao() {
         try {
+            this.data = new ArrayList<JynaSimulationData>();
             JynaSimulationProfile profile = new DefaultSimulationProfile();
             JynaSimulationData data = new DefaultSimulationData();
             JynaSimulation simulation = new DefaultMetaModelInstanceSimulation();
@@ -354,12 +364,13 @@ public class IndexBean {
 
             columns.clear();
 
-
             for (int i = 0; i < data.getWatchedCount(); i++) {
-                System.out.println(data.getWatchedNames().get(i));
-                columns.add(new ColumnModel(data.getWatchedNames().get(i), data.getWatchedNames().get(i).toLowerCase()));
-
-
+                ColumnModel column = new ColumnModel();
+                column.setHeader(data.getWatchedNames().get(i));
+                for (int j = 1; j < data.getWatchedSize(); j++) {
+                    column.getProperty().add(data.getValue(i, j).toString());
+                }
+                columns.add(column);
             }
             generateChart(data);
         } catch (Exception e) {
@@ -370,24 +381,39 @@ public class IndexBean {
 
     public void generateChart(JynaSimulationData data) {
 
-            linearModel = new CartesianChartModel();
+        linearModel = new CartesianChartModel();
 
-            LineChartSeries trabalho = new LineChartSeries();
+        LineChartSeries trabalho = new LineChartSeries();
+        trabalho.setLabel("Trabalho");
 
-            for (int i = 0; i < data.getWatchedSize(); i++) {
-                trabalho.set(data.getTime(0), data.getValue(1, i));
+        for (int i = 0; i < data.getWatchedSize(); i++) {
+            if (i % 2 == 0) {
+                trabalho.set(data.getTime(i), data.getValue(1, i));
             }
-            linearModel.addSeries(trabalho);
+        }
+        linearModel.addSeries(trabalho);
 
     }
 
     static public class ColumnModel implements Serializable {
 
         private String header;
-        private String property;
+        private List<String> property;
 
-        public ColumnModel(String header, String property) {
+        public ColumnModel(String header, List<String> property) {
             this.header = header;
+            this.property = property;
+        }
+
+        private ColumnModel() {
+            property = new ArrayList<String>();
+        }
+
+        public void setHeader(String header) {
+            this.header = header;
+        }
+
+        public void setProperty(List<String> property) {
             this.property = property;
         }
 
@@ -395,7 +421,8 @@ public class IndexBean {
             return header;
         }
 
-        public String getProperty() {
+        public List<String> getProperty() {
+            
             return property;
         }
     }
