@@ -11,11 +11,13 @@
     </h:head>
     <h:body>
         <h:form id="frmTbl">
-            <h:outputText value="Teste" />
+            <div style="margin-top: 10px; margin-left: 10px;">
+            <h:outputText value="Realize uma simulação, com valores default" style="margin-right: 10px; " />
 
             <p:commandButton action="#{indexBean.realizaSimulacao()}"
                              value="Simular"
                              update=":frmTbl"/>
+            </div>
 
 <!--            <p:dataTable var="values" value="#{indexBean.data}">
                 <c:forEach var="column" items="#{indexBean.data.watchedNames}">
@@ -25,7 +27,11 @@
                 </c:forEach>
             </p:dataTable>-->
 
-            <p:dataTable id="valores" var="values" value="#{indexBean.columns[0].property}" rowIndexVar="rowIndex">                      
+            <p:dataTable id="valores" 
+                         var="values" 
+                         value="#{indexBean.columns[0].property}" 
+                         rowIndexVar="rowIndex"
+                         style="width: 90%; margin-left: 5%; margin-top: 5px;">                      
                 <p:columns value="#{indexBean.columns}" var="column" columnIndexVar="colIndex">
                     <f:facet name="header">  
                         #{column.header}  
@@ -37,7 +43,7 @@
             <p:lineChart id="linear" value="#{indexBean.linearModel}"
                          legendPosition="e"  
                          title="Gráfico da Simulação"
-                         style="height:300px; width: 1200px; margin-top: 30px;"
+                         style="height:300px; width: 90%; margin-top: 30px; margin-left: 5%"
                          rendered="#{indexBean.linearModel != null}"/>
         </h:form>
     </h:body>

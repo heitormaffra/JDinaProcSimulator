@@ -392,7 +392,7 @@ public class IndexBean {
                 dataValues.add(new Values());
                 dataValues.get(i).setIdentficador(data.getWatchedNames().get(i));
                 ColumnModel column = new ColumnModel();
-                column.setHeader(data.getWatchedNames().get(i));
+                column.setHeader(data.getWatchedNames().get(i).replace(".", " - "));
                 for (int j = 1; j < data.getWatchedSize(); j++) {
                     column.getProperty().add(data.getValue(i, j).toString());
                     tempValues.add(data.getValue(i, j).toString());
