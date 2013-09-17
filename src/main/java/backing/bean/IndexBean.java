@@ -90,6 +90,7 @@ public class IndexBean {
 
     public IndexBean() {
         desenvolvedores = new ArrayList<MetaModel>();
+        data = new ArrayList<JynaSimulationData>();
     }
 
     public CartesianChartModel getLinearModel() {
@@ -193,7 +194,6 @@ public class IndexBean {
 
     public void realizaSimulacao() {
         try {
-            this.data = new ArrayList<JynaSimulationData>();
             JynaSimulationProfile profile = new DefaultSimulationProfile();
             JynaSimulationData data = new DefaultSimulationData();
             JynaSimulation simulation = new DefaultMetaModelInstanceSimulation();
@@ -382,16 +382,29 @@ public class IndexBean {
     public void generateChart(JynaSimulationData data) {
 
         linearModel = new CartesianChartModel();
+        List<LineChartSeries> lines = new ArrayList<LineChartSeries>();
 
-        LineChartSeries trabalho = new LineChartSeries();
-        trabalho.setLabel("Trabalho");
-
-        for (int i = 0; i < data.getWatchedSize(); i++) {
-            if (i % 2 == 0) {
-                trabalho.set(data.getTime(i), data.getValue(1, i));
+        for (int i = 0; i < data.getWatchedCount(); i++) {
+            lines.add(new LineChartSeries());
+            lines.get(i).setLabel(data.getWatchedNames().get(i));
+            for (int j = 0; j < data.getWatchedSize(); j++) {
+                lines.get(i).set(data.getTime(j), data.getValue(i, j));
             }
         }
-        linearModel.addSeries(trabalho);
+
+//        LineChartSeries trabalho = new LineChartSeries();
+//        trabalho.setLabel("Trabalho");
+//
+//        for (int i = 0; i < data.getWatchedSize(); i++) {
+//            if (i % 2 == 0) {
+//                trabalho.set(data.getTime(i), data.getValue(1, i));
+//            }
+//        }
+//        linearModel.addSeries(trabalho);
+
+        for (LineChartSeries line : lines) {
+            linearModel.addSeries(line);
+        }
 
     }
 
@@ -422,7 +435,7 @@ public class IndexBean {
         }
 
         public List<String> getProperty() {
-            
+
             return property;
         }
     }
