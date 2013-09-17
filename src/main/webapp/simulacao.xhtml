@@ -14,22 +14,30 @@
             <h:outputText value="Teste" />
 
             <p:commandButton action="#{indexBean.realizaSimulacao()}"
-                             value="Submit"
+                             value="Simular"
                              update=":frmTbl"/>
 
-            <p:dataTable id="valores" var="jynaValues" value="#{indexBean.data}">                      
-                <p:columns value="#{indexBean.columns}" var="column" columnIndexVar="colIndex">  
+<!--            <p:dataTable var="values" value="#{indexBean.data}">
+                <c:forEach var="column" items="#{indexBean.data.watchedNames}">
+                    <p:column headerText="#{column}">
+                        
+                    </p:column>
+                </c:forEach>
+            </p:dataTable>-->
+
+            <p:dataTable id="valores" var="values" value="#{indexBean.columns[0].property}" rowIndexVar="rowIndex">                      
+                <p:columns value="#{indexBean.columns}" var="column" columnIndexVar="colIndex">
                     <f:facet name="header">  
                         #{column.header}  
                     </f:facet>
-                    #{column.property} 
+                        #{column.property.get(rowIndex)}
                 </p:columns>  
-
+                
             </p:dataTable>
             <p:lineChart id="linear" value="#{indexBean.linearModel}"
                          legendPosition="e"  
-                         title="Linear Chart"
-                         style="height:300px; width: 1500px;"
+                         title="Gráfico da Simulação"
+                         style="height:300px; width: 1200px; margin-top: 30px;"
                          rendered="#{indexBean.linearModel != null}"/>
         </h:form>
     </h:body>

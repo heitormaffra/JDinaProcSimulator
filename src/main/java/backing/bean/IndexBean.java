@@ -78,19 +78,38 @@ public class IndexBean {
     private Double artefatoDesenv;
     private List<ColumnModel> columns = new ArrayList<ColumnModel>();
     private CartesianChartModel linearModel;
-    private List<JynaSimulationData> data;
+    //private JynaSimulationData data;
+    private DefaultSimulationData data;
+    private List<Values> dataValues;
+    private List<String> tempValues;
 
-    public List<JynaSimulationData> getData() {
+    public List<String> getTempValues() {
+        return tempValues;
+    }
+
+    public void setTempValues(List<String> tempValues) {
+        this.tempValues = tempValues;
+    }
+
+    public List<Values> getValues() {
+        return dataValues;
+    }
+
+    public void setValues(List<Values> values) {
+        this.dataValues = values;
+    }
+
+    public DefaultSimulationData getData() {
         return data;
     }
 
-    public void setData(List<JynaSimulationData> data) {
+    public void setData(DefaultSimulationData data) {
         this.data = data;
     }
 
     public IndexBean() {
         desenvolvedores = new ArrayList<MetaModel>();
-        data = new ArrayList<JynaSimulationData>();
+        data = new DefaultSimulationData();
     }
 
     public CartesianChartModel getLinearModel() {
@@ -361,15 +380,25 @@ public class IndexBean {
             XYSeries xyserie = new XYSeries(data.getWatchedNames().get(0));
             System.out.println(data.getWatchedNames().get(0));
             //System.out.println(data);
+            
+            this.data = (DefaultSimulationData) data;
 
             columns.clear();
+            dataValues = new ArrayList<Values>();
+            
+            tempValues = new ArrayList<String>();
 
             for (int i = 0; i < data.getWatchedCount(); i++) {
+                dataValues.add(new Values());
+                dataValues.get(i).setIdentficador(data.getWatchedNames().get(i));
                 ColumnModel column = new ColumnModel();
                 column.setHeader(data.getWatchedNames().get(i));
                 for (int j = 1; j < data.getWatchedSize(); j++) {
                     column.getProperty().add(data.getValue(i, j).toString());
+                    tempValues.add(data.getValue(i, j).toString());
+                    
                 }
+                dataValues.get(i).setValue(tempValues);
                 columns.add(column);
             }
             generateChart(data);
