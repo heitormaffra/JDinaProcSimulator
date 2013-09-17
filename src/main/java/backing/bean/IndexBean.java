@@ -80,7 +80,6 @@ public class IndexBean {
     private CartesianChartModel linearModel;
     //private JynaSimulationData data;
     private DefaultSimulationData data;
-    private List<Values> dataValues;
     private List<String> tempValues;
 
     public List<String> getTempValues() {
@@ -89,14 +88,6 @@ public class IndexBean {
 
     public void setTempValues(List<String> tempValues) {
         this.tempValues = tempValues;
-    }
-
-    public List<Values> getValues() {
-        return dataValues;
-    }
-
-    public void setValues(List<Values> values) {
-        this.dataValues = values;
     }
 
     public DefaultSimulationData getData() {
@@ -384,13 +375,10 @@ public class IndexBean {
             this.data = (DefaultSimulationData) data;
 
             columns.clear();
-            dataValues = new ArrayList<Values>();
             
             tempValues = new ArrayList<String>();
 
             for (int i = 0; i < data.getWatchedCount(); i++) {
-                dataValues.add(new Values());
-                dataValues.get(i).setIdentficador(data.getWatchedNames().get(i));
                 ColumnModel column = new ColumnModel();
                 column.setHeader(data.getWatchedNames().get(i).replace(".", " - "));
                 for (int j = 1; j < data.getWatchedSize(); j++) {
@@ -398,7 +386,6 @@ public class IndexBean {
                     tempValues.add(data.getValue(i, j).toString());
                     
                 }
-                dataValues.get(i).setValue(tempValues);
                 columns.add(column);
             }
             generateChart(data);
