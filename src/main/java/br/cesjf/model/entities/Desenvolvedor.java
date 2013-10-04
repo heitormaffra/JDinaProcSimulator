@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author heitormaffra
  */
 @Entity
-@Table(name = "desenvolvedor")
+@Table(name = "desenvolvedor", catalog = "dinaprocsimu", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Desenvolvedor.findAll", query = "SELECT d FROM Desenvolvedor d"),
@@ -38,16 +38,18 @@ public class Desenvolvedor implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID_DESENV")
+    @Column(name = "ID_DESENV", nullable = false)
     private Integer idDesenv;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 150)
-    @Column(name = "NM_DSENV")
+    @Column(name = "NM_DSENV", nullable = false, length = 150)
     private String nmDsenv;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "EXP_DESENV")
+    @Column(name = "EXP_DESENV", precision = 12)
     private Float expDesenv;
+    @OneToMany(mappedBy = "idDesenv")
+    private Collection<Equipe> equipeCollection;
     @OneToMany(mappedBy = "idDesenv")
     private Collection<Atividade> atividadeCollection;
 
@@ -88,6 +90,15 @@ public class Desenvolvedor implements Serializable {
     }
 
     @XmlTransient
+    public Collection<Equipe> getEquipeCollection() {
+        return equipeCollection;
+    }
+
+    public void setEquipeCollection(Collection<Equipe> equipeCollection) {
+        this.equipeCollection = equipeCollection;
+    }
+
+    @XmlTransient
     public Collection<Atividade> getAtividadeCollection() {
         return atividadeCollection;
     }
@@ -118,7 +129,7 @@ public class Desenvolvedor implements Serializable {
 
     @Override
     public String toString() {
-        return "action.control.Desenvolvedor[ idDesenv=" + idDesenv + " ]";
+        return "br.cesjf.model.entities.Desenvolvedor[ idDesenv=" + idDesenv + " ]";
     }
     
 }

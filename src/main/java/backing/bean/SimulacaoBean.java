@@ -4,7 +4,8 @@
  */
 package backing.bean;
 
-import br.cesjf.util.MetaModel;
+import br.cesjf.model.entities.Atividade;
+import br.cesjf.model.entities.Desenvolvedor;
 import br.ufjf.mmc.jynacore.JynaSimulableModel;
 import br.ufjf.mmc.jynacore.JynaSimulation;
 import br.ufjf.mmc.jynacore.JynaSimulationData;
@@ -43,46 +44,109 @@ import br.ufjf.mmc.jynacore.metamodel.instance.MetaModelInstance;
 import br.ufjf.mmc.jynacore.metamodel.instance.impl.DefaultMetaModelInstance;
 import br.ufjf.mmc.jynacore.metamodel.simulator.impl.DefaultMetaModelInstanceEulerMethod;
 import br.ufjf.mmc.jynacore.metamodel.simulator.impl.DefaultMetaModelInstanceSimulation;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import org.jfree.data.xy.XYSeries;
-import org.primefaces.event.FlowEvent;
 import org.primefaces.model.chart.CartesianChartModel;
-import org.primefaces.model.chart.LineChartSeries;
 
 /**
  *
- * @author heitor.filho
+ * @author heitormaffra
  */
+@ManagedBean(name = "simulacaoBean")
 @ViewScoped
-@ManagedBean(name = "indexBean")
-public class IndexBean {
+public class SimulacaoBean {
 
     private static final Logger logger = Logger.getLogger(IndexBean.class.getName());
     private String nomeProjeto;
-    private List<String> atividades;
-    private List<MetaModel> desenvolvedores;
+    private List<Atividade> atividades;
+//    private List<MetaModel> desenvolvedores;
     private DataModel desenvModel;
-    private String nomeDesenv;
+    private List<Desenvolvedor> desenvolvedores;
     private Double artefatoDesenv;
-    private List<ColumnModel> columns = new ArrayList<ColumnModel>();
+    private List<IndexBean.ColumnModel> columns = new ArrayList<IndexBean.ColumnModel>();
     private CartesianChartModel linearModel;
     //private JynaSimulationData data;
     private DefaultSimulationData data;
     private List<String> tempValues;
     private Double expDes1;
     private Double expDes2;
+
+    public String getNomeProjeto() {
+        return nomeProjeto;
+    }
+
+    public void setNomeProjeto(String nomeProjeto) {
+        this.nomeProjeto = nomeProjeto;
+    }
+
+    public List<Atividade> getAtividades() {
+        return atividades;
+    }
+
+    public void setAtividades(List<Atividade> atividades) {
+        this.atividades = atividades;
+    }
+
+    public DataModel getDesenvModel() {
+        return desenvModel;
+    }
+
+    public void setDesenvModel(DataModel desenvModel) {
+        this.desenvModel = desenvModel;
+    }
+
+    public List<Desenvolvedor> getDesenvolvedores() {
+        return desenvolvedores;
+    }
+
+    public void setDesenvolvedores(List<Desenvolvedor> desenvolvedores) {
+        this.desenvolvedores = desenvolvedores;
+    }
+
+    public Double getArtefatoDesenv() {
+        return artefatoDesenv;
+    }
+
+    public void setArtefatoDesenv(Double artefatoDesenv) {
+        this.artefatoDesenv = artefatoDesenv;
+    }
+
+    public List<IndexBean.ColumnModel> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<IndexBean.ColumnModel> columns) {
+        this.columns = columns;
+    }
+
+    public CartesianChartModel getLinearModel() {
+        return linearModel;
+    }
+
+    public void setLinearModel(CartesianChartModel linearModel) {
+        this.linearModel = linearModel;
+    }
+
+    public DefaultSimulationData getData() {
+        return data;
+    }
+
+    public void setData(DefaultSimulationData data) {
+        this.data = data;
+    }
+
+    public List<String> getTempValues() {
+        return tempValues;
+    }
+
+    public void setTempValues(List<String> tempValues) {
+        this.tempValues = tempValues;
+    }
 
     public Double getExpDes1() {
         return expDes1;
@@ -100,124 +164,7 @@ public class IndexBean {
         this.expDes2 = expDes2;
     }
 
-    public List<String> getTempValues() {
-        return tempValues;
-    }
-
-    public void setTempValues(List<String> tempValues) {
-        this.tempValues = tempValues;
-    }
-
-    public DefaultSimulationData getData() {
-        return data;
-    }
-
-    public void setData(DefaultSimulationData data) {
-        this.data = data;
-    }
-
-    public IndexBean() {
-        desenvolvedores = new ArrayList<MetaModel>();
-        data = new DefaultSimulationData();
-    }
-
-    public CartesianChartModel getLinearModel() {
-        return linearModel;
-    }
-
-    public void setLinearModel(CartesianChartModel linearModel) {
-        this.linearModel = linearModel;
-    }
-
-    public List<ColumnModel> getColumns() {
-        return columns;
-    }
-
-    public void setColumns(List<ColumnModel> columns) {
-        this.columns = columns;
-    }
-
-    public String getNomeDesenv() {
-        return nomeDesenv;
-    }
-
-    public void setNomeDesenv(String nomeDesenv) {
-        this.nomeDesenv = nomeDesenv;
-    }
-
-    public Double getArtefatoDesenv() {
-        return artefatoDesenv;
-    }
-
-    public void setArtefatoDesenv(Double artefatoDesenv) {
-        this.artefatoDesenv = artefatoDesenv;
-    }
-
-    public DataModel getDesenvModel() {
-        return desenvModel;
-    }
-
-    public void setDesenvModel(DataModel desenvModel) {
-        this.desenvModel = desenvModel;
-    }
-
-    public List<MetaModel> getDesenvolvedores() {
-        return desenvolvedores;
-    }
-
-    public void setDesenvolvedores(List<MetaModel> desenvolvedores) {
-        this.desenvolvedores = desenvolvedores;
-    }
-
-    public List<String> getAtividades() {
-        return atividades;
-    }
-
-    public void setAtividades(List<String> atividades) {
-        this.atividades = atividades;
-    }
-
-    public String getNomeProjeto() {
-        return nomeProjeto;
-    }
-
-    public void setNomeProjeto(String nomeProjeto) {
-        this.nomeProjeto = nomeProjeto;
-    }
-
-    public void save(ActionEvent actionEvent) {
-        //Persist user  
-
-        FacesMessage msg = new FacesMessage("Successful", "Welcome :");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
-    public String onFlowProcess(FlowEvent event) {
-        logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
-        logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
-        boolean skip = false;
-
-        if (skip) {
-            skip = false;   //reset in case user goes back  
-            return "confirm";
-        } else {
-            return event.getNewStep();
-        }
-    }
-
-    public final void createNewDesenvRow() {
-        desenvModel = new ListDataModel(desenvolvedores);
-    }
-    DataModel model;
-
-    public final void addNewDesenvRow() {
-        MetaModel meta = new MetaModel(nomeDesenv, new Double(artefatoDesenv));
-        desenvolvedores.add(meta);
-        model = new ListDataModel(desenvolvedores);
-    }
-
-    public DataModel getDesenvolvedoresList() {
-        return model;
+    public SimulacaoBean() {
     }
 
     public void realizaSimulacao() {
@@ -229,7 +176,7 @@ public class IndexBean {
 
             // Modelo de Domínio
             br.ufjf.mmc.jynacore.metamodel.MetaModel domainModel = new DefaultMetaModel();
-            domainModel.setName("Projeto de Software Simples");
+            domainModel.setName(nomeProjeto);
 
             // Desenvolvedor Class
             MetaModelClass developer = new DefaultMetaModelClass();
@@ -297,27 +244,35 @@ public class IndexBean {
             instanceModel.setMetaModel(domainModel);
             instanceModel.setName("Instância de Projeto com Cenários");
 
-            instanceModel.addNewClassInstance("D1", "Desenvolvedor");
-            instanceModel.addNewClassInstance("D2", "Desenvolvedor");
+            for (Desenvolvedor desenv : desenvolvedores) {
+                instanceModel.addNewClassInstance(desenv.getNmDsenv(), "Desenvolvedor");
+                instanceModel.getClassInstances().get(desenv.getNmDsenv()).setProperty("experiência", Double.parseDouble(desenv.getExpDesenv().toString()));
+            }
 
-            instanceModel.getClassInstances().get("D1").setProperty(
-                    "experiência", expDes1);
-            instanceModel.getClassInstances().get("D2").setProperty(
-                    "experiência", expDes2);
+//            instanceModel.addNewClassInstance("D1", "Desenvolvedor");
+//            instanceModel.addNewClassInstance("D2", "Desenvolvedor");        
+//            instanceModel.getClassInstances().get("D1").setProperty(
+//                    "experiência", expDes1);
+//            instanceModel.getClassInstances().get("D2").setProperty(
+//                    "experiência", expDes2);
 
-            instanceModel.addNewClassInstance("Projeto", "Atividade");
-            instanceModel.addNewClassInstance("Codificação", "Atividade");
+            for (Atividade atv : atividades) {
+                instanceModel.addNewClassInstance(atv.getNmAtivd(), "Atividade");
+            }
+
+//            instanceModel.addNewClassInstance("Projeto", "Atividade");
+//            instanceModel.addNewClassInstance("Codificação", "Atividade");
 
             ClassInstance design = instanceModel.getClassInstances().get(
                     "Projeto");
             design.setProperty("duração", 20.0);
-            design.setLink("Equipe", "D1");
+            design.setLink("Equipe", desenvolvedores.get(0).getNmDsenv());
 
             ClassInstance coding = instanceModel.getClassInstances().get(
                     "Codificação");
             coding.setProperty("duração", 15.0);
             coding.setLink("Precedente", "Projeto");
-            coding.setLink("Equipe", "D2");
+            coding.setLink("Equipe", desenvolvedores.get(1).getNmDsenv());
 
             profile.setTimeLimits(50, 50.0);
 
@@ -396,87 +351,10 @@ public class IndexBean {
 
             tempValues = new ArrayList<String>();
 
-            for (int i = 0; i < data.getWatchedCount(); i++) {
-                ColumnModel column = new ColumnModel();
-                column.setHeader(data.getWatchedNames().get(i).replace(".", " - "));
-                for (int j = 1; j < data.getWatchedSize(); j++) {
-                    column.getProperty().add(data.getValue(i, j).toString());
-                    tempValues.add(data.getValue(i, j).toString());
 
-                }
-                columns.add(column);
-            }
-            generateChart(data);
         } catch (Exception e) {
             System.err.println(e.getCause());
             e.printStackTrace();
-        }
-    }
-
-    public void generateChart(JynaSimulationData data) {
-
-        linearModel = new CartesianChartModel();
-        List<LineChartSeries> lines = new ArrayList<LineChartSeries>();
-
-        for (int i = 0; i < data.getWatchedCount(); i++) {
-            lines.add(new LineChartSeries());
-            lines.get(i).setLabel(data.getWatchedNames().get(i));
-            for (int j = 0; j < data.getWatchedSize(); j++) {
-                lines.get(i).set(data.getTime(j), data.getValue(i, j));
-            }
-        }
-
-//        LineChartSeries trabalho = new LineChartSeries();
-//        trabalho.setLabel("Trabalho");
-//
-//        for (int i = 0; i < data.getWatchedSize(); i++) {
-//            if (i % 2 == 0) {
-//                trabalho.set(data.getTime(i), data.getValue(1, i));
-//            }
-//        }
-//        linearModel.addSeries(trabalho);
-
-//        for (LineChartSeries line : lines) {
-//            linearModel.addSeries(line);
-//        }
-        linearModel.addSeries(lines.get(1));
-        linearModel.addSeries(lines.get(5));
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(IndexBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    static public class ColumnModel implements Serializable {
-
-        private String header;
-        private List<String> property;
-
-        public ColumnModel(String header, List<String> property) {
-            this.header = header;
-            this.property = property;
-        }
-
-        private ColumnModel() {
-            property = new ArrayList<String>();
-        }
-
-        public void setHeader(String header) {
-            this.header = header;
-        }
-
-        public void setProperty(List<String> property) {
-            this.property = property;
-        }
-
-        public String getHeader() {
-            return header;
-        }
-
-        public List<String> getProperty() {
-
-            return property;
         }
     }
 }

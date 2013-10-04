@@ -5,6 +5,7 @@
 package br.cesjf.model.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,17 +16,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author heitormaffra
  */
 @Entity
-@Table(name = "atividade")
+@Table(name = "atividade", catalog = "dinaprocsimu", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Atividade.findAll", query = "SELECT a FROM Atividade a"),
@@ -33,6 +36,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Atividade.findByNmAtivd", query = "SELECT a FROM Atividade a WHERE a.nmAtivd = :nmAtivd"),
     @NamedQuery(name = "Atividade.findByDuracaoAtivid", query = "SELECT a FROM Atividade a WHERE a.duracaoAtivid = :duracaoAtivid")})
 public class Atividade implements Serializable {
+    @OneToMany(mappedBy = "atividadePrecedente")
+    private Collection<Atividade> atividadeCollection;
+    @JoinColumn(name = "ATIVIDADE_PRECEDENTE", referencedColumnName = "ID_ATIVD")
+    @ManyToOne
+    private Atividade atividadePrecedente;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -128,7 +136,24 @@ public class Atividade implements Serializable {
 
     @Override
     public String toString() {
-        return "action.control.Atividade[ idAtivd=" + idAtivd + " ]";
+        return "br.cesjf.model.entities.Atividade[ idAtivd=" + idAtivd + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Atividade> getAtividadeCollection() {
+        return atividadeCollection;
+    }
+
+    public void setAtividadeCollection(Collection<Atividade> atividadeCollection) {
+        this.atividadeCollection = atividadeCollection;
+    }
+
+    public Atividade getAtividadePrecedente() {
+        return atividadePrecedente;
+    }
+
+    public void setAtividadePrecedente(Atividade atividadePrecedente) {
+        this.atividadePrecedente = atividadePrecedente;
     }
     
 }

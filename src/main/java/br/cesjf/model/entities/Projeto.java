@@ -26,27 +26,26 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author heitormaffra
  */
 @Entity
-@Table(name = "projeto")
+@Table(name = "projeto", catalog = "dinaprocsimu", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Projeto.findAll", query = "SELECT p FROM Projeto p"),
     @NamedQuery(name = "Projeto.findByIdProjeto", query = "SELECT p FROM Projeto p WHERE p.idProjeto = :idProjeto"),
     @NamedQuery(name = "Projeto.findByNmProjeto", query = "SELECT p FROM Projeto p WHERE p.nmProjeto = :nmProjeto")})
 public class Projeto implements Serializable {
+    @OneToMany(mappedBy = "idProjeto")
+    private Collection<Atividade> atividadeCollection;
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_PROJETO")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "ID_PROJETO", nullable = false)
     private Integer idProjeto;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "NM_PROJETO")
+    @Size(min = 1, max = 45)
+    @Column(name = "NM_PROJETO", nullable = false, length = 45)
     private String nmProjeto;
-    @OneToMany(mappedBy = "idProjeto")
-    private Collection<Atividade> atividadeCollection;
 
     public Projeto() {
     }
@@ -76,15 +75,6 @@ public class Projeto implements Serializable {
         this.nmProjeto = nmProjeto;
     }
 
-    @XmlTransient
-    public Collection<Atividade> getAtividadeCollection() {
-        return atividadeCollection;
-    }
-
-    public void setAtividadeCollection(Collection<Atividade> atividadeCollection) {
-        this.atividadeCollection = atividadeCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -107,7 +97,16 @@ public class Projeto implements Serializable {
 
     @Override
     public String toString() {
-        return "action.control.Projeto[ idProjeto=" + idProjeto + " ]";
+        return "br.cesjf.model.entities.Projeto[ idProjeto=" + idProjeto + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Atividade> getAtividadeCollection() {
+        return atividadeCollection;
+    }
+
+    public void setAtividadeCollection(Collection<Atividade> atividadeCollection) {
+        this.atividadeCollection = atividadeCollection;
     }
     
 }

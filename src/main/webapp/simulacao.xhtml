@@ -10,13 +10,38 @@
         <title>Realizar Simulação </title>
     </h:head>
     <h:body>
+        <h:form>
+            <p:dialog id="loading" widgetVar="loading" width="425"  
+                      resizable="false" showEffect="clip" hideEffect="clip" closable="false">
+                <p:graphicImage value="/imagens/load.gif" />
+            </p:dialog>
+        </h:form>
+
         <h:form id="frmTbl">
             <div style="margin-top: 10px; margin-left: 10px;">
-            <h:outputText value="Realize uma simulação, com valores default" style="margin-right: 10px; " />
 
-            <p:commandButton action="#{indexBean.realizaSimulacao()}"
-                             value="Simular"
-                             update=":frmTbl"/>
+                <p:panel id="panel" header="Alterar Valores da Simulação" style="width: 30%">  
+                    <h:panelGrid columns="3">  
+                        <h:outputLabel for="expDes1" value="Exp. Des 1: " />  
+                        
+                        <p:inputText id="expDes1" value="#{indexBean.expDes1}" required="true" label="Exp. Des 1" >  
+                            <f:validateLength minimum="1" />  
+                        </p:inputText>
+                        <p:message for="expDes1" />
+
+                        <h:outputLabel for="expDes2" value="Exp. Des 2: " />  
+                        <p:inputText id="expDes2" value="#{indexBean.expDes2}" required="true" label="Exp. Des 2" />   
+                        <p:message for="expDes2" />
+                        
+                    </h:panelGrid>  
+                    <p:commandButton action="#{indexBean.realizaSimulacao()}"
+                                     value="Simular"
+                                     update=":frmTbl"
+                                     onclick="PF('loading').show()"
+                                     onsuccess="PF('loading').hide()"/>
+                </p:panel>  
+
+
             </div>
 
 <!--            <p:dataTable var="values" value="#{indexBean.data}">
@@ -31,14 +56,15 @@
                          var="values" 
                          value="#{indexBean.columns[0].property}" 
                          rowIndexVar="rowIndex"
-                         style="width: 90%; margin-left: 5%; margin-top: 5px;">                      
+                         style="width: 90%; margin-left: 5%; margin-top: 5px;"
+                         emptyMessage="Não há registros, por favor, realize uma simulação">                      
                 <p:columns value="#{indexBean.columns}" var="column" columnIndexVar="colIndex">
                     <f:facet name="header">  
                         #{column.header}  
                     </f:facet>
-                        #{column.property.get(rowIndex)}
+                    #{column.property.get(rowIndex)}
                 </p:columns>  
-                
+
             </p:dataTable>
             <p:lineChart id="linear" value="#{indexBean.linearModel}"
                          legendPosition="e"  
