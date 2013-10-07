@@ -1,55 +1,18 @@
 <ui:component xmlns:ui="http://java.sun.com/jsf/facelets"
               xmlns:h="http://java.sun.com/jsf/html"
               xmlns:p="http://primefaces.org/ui"
-              xmlns:f="http://java.sun.com/jsf/core">
-    <h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">  
-        <p:panel id="panelResultSearch" style="margin: 0; border: none;">
-            <p:dataTable id="desenvolvedorView"
-                         style="text-align: center;"
-                         paginator="true"
-                         rows="8"
-                         paginatorAlwaysVisible="false"
-                         paginatorPosition="bottom"
-                         widgetVar="expeditionNoteView"                                     
-                         var="d"                                      
-                         value="#{indexBean.desenvolvedoresList}"
-                         emptyMessage="Nenhum desenvolvedor encontrado."> 
-                <p:column headerText="Desenvolvedor" >
-                    <h:outputText value="#{d.nome}" />
-                </p:column>
-                <p:column headerText="Experiência" >
-                    <h:outputText value="#{d.artefato}" />
-                </p:column>
-            </p:dataTable>
-        </p:panel>
+              xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+        <h:outputText value="Atividades: " />
+        <p:selectManyMenu  id="desenvWizard"
+                           style="width: 200px;"
+                           value="#{simulacaoBean.desenvolvedores}"
+                           showCheckbox="true">
+            <f:selectItem itemLabel="Heitor" itemValue="Heitor" />
+            <f:selectItem itemLabel="Ramon" itemValue="Ramon" />
+            <f:selectItem itemLabel="Lucas" itemValue="Lucas" />
+        </p:selectManyMenu>
     </h:panelGrid>
-
-    <p:dialog header="Portal-CTe" 
-              widgetVar="addNewDesenv"
-              id="desenvDlg"
-              resizable="false"
-              modal="true"
-              width="360">
-        <h:form id="frmInputDesev">
-
-            <h:outputText value="Nome"/>
-            <p:inputText value="#{indexBean.nomeDesenv}"/>
-            <h:outputText value="Experiência"/>
-            <p:inputText value="#{indexBean.artefatoDesenv}"/>
-            <p:commandButton id="submitButton" 
-                             value="Submit" 
-                             update=":desenvolvedorView" 
-                             oncomplete="PF('addNewDesenv').hide();"
-                             action="#{indexBean.addNewDesenvRow()}"/>
-            <!--            <p:commandButton value="Adicionar" 
-                                         process="@all"
-                                         onclick="desenvolvedorView.getPaginator().setPage(0);"
-                                         action="#{indexBean.addNewDesenvRow()}"
-                                         oncomplete="PF('addNewDesenv').hide();"/>-->
-
-        </h:form>
-    </p:dialog>
-    <p:commandButton value="Add Desenv"
-                     onclick="PF('addNewDesenv').show();"/>
 
 </ui:component>

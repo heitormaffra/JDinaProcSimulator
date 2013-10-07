@@ -46,11 +46,13 @@ import br.ufjf.mmc.jynacore.metamodel.simulator.impl.DefaultMetaModelInstanceEul
 import br.ufjf.mmc.jynacore.metamodel.simulator.impl.DefaultMetaModelInstanceSimulation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.DataModel;
 import org.jfree.data.xy.XYSeries;
+import org.primefaces.event.FlowEvent;
 import org.primefaces.model.chart.CartesianChartModel;
 
 /**
@@ -163,9 +165,20 @@ public class SimulacaoBean {
     public void setExpDes2(Double expDes2) {
         this.expDes2 = expDes2;
     }
+    
+    public String onFlowProcess(FlowEvent event) {
+        logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
+        logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
+        boolean skip = false;
 
-    public SimulacaoBean() {
+        if (skip) {
+            skip = true;   //reset in case user goes back  
+            return "confirm";
+        } else {
+            return event.getNewStep();
+        }
     }
+
 
     public void realizaSimulacao() {
         try {

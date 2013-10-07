@@ -25,7 +25,9 @@ import javax.persistence.EntityManagerFactory;
  */
 public class ProjetoDao extends GenericDao{
 
-    public void create(Projeto projeto) throws PreexistingEntityException, Exception {
+    public boolean create(Projeto projeto) throws PreexistingEntityException, Exception {
+        
+        boolean salvo = false;
         if (projeto.getAtividadeCollection() == null) {
             projeto.setAtividadeCollection(new ArrayList<Atividade>());
         }
@@ -50,11 +52,14 @@ public class ProjetoDao extends GenericDao{
                 }
             }
             em.getTransaction().commit();
+            salvo = true;
+            return salvo;
         } catch (Exception ex) {
             if (findProjeto(projeto.getIdProjeto()) != null) {
-                throw new PreexistingEntityException("Projeto " + projeto + " already exists.", ex);
+                throw new PreexistingEntityException("Projeto " + projeto + " já existe.", ex);
             }
             throw ex;
+            
         } finally {
             if (em != null) {
                 em.close();

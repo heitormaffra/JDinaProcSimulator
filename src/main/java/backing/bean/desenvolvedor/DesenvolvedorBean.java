@@ -22,10 +22,9 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name = "desenvolvedor")
 public class DesenvolvedorBean {
 
-    private String nomeDesenv;
-    private Double artefato;
+    private String nomeDesenv = null;
+    private Double artefato = 0d;
     private List<Desenvolvedor> desenv;
-    
     private List<Desenvolvedor> desenvs;
 
     /**
@@ -104,19 +103,19 @@ public class DesenvolvedorBean {
      * Método para criar um novo desenvolvedor.
      */
     public void criaDesenv() {
-        Desenvolvedor desenv = new Desenvolvedor();
-        desenv.setNmDsenv(nomeDesenv);
-//        desenv.setExpDesenv(artefato);
+        Desenvolvedor desenvolvedor = new Desenvolvedor();
+        desenvolvedor.setNmDsenv(nomeDesenv);
+        desenvolvedor.setExpDesenv(artefato.floatValue());
 
-        DesenvolvedorDao desenvDao = new DesenvolvedorDao();
-        boolean create = desenvDao.create(desenv);
+            DesenvolvedorDao desenvDao = new DesenvolvedorDao();
+        boolean create = desenvDao.create(desenvolvedor);
 
-        if (create == false) {
-            FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao salvar registro."));
-        } else {
-            FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + nomeDesenv + " salvo com sucesso!"));
+            if (create == false) {
+                FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao salvar registro."));
+            } else {
+                FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + nomeDesenv + " salvo com sucesso!"));
+            }
         }
+    
+    
     }
-    
-    
-}

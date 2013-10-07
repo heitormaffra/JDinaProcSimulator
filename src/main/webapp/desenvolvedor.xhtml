@@ -24,7 +24,7 @@
                                         <h:outputText value="Nome: "/>
                                     </td>
                                     <td>
-                                        <h:inputText value="#{desenvolvedor.nomeDesenv}"/>
+                                        <p:inputText value="#{desenvolvedor.nomeDesenv}"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -32,12 +32,11 @@
                                         <h:outputText value="Experiência: "/>
                                     </td>
                                     <td>
-                                        <h:inputText value="#{desenvolvedor.artefato}"/>
+                                        <p:inputText value="#{desenvolvedor.artefato}"/>
                                     </td>
                                 </tr>
                             </table>
-                            <p:commandButton value="Salvar"
-                                             actionListener="#{desenvolvedor.criaDesenv()}"/>
+                            <p:commandButton value="Salvar" action="#{desenvolvedor.criaDesenv()}" />
                         </h:form>
                     </p:panel>
                 </div>

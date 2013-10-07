@@ -16,7 +16,7 @@
 
                 <p:growl id="growl" sticky="true" showDetail="true"/>  
 
-                <p:wizard flowListener="#{indexBean.onFlowProcess}" style="width: 90%;">  
+                <p:wizard flowListener="#{simulacaoBean.onFlowProcess}" style="width: 90%;">  
 
                     <p:tab id="projeto" title="Projeto">  
 
@@ -38,30 +38,18 @@
                             <ui:include src="WEB-INF/comps/includes/selecionarAtividade.xhtml" />
 
                         </p:panel>  
-                    </p:tab> 
-
-                    <p:tab id="desenvolvedor" title="Desenvolvedor">  
-
-                        <p:panel header="Selecionar Desenvolvedor">  
-
-                            <h:messages errorClass="error"/>  
-
+                    </p:tab>
+                    <p:tab id="desenvolvedo" title="Desenvolvedor"> 
+                        <p:panel header="Selecionar Desenvolvedor">
                             <ui:include src="WEB-INF/comps/includes/selecionarDesenvolvedor.xhtml" />
-
-                        </p:panel>  
+                        </p:panel>
                     </p:tab>
-                    
-                    <p:tab id="equipe" title="Desenvolvedor">  
 
-                        <p:panel header="Criar Equipe">  
-
-                            <h:messages errorClass="error"/>  
-
+                    <p:tab id="equipe" title="Equipe"> 
+                        <p:panel header="Selecionar Equipe">
                             <ui:include src="WEB-INF/comps/includes/selecionarEquipe.xhtml" />
-
-                        </p:panel>  
+                        </p:panel>
                     </p:tab>
-
                 </p:wizard>  
             </h:form>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non urna sed nulla euismod pellentesque et sollicitudin enim. Donec condimentum posuere turpis, at elementum purus malesuada non. Mauris pulvinar lacus sem, at elementum augue sagittis a. Vestibulum non urna augue. Curabitur metus quam, adipiscing a ipsum et, feugiat malesuada lectus. Pellentesque mauris augue, scelerisque et tincidunt eu, interdum ut mi. Vivamus mauris eros, fermentum et orci sed, commodo vulputate magna. Quisque vitae aliquam risus, et sagittis magna. Ut eu lobortis eros. Fusce arcu lacus, euismod vel sagittis ac, tempor aliquam massa.
@@ -74,7 +62,7 @@
 
             In pretium dui neque, ac porta tortor sollicitudin a. Cras metus turpis, varius ut faucibus quis, vehicula sed urna. Suspendisse vel turpis faucibus, adipiscing magna non, venenatis nunc. Morbi aliquet lorem ac ligula tempor, in condimentum quam imperdiet. Nullam porttitor laoreet est ut bibendum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi metus tortor, facilisis eget justo sed, auctor blandit quam. Nulla facilisi. Integer tortor elit, interdum non tortor sollicitudin, volutpat tincidunt felis. Sed pellentesque metus sed faucibus fringilla. Mauris vel augue id arcu mollis placerat. Nullam faucibus, purus ut semper facilisis, mauris lorem tristique elit, eget ultrices nunc nisl ut est. In iaculis, lectus id fringilla dictum, lacus neque ornare lectus, at mollis nunc ligula in magna. Maecenas quis congue ante, eu vehicula tellus. Vivamus diam est, sollicitudin porttitor eros sed, blandit condimentum sem.
         </div>
-<!--        <ui:include src="WEB-INF/comps/geral/rodape.xhtml" />-->
+        <!--        <ui:include src="WEB-INF/comps/geral/rodape.xhtml" />-->
     </h:body>
 </html>
 

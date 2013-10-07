@@ -12,8 +12,10 @@ import br.cesjf.model.entities.exceptions.PreexistingEntityException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 
 /**
@@ -103,12 +105,16 @@ public class ProjetoBean {
         projeto.setNmProjeto(nomeProjeto);
         
         ProjetoDao projetoDao = new ProjetoDao();
+
         try {
             projetoDao.create(projeto);
+            FacesContext.getCurrentInstance().addMessage("Sucesso", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Projeto " + nomeProjeto + " salvo com sucesso!"));
         } catch (PreexistingEntityException ex) {
             Logger.getLogger(ProjetoBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao salvar registro."));
         } catch (Exception ex) {
             Logger.getLogger(ProjetoBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao salvar registro."));
         }
         
     }
