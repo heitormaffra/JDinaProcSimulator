@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <link type="text/css" rel="stylesheet" href="css/default.css"/>
+        <title>Desenvolvedores</title>
+    </h:head>
+    <h:body>
+        <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
+        <ui:include src="WEB-INF/comps/geral/menu.xhtml" />
+        <p:layout>
+            <p:layoutUnit position="center" styleClass="conteudo">
+                <h1 class="title ui-widget-header ui-corner-all">Listagem de Desenvolvedores</h1>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <h:form id="frmDesenvDt">
+                    <p:dataTable var="desenv" 
+                                 value="#{desenvolvedorBean.listDesenv}" 
+                                 rowKey="#{desenv.nmDsenv}" 
+                                 paginator="true"
+                                 paginatorAlwaysVisible="false"
+                                 paginatorPosition="bottom"
+                                 rows="10"
+                                 id="desenvsTable"
+                                 style="padding-bottom: 10px; padding-top: 10px; width: 80%; padding-left: 10%;"
+                                 emptyMessage="Não há nenhum desenvolvedor cadastrado.">
+                        <p:column headerText="Nome" id="nome">  
+                            #{desenv.nmDsenv}
+                        </p:column>
+                        <p:column headerText="Experiência" id="exp">  
+                            #{desenv.expDesenv}
+                        </p:column>
+                        <p:column headerText="Excluir" id="excluir" style="text-align: center;">  
+                            <p:commandLink actionListener="#{desenvolvedorBean.deletaDesenv()}"
+                                           update=":frmDesenvDt:desenvsTable">
+                                <p:graphicImage value="/imagens/delete_1.png" />
+                            </p:commandLink>
+                        </p:column>
+                        <p:column headerText="Editar" id="editar" style="text-align: center;">  
+                            <p:commandLink onclick="editDlg.show();">
+                                <p:graphicImage value="/imagens/edit.png" width="16px" height="16" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+                <h:form id="frmEdit">
+                    <p:dialog widgetVar="editDlg"
+                              header = "Editar registro"
+                              resizable="true"
+                              modal="true">  
+                        <table>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Nome: "/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{desenvolvedorBean.nomeDesenv}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Experiência: "/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{desenvolvedorBean.artefato}"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <p:commandButton value="Salvar" 
+                                         action="#{desenvolvedorBean.editaDesenv()}"
+                                         process="@all"
+                                         update=":frmDesenvDt"
+                                         oncomplete="editDlg.hide();"/>
+                        <p:commandButton value="Limpar" style="margin-right: 18px;"
+                                         type="reset"/>                
+                    </p:dialog>
+                </h:form>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>
+

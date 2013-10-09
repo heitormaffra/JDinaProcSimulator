@@ -5,26 +5,26 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <link type="text/css" rel="stylesheet" href="css/style.css"/>
         <link type="text/css" rel="stylesheet" href="css/default.css"/>
     </h:head>
     <h:body>
-        <p:layout fullPage="true">
-            <p:layoutUnit position="center">
-                <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
-                <ui:include src="WEB-INF/comps/geral/menu.xhtml" />
-                <div style="margin-left: 220px;">
-                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <h1 class="title ui-widget-header ui-corner-all">Cadastro de Desenvolvedor</h1>
-                    <p:panel style="width: 70%;">
-                        <h:form id="frmDesenv">
+
+        <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
+        <ui:include src="WEB-INF/comps/geral/menu.xhtml" />
+        <p:layout id="layoutPrinc">
+            <p:layoutUnit position="center" styleClass="conteudo" id="layoutUnit">
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <h1 class="title ui-widget-header ui-corner-all">Cadastro de Desenvolvedor</h1>
+                <p:panel style="width: 90%; border: 0">
+                    <h:form id="frmDesenv">
+                        <div class="form">
                             <table>
                                 <tr>
                                     <td>
                                         <h:outputText value="Nome: "/>
                                     </td>
                                     <td>
-                                        <p:inputText value="#{desenvolvedor.nomeDesenv}"/>
+                                        <p:inputText value="#{desenvolvedorBean.nomeDesenv}"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -32,14 +32,19 @@
                                         <h:outputText value="Experiência: "/>
                                     </td>
                                     <td>
-                                        <p:inputText value="#{desenvolvedor.artefato}"/>
+                                        <p:inputText value="#{desenvolvedorBean.artefato}"/>
                                     </td>
                                 </tr>
                             </table>
-                            <p:commandButton value="Salvar" action="#{desenvolvedor.criaDesenv()}" />
-                        </h:form>
-                    </p:panel>
-                </div>
+                        </div>
+                        <p:commandButton value="Salvar" 
+                                         action="#{desenvolvedorBean.criaDesenv()}"
+                                         update="frmDesenv"
+                                         process="@all"/>
+                        <p:commandButton value="Limpar" style="margin-right: 18px;"
+                                         type="reset"/>
+                    </h:form>
+                </p:panel>
             </p:layoutUnit>
         </p:layout>
     </h:body>

@@ -264,22 +264,30 @@ img.right {
 }
 
 .conteudo{
-    margin-left: 220px;
-    margin-top: -95px;
-    padding-top: 30px;
-    padding-left: 30px;
-    padding-right: 30px;
-    width: 83%;
-    padding-bottom: 100px;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    background: #FFF;
-    border: 1px solid #CCC;
-    box-shadow: 10px 10px 5px rgb(50, 50, 50);
+    margin-top: 15px !important;
+    padding-top: 30px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    padding-bottom: 100px !important;
+    border-top-left-radius: 15px !important;
+    border-top-right-radius: 15px !important;
+    
+    background: #FFF !important;
+    border: 1px solid #CCC !important;
+    box-shadow: 10px 10px 5px rgb(50, 50, 50) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 83% !important;
+    height: 600px !important;
 }
 
 html{
     background-color: rgb(243, 242, 238);
+}
+.form {
+    margin: 10px 10px 10px 0;
+}
+
+.message {
+    width: 90%;
 }

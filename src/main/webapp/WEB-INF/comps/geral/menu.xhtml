@@ -2,14 +2,23 @@
               xmlns:h="http://java.sun.com/jsf/html"
               xmlns:p="http://primefaces.org/ui">
     <h:form>
-        <p:tieredMenu style="width:180px; position: relative; margin-left: 10px;">
-            <p:submenu label="Cadastro" >
-                <p:menuitem value="Desenvolvedor"  url="#{request.contextPath}/../desenvolvedor.jsf"  />
-                <p:menuitem value="Atividade" url="#{request.contextPath}/../atividade.jsf" />
-                <p:menuitem value="Projeto" url="#{request.contextPath}/../projeto.jsf" />
-            </p:submenu>
-            <p:separator />
-            <p:menuitem value="Simulação" url="#{request.contextPath}/../simulacao.jsf" />
-        </p:tieredMenu>
+        <div style="padding-bottom: 10px; padding-top: 10px; width: 98%; padding-left: 1%;">
+            <p:menubar autoDisplay="false">
+                <p:menuitem value="Home"  url="#{request.contextPath}/../index.jsf"  />
+                <p:submenu label="Cadastro" >
+                    <p:menuitem value="Desenvolvedor"  url="#{request.contextPath}/../desenvolvedor.jsf"  />
+                    <p:menuitem value="Atividade" url="#{request.contextPath}/../atividade.jsf" />
+                    <p:menuitem value="Projeto" url="#{request.contextPath}/../projeto.jsf" />
+                </p:submenu>
+                
+                <p:submenu label="Listagem" >
+                    <p:menuitem value="Desenvolvedor"  url="#{request.contextPath}/../listaDesenvolvedor.jsf"  />
+                    <p:menuitem value="Atividade" url="#{request.contextPath}/../listaAtividade.jsf" />
+                    <p:menuitem value="Projeto" url="#{request.contextPath}/../listaProjeto.jsf" />
+                </p:submenu>
+
+                <p:menuitem value="Simulação" url="#{request.contextPath}/../simulacao.jsf" />
+            </p:menubar>
+        </div>
     </h:form>
 </ui:component>

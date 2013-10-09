@@ -11,25 +11,31 @@
         <link type="text/css" rel="stylesheet" href="css/default.css"/>
     </h:head>
     <h:body>
-        <p:layout fullPage="true">
-            <p:layoutUnit position="center">
-                <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
-                <ui:include src="WEB-INF/comps/geral/menu.xhtml" /> 
-                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <h:form id="frmDesenv">
-                    <table>
-                        <tr>
-                            <td>
-                                <h:outputText value="Nome: "/>
-                            </td>
-                            <td>
-                                <p:inputText value="#{projetoBean.nomeProjeto}"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <p:commandButton value="Salvar"
-                                     actionListener="#{projetoBean.criarProjeto()}"/>
-                </h:form>
+        <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
+        <ui:include src="WEB-INF/comps/geral/menu.xhtml" /> 
+        <p:layout id="layoutPrinc">
+            <p:layoutUnit position="center" styleClass="conteudo" id="layoutUnit">
+                <p:panel style="width: 90%; margin-left: 20px; border: 0">
+                    <h1 class="title ui-widget-header ui-corner-all">Cadastro de Projetos</h1>
+                    <p:messages id="messages" 
+                                showDetail="true" 
+                                autoUpdate="true" 
+                                closable="true" />
+                    <h:form id="frmDesenv">
+                        <table>
+                            <tr>
+                                <td>
+                                    <h:outputText value="Nome: "/>
+                                </td>
+                                <td>
+                                    <p:inputText value="#{projetoBean.nomeProjeto}"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <p:commandButton value="Salvar"
+                                         actionListener="#{projetoBean.criarProjeto()}"/>
+                    </h:form>
+                </p:panel>
             </p:layoutUnit>
         </p:layout>
     </h:body>

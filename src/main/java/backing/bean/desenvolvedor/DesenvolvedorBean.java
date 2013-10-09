@@ -4,118 +4,129 @@
  */
 package backing.bean.desenvolvedor;
 
-//import br.cesjf.model.dao.DesenvolvedorDao;
-//import br.cesjf.model.entites.Desenvolvedor;
 import br.cesjf.model.dao.DesenvolvedorDao;
+import br.cesjf.model.dao.exceptions.NonexistentEntityException;
 import br.cesjf.model.entities.Desenvolvedor;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 
 /**
  *
- * @author heitor.filho
+ * @author heitormaffra
  */
 @ViewScoped
-@ManagedBean(name = "desenvolvedor")
+@ManagedBean(name = "desenvolvedorBean")
 public class DesenvolvedorBean {
 
-    private String nomeDesenv = null;
-    private Double artefato = 0d;
-    private List<Desenvolvedor> desenv;
-    private List<Desenvolvedor> desenvs;
+    private String nomeDesenv;
+    private Double artefato;
+    private List<Desenvolvedor> listDesenv;
+    private Desenvolvedor desenvSelcionado;
+    private List<Desenvolvedor> desenvFiltrado;
+    private DataModel rowsData;
 
-    /**
-     *
-     * @return
-     */
-    public List<Desenvolvedor> getDesenvolvedores() {
+    public DataModel getRowData() {
+        return rowsData;
+    }
+
+    public void setRowData(DataModel rowData) {
+        this.rowsData = rowData;
+    }
+
+    public List<Desenvolvedor> getDesenvFiltrado() {
+        return desenvFiltrado;
+    }
+
+    public void setDesenvFiltrado(List<Desenvolvedor> desenvFiltrado) {
+        this.desenvFiltrado = desenvFiltrado;
+    }
+
+    public Desenvolvedor getDesenvSelcionado() {
+        return desenvSelcionado;
+    }
+
+    public void setDesenvSelcionado(Desenvolvedor desenvSelcionado) {
+        this.desenvSelcionado = desenvSelcionado;
+    }
+
+    public List<Desenvolvedor> getListDesenv() {
         DesenvolvedorDao desenvDao = new DesenvolvedorDao();
-        desenvs = desenvDao.findDesenvolvedorEntities();
-        return desenvs;
+        listDesenv = desenvDao.findDesenvolvedorEntities();
+        return listDesenv;
     }
 
-    /**
-     *
-     * @param desenvs
-     */
-    public void setDesenvs(List<Desenvolvedor> desenvs) {
-        this.desenvs = desenvs;
+    public void setListDesenv(List<Desenvolvedor> listDesenv) {
+        this.listDesenv = listDesenv;
     }
 
-    /**
-     *
-     * @return
-     */
-    public List<Desenvolvedor> getDesenv() {
-        DesenvolvedorDao desevDao = new DesenvolvedorDao();
-        desenv = desevDao.findDesenvolvedorEntities();
-        return desenv;
-    }
-
-    /**
-     *
-     * @param desenv
-     */
-    public void setDesenv(List<Desenvolvedor> desenv) {
-        this.desenv = desenv;
-    }
-
-    /**
-     * Returna o nome do desenvolvedor
-     *
-     * @return nomeDesenv
-     */
     public String getNomeDesenv() {
         return nomeDesenv;
     }
 
-    /**
-     * Seta o nome do desenvolvedor.
-     *
-     * @param nomeDesenv
-     */
     public void setNomeDesenv(String nomeDesenv) {
         this.nomeDesenv = nomeDesenv;
     }
 
-    /**
-     * Retorna o valor da experiência do desenvolvedor
-     *
-     * @return expeDesenv
-     */
     public Double getArtefato() {
         return artefato;
     }
 
-    /**
-     * Setar valor para experiência do desenvolvedor.
-     *
-     * @param getArtefato
-     */
-    public void getArtefato(Double expeDesenv) {
-        this.artefato = expeDesenv;
+    public void setArtefato(Double artefato) {
+        this.artefato = artefato;
     }
 
-    /**
-     * Método para criar um novo desenvolvedor.
-     */
     public void criaDesenv() {
         Desenvolvedor desenvolvedor = new Desenvolvedor();
         desenvolvedor.setNmDsenv(nomeDesenv);
         desenvolvedor.setExpDesenv(artefato.floatValue());
 
-            DesenvolvedorDao desenvDao = new DesenvolvedorDao();
-        boolean create = desenvDao.create(desenvolvedor);
-
-            if (create == false) {
-                FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao salvar registro."));
-            } else {
-                FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + nomeDesenv + " salvo com sucesso!"));
-            }
+        DesenvolvedorDao desenvDao = new DesenvolvedorDao();
+        try {
+            desenvDao.create(desenvolvedor);
+            setNomeDesenv("");
+            setArtefato(null);
+            FacesContext.getCurrentInstance().addMessage("sucesso", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + nomeDesenv + " salvo com sucesso!"));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao salvar registro." + ex.getMessage()));
         }
-    
-    
     }
+
+    public void deletaDesenv() {
+
+        try {
+            //resultFluxos = new ListDataModel(recebimentoNotaDao.findResultNotaSearch(atributosPesquisa));
+            rowsData = new ListDataModel(getListDesenv());
+            Desenvolvedor desenvolvedor = (Desenvolvedor) rowsData.getRowData();
+            DesenvolvedorDao desenvDao = new DesenvolvedorDao();
+            desenvDao.destroy(desenvolvedor.getIdDesenv());
+            FacesContext.getCurrentInstance().addMessage("sucesso", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + desenvolvedor.getNmDsenv() + " deletado com sucesso!"));
+        } catch (NonexistentEntityException ex) {
+            FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao deletar registro." + ex.getMessage()));
+            Logger.getLogger(DesenvolvedorBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void editaDesenv() {
+
+        try {
+            //resultFluxos = new ListDataModel(recebimentoNotaDao.findResultNotaSearch(atributosPesquisa));
+            rowsData = new ListDataModel(getListDesenv());
+            Desenvolvedor desenvolvedor = (Desenvolvedor) rowsData.getRowData();
+            desenvolvedor.setNmDsenv(nomeDesenv);
+            desenvolvedor.setExpDesenv(artefato.floatValue());
+            DesenvolvedorDao desenvDao = new DesenvolvedorDao();
+            desenvDao.edit(desenvolvedor);
+            FacesContext.getCurrentInstance().addMessage("sucesso", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + desenvolvedor.getNmDsenv() + " editado com sucesso!"));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao editar registro." + ex.getMessage()));
+            Logger.getLogger(DesenvolvedorBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}

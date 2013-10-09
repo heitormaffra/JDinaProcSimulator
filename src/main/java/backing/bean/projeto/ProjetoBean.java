@@ -5,9 +5,11 @@
 package backing.bean.projeto;
 
 import br.cesjf.model.dao.AtividadeDao;
+import br.cesjf.model.dao.DesenvolvedorDao;
 import br.cesjf.model.entities.Projeto;
 import br.cesjf.model.dao.ProjetoDao;
 import br.cesjf.model.entities.Atividade;
+import br.cesjf.model.entities.Desenvolvedor;
 import br.cesjf.model.entities.exceptions.PreexistingEntityException;
 import java.util.List;
 import java.util.logging.Level;

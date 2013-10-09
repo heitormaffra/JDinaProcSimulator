@@ -4,75 +4,74 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <link type="text/css" rel="stylesheet" href="css/default.css"/>
         <title>Realizar Simulação </title>
     </h:head>
     <h:body>
-        <h:form>
-            <p:dialog id="loading" widgetVar="loading" width="425"  
-                      resizable="false" showEffect="clip" hideEffect="clip" closable="false">
-                <p:graphicImage value="/imagens/load.gif" />
-            </p:dialog>
-        </h:form>
+        <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
+        <ui:include src="WEB-INF/comps/geral/menu.xhtml" /> 
+        <p:layout id="layoutPrinc">
+            <p:layoutUnit position="center" styleClass="conteudo" id="layoutUnit">
+                <h:form>
+                    <p:dialog id="loading" widgetVar="loading" width="425"  
+                              resizable="false" showEffect="clip" hideEffect="clip" closable="false">
+                        <p:graphicImage value="/imagens/load.gif" />
+                    </p:dialog>
+                </h:form>
 
-        <h:form id="frmTbl">
-            <div style="margin-top: 10px; margin-left: 10px;">
+                <h:form id="frmTbl">
+                    <div style="margin-top: 10px; margin-left: 10px;">
 
-                <p:panel id="panel" header="Alterar Valores da Simulação" style="width: 30%">  
-                    <h:panelGrid columns="3">  
-                        <h:outputLabel for="expDes1" value="Exp. Des 1: " />  
-                        
-                        <p:inputText id="expDes1" value="#{indexBean.expDes1}" required="true" label="Exp. Des 1" >  
-                            <f:validateLength minimum="1" />  
-                        </p:inputText>
-                        <p:message for="expDes1" />
+                        <p:panel id="panel" header="Alterar Valores da Simulação" style="width: 30%">  
+                            <h:panelGrid columns="3">  
+                                <h:outputLabel for="expDes1" value="Exp. Des 1: " />  
 
-                        <h:outputLabel for="expDes2" value="Exp. Des 2: " />  
-                        <p:inputText id="expDes2" value="#{indexBean.expDes2}" required="true" label="Exp. Des 2" />   
-                        <p:message for="expDes2" />
-                        
-                    </h:panelGrid>  
-                    <p:commandButton action="#{indexBean.realizaSimulacao()}"
-                                     value="Simular"
-                                     update=":frmTbl"
-                                     onclick="PF('loading').show();"
-                                     onsuccess="PF('loading').hide()"/>
-                </p:panel>  
+                                <p:inputText id="expDes1" value="#{indexBean.expDes1}" required="true" label="Exp. Des 1">  
+                                    <f:validateLength minimum="1" />
+                                    <p:clientValidator event="keyup"/>
+                                </p:inputText>
+                                <p:message for="expDes1" />
+
+                                <h:outputLabel for="expDes2" value="Exp. Des 2: " />  
+                                <p:inputText id="expDes2" value="#{indexBean.expDes2}" required="true" label="Exp. Des 2" />   
+                                <p:message for="expDes2" />
+
+                            </h:panelGrid>  
+                            <p:commandButton action="#{indexBean.realizaSimulacao()}"
+                                             value="Simular"
+                                             update=":frmTbl"
+                                             onclick="PF('loading').show();"
+                                             onsuccess="PF('loading').hide()"/>
+                        </p:panel>  
 
 
-            </div>
+                    </div>
 
-<!--            <p:dataTable var="values" value="#{indexBean.data}">
-                <c:forEach var="column" items="#{indexBean.data.watchedNames}">
-                    <p:column headerText="#{column}">
-                        
-                    </p:column>
-                </c:forEach>
-            </p:dataTable>-->
+                    <p:dataTable id="valores" 
+                                 var="values" 
+                                 value="#{indexBean.columns[0].property}" 
+                                 rowIndexVar="rowIndex"
+                                 style="width: 90%; margin-left: 5%; margin-top: 5px;"
+                                 emptyMessage="Não há registros, por favor, realize uma simulação">                      
+                        <p:columns value="#{indexBean.columns}" var="column" columnIndexVar="colIndex">
+                            <f:facet name="header">  
+                                #{column.header}  
+                            </f:facet>
+                            #{column.property.get(rowIndex)}
+                        </p:columns>  
 
-            <p:dataTable id="valores" 
-                         var="values" 
-                         value="#{indexBean.columns[0].property}" 
-                         rowIndexVar="rowIndex"
-                         style="width: 90%; margin-left: 5%; margin-top: 5px;"
-                         emptyMessage="Não há registros, por favor, realize uma simulação">                      
-                <p:columns value="#{indexBean.columns}" var="column" columnIndexVar="colIndex">
-                    <f:facet name="header">  
-                        #{column.header}  
-                    </f:facet>
-                    #{column.property.get(rowIndex)}
-                </p:columns>  
-
-            </p:dataTable>
-            <p:lineChart id="linear" value="#{indexBean.linearModel}"
-                         legendPosition="e"  
-                         title="Gráfico da Simulação"
-                         style="height:300px; width: 90%; margin-top: 30px; margin-left: 5%"
-                         rendered="#{indexBean.linearModel != null}"/>
-        </h:form>
-        <a href="#{request.contextPath}/../dinaProcSimulator/index.jsf">Voltar</a>
+                    </p:dataTable>
+                    <p:lineChart id="linear" value="#{indexBean.linearModel}"
+                                 legendPosition="e"  
+                                 title="Gráfico da Simulação"
+                                 style="height:300px; width: 90%; margin-top: 30px; margin-left: 5%"
+                                 rendered="#{indexBean.linearModel != null}"/>
+                </h:form>
+            </p:layoutUnit>
+        </p:layout>
     </h:body>
 </html>
 
