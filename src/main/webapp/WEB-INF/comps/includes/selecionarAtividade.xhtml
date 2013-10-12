@@ -2,15 +2,59 @@
               xmlns:h="http://java.sun.com/jsf/html"
               xmlns:p="http://primefaces.org/ui"
               xmlns:f="http://java.sun.com/jsf/core">
+    <h:form id="form">
+        <p:dataTable id="selectAtvs" 
+                     var="atv" 
+                     value="#{indexBean.atvsToAdd}" 
+                     paginator="true" 
+                     rows="10"  editable="true" 
+                     editMode="cell" 
+                     widgetVar="carsTable">  
+
+            <f:facet name="header">  
+                Selecionar Atividades
+            </f:facet>  
+
+            <p:column headerText="Atividade" style="width:25%">  
+                #{atv.nmAtivd}  
+            </p:column>  
+
+            <p:column headerText="Duração" style="width:25%">  
+                <p:cellEditor>  
+                    <f:facet name="output">
+                        <h:outputText value="#{atv.duracaoAtivid}  " />
+                    </f:facet>  
+                    <f:facet name="input">
+                        <p:inputText value="#{atv.duracaoAtivid}  " label="Year"/>
+                    </f:facet>  
+                </p:cellEditor>  
+            </p:column>  
+
+            <p:column headerText="Nome Desenvolvedor" style="width:25%">  
+                #{atv.idDesenv.nmDsenv}
+            </p:column>
+
+            <p:column headerText="Adicionar" style="width:25%; text-align: center;">  
+                <p:commandLink actionListener="#{indexBean.getDataAtv()}">
+                    <p:graphicImage value="/imagens/add.png" width="16px" height="16" />
+                </p:commandLink>
+            </p:column>
+
+        </p:dataTable>  
+
+    </h:form>
+    
     <h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
         <h:outputText value="Atividades: " />
         <p:selectManyMenu  id="atividWizard"
                            style="width: 200px;"
                            value="#{indexBean.atividades}"
-                           showCheckbox="true">
-            <f:selectItem itemLabel="Desenvolver" itemValue="Desenvolver" />
-            <f:selectItem itemLabel="Projetar" itemValue="Projetar" />
-            <f:selectItem itemLabel="Quality Assurance" itemValue="Quality Assurance" />
+                           showCheckbox="true"
+                           disabled="true">
+            <f:selectItems value="#{indexBean.ativdsSelecteds}"
+                           var="atvsSelec"
+                           itemLabel="#{atvsSelec.nmAtivd}"
+                           itemValue="#{atvsSelec.idAtivd}"/>
         </p:selectManyMenu>
     </h:panelGrid>  
 </ui:component>

@@ -4,6 +4,9 @@
  */
 package backing.bean;
 
+import br.cesjf.model.datamodel.AtividadeDataModel;
+import br.cesjf.model.entities.Atividade;
+import br.cesjf.model.entities.Desenvolvedor;
 import br.cesjf.util.MetaModel;
 import br.ufjf.mmc.jynacore.JynaSimulableModel;
 import br.ufjf.mmc.jynacore.JynaSimulation;
@@ -46,7 +49,6 @@ import br.ufjf.mmc.jynacore.metamodel.simulator.impl.DefaultMetaModelInstanceSim
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -57,6 +59,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import org.jfree.data.xy.XYSeries;
+import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.LineChartSeries;
@@ -69,6 +72,24 @@ import org.primefaces.model.chart.LineChartSeries;
 @ManagedBean(name = "indexBean")
 public class IndexBean {
 
+    public IndexBean() {
+        desenvolvedores = new ArrayList<MetaModel>();
+        data = new DefaultSimulationData();
+
+
+        atvsToAdd = new ArrayList<Atividade>();
+        atvsToAdd.add(new Atividade(1, "Codificar", 10d, new Desenvolvedor(1, "Heitor")));
+        atvsToAdd.add(new Atividade(2, "QA", 10d, new Desenvolvedor(2, "Ramon")));
+        atvsToAdd.add(new Atividade(3, "Arquitetar", 10d, new Desenvolvedor(3, "Lucas")));
+        atvsToAdd.add(new Atividade(4, "Projetar", 10d, new Desenvolvedor(4, "João")));
+        atvsToAdd.add(new Atividade(5, "Homologar", 10d, new Desenvolvedor(5, "Diogo")));
+
+        ativds = new AtividadeDataModel(atvsToAdd);
+        
+        ativdsSelecteds = new ArrayList<Atividade>();
+        
+        ativSelecionada = new Atividade();
+    }
     private static final Logger logger = Logger.getLogger(IndexBean.class.getName());
     private String nomeProjeto;
     private List<String> atividades;
@@ -83,6 +104,82 @@ public class IndexBean {
     private List<String> tempValues;
     private Double expDes1;
     private Double expDes2;
+    private AtividadeDataModel ativds;
+    private List<Atividade> ativdsSelecteds;
+    private List<Atividade> atvsToAdd;
+    private DataModel rowsData;
+    private String nomeAtividade;
+    private Double duracaoAtividade;
+    private Desenvolvedor desenvRespAtv;
+    private Atividade ativSelecionada;
+
+    public Atividade getAtivSelecionada() {
+        return ativSelecionada;
+    }
+
+    public void setAtivSelecionada(Atividade ativSelecionada) {
+        this.ativSelecionada = ativSelecionada;
+    }
+
+    public String getNomeAtividade() {
+        return nomeAtividade;
+    }
+
+    public void setNomeAtividade(String nomeAtividade) {
+        this.nomeAtividade = nomeAtividade;
+    }
+
+    public Double getDuracaoAtividade() {
+        return duracaoAtividade;
+    }
+
+    public void setDuracaoAtividade(Double duracaoAtividade) {
+        this.duracaoAtividade = duracaoAtividade;
+    }
+
+    public Desenvolvedor getDesenvRespAtv() {
+        return desenvRespAtv;
+    }
+
+    public void setDesenvRespAtv(Desenvolvedor desenvRespAtv) {
+        this.desenvRespAtv = desenvRespAtv;
+    }
+
+    public DataModel getRowsData() {
+        return rowsData;
+    }
+
+    public void setRowsData(DataModel rowsData) {
+        this.rowsData = rowsData;
+    }
+
+    public List<Atividade> getAtvsToAdd() {
+        return atvsToAdd;
+    }
+
+    public void setAtvsToAdd(List<Atividade> atvsToAdd) {
+        this.atvsToAdd = atvsToAdd;
+    }
+
+    public List<Atividade> getAtivdsSelecteds() {
+        return ativdsSelecteds;
+    }
+
+    public void setAtivdsSelecteds(List<Atividade> ativdsSelecteds) {
+        this.ativdsSelecteds = ativdsSelecteds;
+    }
+
+    public AtividadeDataModel getAtivds() {
+        return ativds;
+    }
+
+    public void setAtivds(AtividadeDataModel ativds) {
+        this.ativds = ativds;
+    }
+
+    public void verifica() {
+        getAtivdsSelecteds().add(ativSelecionada);
+    }
 
     public Double getExpDes1() {
         return expDes1;
@@ -114,11 +211,6 @@ public class IndexBean {
 
     public void setData(DefaultSimulationData data) {
         this.data = data;
-    }
-
-    public IndexBean() {
-        desenvolvedores = new ArrayList<MetaModel>();
-        data = new DefaultSimulationData();
     }
 
     public CartesianChartModel getLinearModel() {
@@ -479,4 +571,15 @@ public class IndexBean {
             return property;
         }
     }
+    
+    public void onCellEdit(CellEditEvent event) {  
+        Object oldValue = event.getOldValue();  
+        Object newValue = event.getNewValue();  
+          
+        if(newValue != null && !newValue.equals(oldValue)) {  
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);  
+            FacesContext.getCurrentInstance().addMessage(null, msg);  
+        }  
+    }
+    
 }

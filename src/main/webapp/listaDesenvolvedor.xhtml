@@ -37,11 +37,13 @@
                             <p:commandLink actionListener="#{desenvolvedorBean.deletaDesenv()}"
                                            update=":frmDesenvDt:desenvsTable">
                                 <p:graphicImage value="/imagens/delete_1.png" />
+                                <f:setPropertyActionListener value="#{desenv}" target="#{desenvolvedorBean.desenvSelcionado}" />
                             </p:commandLink>
                         </p:column>
                         <p:column headerText="Editar" id="editar" style="text-align: center;">  
                             <p:commandLink onclick="editDlg.show();">
                                 <p:graphicImage value="/imagens/edit.png" width="16px" height="16" />
+                                <f:setPropertyActionListener value="#{desenv}" target="#{desenvolvedorBean.desenvSelcionado}" />
                             </p:commandLink>
                         </p:column>
                     </p:dataTable>
@@ -51,7 +53,7 @@
                     <p:dialog widgetVar="editDlg"
                               header = "Editar registro"
                               resizable="true"
-                              modal="true">  
+                              modal="false">  
                         <table>
                             <tr>
                                 <td>

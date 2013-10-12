@@ -102,11 +102,11 @@ public class DesenvolvedorBean {
 
         try {
             //resultFluxos = new ListDataModel(recebimentoNotaDao.findResultNotaSearch(atributosPesquisa));
-            rowsData = new ListDataModel(getListDesenv());
-            Desenvolvedor desenvolvedor = (Desenvolvedor) rowsData.getRowData();
+            desenvSelcionado.setNmDsenv(nomeDesenv);
+            desenvSelcionado.setExpDesenv(artefato.floatValue());
             DesenvolvedorDao desenvDao = new DesenvolvedorDao();
-            desenvDao.destroy(desenvolvedor.getIdDesenv());
-            FacesContext.getCurrentInstance().addMessage("sucesso", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + desenvolvedor.getNmDsenv() + " deletado com sucesso!"));
+            desenvDao.destroy(desenvSelcionado.getIdDesenv());
+            FacesContext.getCurrentInstance().addMessage("sucesso", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + desenvSelcionado.getNmDsenv() + " deletado com sucesso!"));
         } catch (NonexistentEntityException ex) {
             FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao deletar registro." + ex.getMessage()));
             Logger.getLogger(DesenvolvedorBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -117,13 +117,12 @@ public class DesenvolvedorBean {
 
         try {
             //resultFluxos = new ListDataModel(recebimentoNotaDao.findResultNotaSearch(atributosPesquisa));
+            desenvSelcionado.setNmDsenv(nomeDesenv);
+            desenvSelcionado.setExpDesenv(artefato.floatValue());
             rowsData = new ListDataModel(getListDesenv());
-            Desenvolvedor desenvolvedor = (Desenvolvedor) rowsData.getRowData();
-            desenvolvedor.setNmDsenv(nomeDesenv);
-            desenvolvedor.setExpDesenv(artefato.floatValue());
             DesenvolvedorDao desenvDao = new DesenvolvedorDao();
-            desenvDao.edit(desenvolvedor);
-            FacesContext.getCurrentInstance().addMessage("sucesso", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + desenvolvedor.getNmDsenv() + " editado com sucesso!"));
+            desenvDao.edit(desenvSelcionado);
+            FacesContext.getCurrentInstance().addMessage("sucesso", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + desenvSelcionado.getNmDsenv() + " editado com sucesso!"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao editar registro." + ex.getMessage()));
             Logger.getLogger(DesenvolvedorBean.class.getName()).log(Level.SEVERE, null, ex);
