@@ -88,7 +88,7 @@ public class IndexBean {
         
         ativdsSelecteds = new ArrayList<Atividade>();
         
-        ativSelecionada = new Atividade();
+//        ativSelecionada = new Atividade();
     }
     private static final Logger logger = Logger.getLogger(IndexBean.class.getName());
     private String nomeProjeto;
@@ -410,7 +410,7 @@ public class IndexBean {
             coding.setProperty("duração", 15.0);
             coding.setLink("Precedente", "Projeto");
             coding.setLink("Equipe", "D2");
-
+            
             profile.setTimeLimits(50, 50.0);
 
             // Modelo de Cenário
@@ -528,11 +528,11 @@ public class IndexBean {
 //        }
 //        linearModel.addSeries(trabalho);
 
-//        for (LineChartSeries line : lines) {
-//            linearModel.addSeries(line);
-//        }
-        linearModel.addSeries(lines.get(1));
-        linearModel.addSeries(lines.get(5));
+        for (LineChartSeries line : lines) {
+            linearModel.addSeries(line);
+        }
+//        linearModel.addSeries(lines.get(1));
+//        linearModel.addSeries(lines.get(5));
         try {
             Thread.sleep(500);
         } catch (InterruptedException ex) {
