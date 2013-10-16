@@ -7,6 +7,7 @@ package backing.bean.desenvolvedor;
 import br.cesjf.model.dao.DesenvolvedorDao;
 import br.cesjf.model.dao.exceptions.NonexistentEntityException;
 import br.cesjf.model.entities.Desenvolvedor;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +26,13 @@ import javax.faces.model.ListDataModel;
 @ManagedBean(name = "desenvolvedorBean")
 public class DesenvolvedorBean {
 
+    public DesenvolvedorBean() {
+        listDesenv = new ArrayList<Desenvolvedor>();
+        listDesenv.add(new Desenvolvedor(1, "Heitor"));
+        listDesenv.add(new Desenvolvedor(2, "Max"));
+        listDesenv.add(new Desenvolvedor(3, "Rafael"));
+    }
+    
     private String nomeDesenv;
     private Double artefato;
     private List<Desenvolvedor> listDesenv;
@@ -57,8 +65,8 @@ public class DesenvolvedorBean {
     }
 
     public List<Desenvolvedor> getListDesenv() {
-        DesenvolvedorDao desenvDao = new DesenvolvedorDao();
-        listDesenv = desenvDao.findDesenvolvedorEntities();
+        //DesenvolvedorDao desenvDao = new DesenvolvedorDao();
+        //listDesenv = desenvDao.findDesenvolvedorEntities();
         return listDesenv;
     }
 

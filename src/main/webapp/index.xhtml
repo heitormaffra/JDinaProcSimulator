@@ -14,25 +14,152 @@
         <ui:include src="WEB-INF/comps/geral/menu.xhtml" />
         <div class="conteudo" >
 
-            <h1>Começando o processo de simulação!</h1>
-            <h2>Primeiro escolha o nome do projeto que deseja simular</h2>
+            <p:tabView effect="fade" effectDuration="normal">
 
-            <p:selectOneMenu id="prj" 
-                             style="width: 200px;"
-                             value="#{projetoBean.projeto}" >
-                <f:selectItems value="#{projetoBean.projetos}" 
-                               var="projs"
-                               itemValue="#{projs.idProjeto}"
-                               itemLabel="#{projs.nmProjeto}"/>
-            </p:selectOneMenu>
+                <p:tab title="Projeto">
+                    <h:form>
+                        <h3>Primeiro selecione o projeto desejado</h3>
 
-            <p:commandButton value="Avançar" 
-                             actionListener="#{projetoBean.nextStep()}"
-                             process="@all"
-                             update="@all"
-                             oncomplete="editDlg.hide();"
-                             styleClass="ui-wizard-nav-next"
-                             icon="ui-wizard-nav-next"/>
+                        <h:outputText value="Projeto"/>
+                        <p:inputText value="#{projetoBean.nomeProjeto}"/>
+                    </h:form>
+                </p:tab>
+
+                <p:tab title="Atividades">  
+                    <h:form id="frmAtividades">
+                        <p:dataTable var="desenv" 
+                                     value="#{atividade.atividades}" 
+                                     rowKey="#{desenv.nmAtivd}" 
+                                     paginator="true"
+                                     paginatorAlwaysVisible="false"
+                                     paginatorPosition="bottom"
+                                     rows="10"
+                                     id="atividadesTable"
+                                     style="padding-bottom: 10px; padding-top: 10px; width: 80%; padding-left: 10%;"
+                                     emptyMessage="Não há nenhum desenvolvedor cadastrado."
+                                     editable="true" 
+                                     editMode="cell">
+                            <p:column headerText="Nome" id="nomeAtv">  
+                                #{desenv.nmAtivd}
+                            </p:column>
+                            <p:column headerText="Duração" id="duracao">  
+                                #{desenv.duracaoAtivid}
+                            </p:column>
+                            <p:column headerText="Desenvolvedor" id="nmDesenv"> 
+                                <h:outputText value="#{desenv.idDesenv.nmDsenv}" /> 
+                            </p:column>
+                            <p:column headerText="Atividade Prec." id="atvPrecedente">  
+                                #{desenv.atividadePrecedente}
+                            </p:column>
+                            <p:column headerText="Adicionar" id="adicionarAtv" style="text-align: center;">  
+                                <p:commandLink onclick="confAddAtv.show();">
+                                    <p:graphicImage value="/imagens/add.png" width="16px" height="16" />
+                                    <f:setPropertyActionListener value="#{desenv}" target="#{atividade.atividade}" />
+                                </p:commandLink>
+                            </p:column>
+                            <p:column headerText="Editar" id="editarAtv" style="text-align: center;">  
+                                <p:commandLink onclick="editDlg.show();">
+                                    <p:graphicImage value="/imagens/edit.png" width="16px" height="16" />
+                                    <f:setPropertyActionListener value="#{desenv}" target="#{atividade.atividadeSelecionada}" />
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+
+                    <h:form id="frmConfAddAtv">
+                        <p:dialog widgetVar="confAddAtv"
+                                  header = "Confirma inclusão"
+                                  resizable="true"
+                                  modal="false"> 
+                            <h3>Deseja adicionar essa atividade?</h3>
+
+                            <p:commandButton value="Sim" 
+                                             action="#{atividade.verifica()}"
+                                             process="@all"
+                                             update="@all"
+                                             oncomplete="editDlg.hide();"
+                                             styleClass="ui-confirmdialog-yes"
+                                             icon="ui-icon-check"/>
+                            <p:commandButton value="Não" style="margin-right: 18px;"
+                                             onclick="editDlg.hide();"  
+                                             styleClass="ui-confirmdialog-no" 
+                                             icon="ui-icon-close"/>                
+                        </p:dialog>
+
+                        <h:panelGrid columns="2" 
+                                     columnClasses="label, value" 
+                                     styleClass="grid" >
+                            <h:outputText value="Atividades: " />
+
+                        </h:panelGrid>
+                    </h:form>
+
+                    <h:form id="frmEdit">
+                        <p:dialog widgetVar="editDlg"
+                                  header = "Editar registro"
+                                  resizable="true"
+                                  modal="true"
+                                  width="352px"
+                                  height="111px">  
+                            <table>
+                                <tr>
+                                    <td>
+                                        <h:outputText value="Desenvolvedor: "/>
+                                    </td>
+                                    <td>
+                                        <p:selectOneMenu value="#{atividade.desenv}" 
+                                                         style="width:100%">
+                                            <f:selectItems value="#{desenvolvedorBean.listDesenv}"
+                                                           var="dsv"
+                                                           itemLabel="#{dsv.nmDsenv}"
+                                                           itemValue="#{dsv.idDesenv}" />
+                                        </p:selectOneMenu>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h:outputText value="Ativ. Prece.: "/>
+                                    </td>
+                                    <td>
+                                        <p:selectManyMenu  id="edtAtvPrec"
+                                                           style="width: 200px;"
+                                                           value="#{atividade.atividadePredecessora}">
+                                            <f:selectItems value="#{atividade.atividades}"
+                                                           var="atvsSelec"
+                                                           itemLabel="#{atvsSelec.nmAtivd}"
+                                                           itemValue="#{atvsSelec.idAtivd}"/>
+                                        </p:selectManyMenu>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p:commandButton value="Salvar" 
+                                             action="#{atividade.editar()}"
+                                             process="@all"
+                                             update="frmAtividades"
+                                             oncomplete="editDlg.hide();"/>
+                            <p:commandButton value="Limpar" style="margin-right: 18px;"
+                                             type="reset"/>                
+                        </p:dialog>
+                    </h:form>
+
+                </p:tab>  
+                <p:tab title="Godfather Part II">  
+                    <h:panelGrid columns="2" cellpadding="10">  
+                        <p:graphicImage value="/images/godfather/godfather2.jpg" />  
+                        <h:outputText value="Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather, parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream.   
+                                      In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy,   
+                                      killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows."></h:outputText>  
+                    </h:panelGrid>
+                </p:tab>  
+                <p:tab title="Godfather Part III">  
+                    <h:panelGrid columns="2" cellpadding="10">  
+                        <p:graphicImage value="/images/godfather/godfather3.jpg" />  
+                        <h:outputText value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family.   
+                                      Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate."></h:outputText>  
+                    </h:panelGrid>  
+                </p:tab>  
+
+            </p:tabView> 
 
         </div>
     </h:body>

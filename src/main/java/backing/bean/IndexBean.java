@@ -4,7 +4,6 @@
  */
 package backing.bean;
 
-import br.cesjf.model.datamodel.AtividadeDataModel;
 import br.cesjf.model.entities.Atividade;
 import br.cesjf.model.entities.Desenvolvedor;
 import br.cesjf.util.MetaModel;
@@ -84,7 +83,6 @@ public class IndexBean {
         atvsToAdd.add(new Atividade(4, "Projetar", 10d, new Desenvolvedor(4, "João")));
         atvsToAdd.add(new Atividade(5, "Homologar", 10d, new Desenvolvedor(5, "Diogo")));
 
-        ativds = new AtividadeDataModel(atvsToAdd);
         
         ativdsSelecteds = new ArrayList<Atividade>();
         
@@ -104,7 +102,6 @@ public class IndexBean {
     private List<String> tempValues;
     private Double expDes1;
     private Double expDes2;
-    private AtividadeDataModel ativds;
     private List<Atividade> ativdsSelecteds;
     private List<Atividade> atvsToAdd;
     private DataModel rowsData;
@@ -167,14 +164,6 @@ public class IndexBean {
 
     public void setAtivdsSelecteds(List<Atividade> ativdsSelecteds) {
         this.ativdsSelecteds = ativdsSelecteds;
-    }
-
-    public AtividadeDataModel getAtivds() {
-        return ativds;
-    }
-
-    public void setAtivds(AtividadeDataModel ativds) {
-        this.ativds = ativds;
     }
 
     public void verifica() {

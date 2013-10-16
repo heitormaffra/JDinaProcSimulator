@@ -32,9 +32,9 @@ public class AtividadeBean {
 
     public AtividadeBean() {
         ativdsSelecteds = new ArrayList<Atividade>();
+        atividades = new ArrayList<Atividade>();
+        atividades.add(new Atividade(1, "Coding", 20.0, new Desenvolvedor(1, "Heitor")));
     }
-    
-
     private String nomeAtividade;
     private Double duracao;
     private Desenvolvedor desenv;
@@ -73,7 +73,7 @@ public class AtividadeBean {
     public void setAtividadePredecessora(Atividade atividadePredecessora) {
         this.atividadePredecessora = atividadePredecessora;
     }
-    
+
     public List<Atividade> getAtividadesPredecessora() {
         AtividadeDao atvDao = new AtividadeDao();
         atividadesPredecessora = atvDao.findAtividadeEntities();
@@ -109,8 +109,8 @@ public class AtividadeBean {
     }
 
     public List<Atividade> getAtividades() {
-        AtividadeDao atividadeDao = new AtividadeDao();
-        atividades = atividadeDao.findAtividadeEntities();
+        //AtividadeDao atividadeDao = new AtividadeDao();
+        //atividades = atividadeDao.findAtividadeEntities();
         return atividades;
     }
 
@@ -197,7 +197,7 @@ public class AtividadeBean {
 
         DesenvolvedorDao desenvDao = new DesenvolvedorDao();
         desenv = desenvDao.findDesenvolvedor(idDesenvolvedor);
-        
+
 
         Atividade atividad = new Atividade();
         atividad.setNmAtivd(nomeAtividade);
@@ -207,7 +207,7 @@ public class AtividadeBean {
         atividad.setAtividadePrecedente(atividadePredecessora);
 
         AtividadeDao ativdDao = new AtividadeDao();
-        
+
         boolean status = ativdDao.create(atividad);
         if (status == false) {
             FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao salvar registro."));
@@ -227,20 +227,35 @@ public class AtividadeBean {
         }
         return null;
     }
-    
+
     public void verifica() {
         getAtivdsSelecteds().add(atividade);
     }
-    
-    public void nextStep(){
+
+    public void nextStep() {
         transfer = new TransferBean();
         transfer.setAtividades(getAtivdsSelecteds());
         try {
-            FacesContext.getCurrentInstance().  
-                             getExternalContext().
-                             redirect("equipe.xhtml");
+            FacesContext.getCurrentInstance().
+                    getExternalContext().
+                    redirect("equipe.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(AtividadeBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public boolean renderedAtividadesSelec() {
+        if (getAtivdsSelecteds().isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void editar() {
+        int i = atividades.indexOf(atividadeSelecionada);
+
+        atividades.get(i).setIdDesenv(desenv);
+        atividades.get(i).setAtividadePrecedente(atividadePredecessora);
     }
 }
