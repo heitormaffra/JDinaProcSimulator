@@ -73,6 +73,13 @@ public class Atividade implements Serializable {
         this.idAtivd = idAtivd;
         this.nmAtivd = nmAtivd;
     }
+    
+    public Atividade(Integer idAtivd, String nmAtivd, Double duracaoAtv, Desenvolvedor idDesenv) {
+        this.idAtivd = idAtivd;
+        this.nmAtivd = nmAtivd;
+        this.duracaoAtivid = duracaoAtv;
+        this.idDesenv = idDesenv;
+    }
 
     public Integer getIdAtivd() {
         return idAtivd;

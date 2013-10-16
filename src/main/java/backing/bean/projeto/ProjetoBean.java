@@ -4,6 +4,8 @@
  */
 package backing.bean.projeto;
 
+import backing.bean.TransferBean;
+import backing.bean.atividade.AtividadeBean;
 import br.cesjf.model.dao.AtividadeDao;
 import br.cesjf.model.dao.DesenvolvedorDao;
 import br.cesjf.model.entities.Projeto;
@@ -11,6 +13,7 @@ import br.cesjf.model.dao.ProjetoDao;
 import br.cesjf.model.entities.Atividade;
 import br.cesjf.model.entities.Desenvolvedor;
 import br.cesjf.model.entities.exceptions.PreexistingEntityException;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +41,7 @@ public class ProjetoBean {
     private String nomeProjeto;
     private Integer idAtividade;
     private List<Atividade> atividades;
+    private TransferBean transfer;
 
     public List<Atividade> getAtividades() {
         return atividades;
@@ -63,7 +67,7 @@ public class ProjetoBean {
     public void setNomeProjeto(String nomeProjeto) {
         this.nomeProjeto = nomeProjeto;
     }
-    
+
     public Projeto getProjeto() {
         return projeto;
     }
@@ -90,7 +94,7 @@ public class ProjetoBean {
     }
 
     public String findProjetosfindById(ValueChangeEvent event) {
-        
+
         Integer idProjeto = event != null ? (Integer) event.getNewValue() : null;
         ProjetoDao projetoDao = new ProjetoDao();
         if (idProjeto != null) {
@@ -100,12 +104,12 @@ public class ProjetoBean {
         }
         return null;
     }
-    
-    public void criarProjeto(){
+
+    public void criarProjeto() {
 
         projeto = new Projeto();
         projeto.setNmProjeto(nomeProjeto);
-        
+
         ProjetoDao projetoDao = new ProjetoDao();
 
         try {
@@ -118,6 +122,18 @@ public class ProjetoBean {
             Logger.getLogger(ProjetoBean.class.getName()).log(Level.SEVERE, null, ex);
             FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao salvar registro."));
         }
-        
+
+    }
+    
+    public void nextStep(){
+        transfer = new TransferBean();
+        transfer.setProjeto(projeto);
+        try {
+            FacesContext.getCurrentInstance().  
+                             getExternalContext().
+                             redirect("desenvolvedor.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(AtividadeBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

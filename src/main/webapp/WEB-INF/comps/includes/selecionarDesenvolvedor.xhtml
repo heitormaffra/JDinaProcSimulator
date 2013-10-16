@@ -3,7 +3,7 @@
               xmlns:p="http://primefaces.org/ui"
               xmlns:f="http://xmlns.jcp.org/jsf/core">
     
-    <h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+<!--    <h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
         <h:outputText value="Atividades: " />
         <p:selectManyMenu  id="desenvWizard"
                            style="width: 200px;"
@@ -13,6 +13,44 @@
             <f:selectItem itemLabel="Ramon" itemValue="Ramon" />
             <f:selectItem itemLabel="Lucas" itemValue="Lucas" />
         </p:selectManyMenu>
-    </h:panelGrid>
+    </h:panelGrid>-->
+
+<h:form id="dsvForm">
+        <p:dataTable id="selectAtvs" 
+                     var="desenv" 
+                     value="#{desenvolvedorBean.listDesenv}" 
+                     paginator="true" 
+                     rows="10"  editable="true" 
+                     editMode="cell" 
+                     widgetVar="carsTable">  
+
+            <f:facet name="header">  
+                Selecionar Atividades
+            </f:facet>  
+
+            <p:column headerText="Desenvolvedor" style="width:25%">  
+                #{desenv.nmDsenv}  
+            </p:column>  
+
+            <p:column headerText="Experiência" style="width:25%">  
+                <p:cellEditor>  
+                    <f:facet name="output">
+                        <h:outputText value="#{desenv.expDesenv}  " />
+                    </f:facet>  
+                    <f:facet name="input">
+                        <p:inputText value="#{desenv.expDesenv}" label="Experiência"/>
+                    </f:facet>  
+                </p:cellEditor>  
+            </p:column>
+
+            <p:column headerText="Adicionar" style="width:25%; text-align: center;">  
+                <p:commandLink actionListener="#{indexBean.getDataAtv()}">
+                    <p:graphicImage value="/imagens/add.png" width="16px" height="16" />
+                </p:commandLink>
+            </p:column>
+
+        </p:dataTable>  
+
+    </h:form>
 
 </ui:component>

@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
         <link type="text/css" rel="stylesheet" href="css/default.css"/>
@@ -12,57 +13,28 @@
         <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
         <ui:include src="WEB-INF/comps/geral/menu.xhtml" />
         <div class="conteudo" >
-            <h:form>  
 
-                <p:growl id="growl" sticky="true" showDetail="true"/>  
+            <h1>Começando o processo de simulação!</h1>
+            <h2>Primeiro escolha o nome do projeto que deseja simular</h2>
 
-                <p:wizard flowListener="#{simulacaoBean.onFlowProcess}" style="width: 90%;">  
+            <p:selectOneMenu id="prj" 
+                             style="width: 200px;"
+                             value="#{projetoBean.projeto}" >
+                <f:selectItems value="#{projetoBean.projetos}" 
+                               var="projs"
+                               itemValue="#{projs.idProjeto}"
+                               itemLabel="#{projs.nmProjeto}"/>
+            </p:selectOneMenu>
 
-                    <p:tab id="projeto" title="Projeto">  
+            <p:commandButton value="Avançar" 
+                             actionListener="#{projetoBean.nextStep()}"
+                             process="@all"
+                             update="@all"
+                             oncomplete="editDlg.hide();"
+                             styleClass="ui-wizard-nav-next"
+                             icon="ui-wizard-nav-next"/>
 
-                        <p:panel header="Selecionar Projeto">  
-
-                            <h:messages errorClass="error"/>  
-
-                            <ui:include src="WEB-INF/comps/includes/selecionarProjeto.xhtml" />
-
-                        </p:panel>  
-                    </p:tab>  
-
-                    <p:tab id="atividade" title="Atividade">  
-
-                        <p:panel header="Selecionar Atividade">  
-
-                            <h:messages errorClass="error"/>  
-
-                            <ui:include src="WEB-INF/comps/includes/selecionarAtividade.xhtml" />
-
-                        </p:panel>  
-                    </p:tab>
-                    <p:tab id="desenvolvedo" title="Desenvolvedor"> 
-                        <p:panel header="Selecionar Desenvolvedor">
-                            <ui:include src="WEB-INF/comps/includes/selecionarDesenvolvedor.xhtml" />
-                        </p:panel>
-                    </p:tab>
-
-                    <p:tab id="equipe" title="Equipe"> 
-                        <p:panel header="Selecionar Equipe">
-                            <ui:include src="WEB-INF/comps/includes/selecionarEquipe.xhtml" />
-                        </p:panel>
-                    </p:tab>
-                </p:wizard>  
-            </h:form>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non urna sed nulla euismod pellentesque et sollicitudin enim. Donec condimentum posuere turpis, at elementum purus malesuada non. Mauris pulvinar lacus sem, at elementum augue sagittis a. Vestibulum non urna augue. Curabitur metus quam, adipiscing a ipsum et, feugiat malesuada lectus. Pellentesque mauris augue, scelerisque et tincidunt eu, interdum ut mi. Vivamus mauris eros, fermentum et orci sed, commodo vulputate magna. Quisque vitae aliquam risus, et sagittis magna. Ut eu lobortis eros. Fusce arcu lacus, euismod vel sagittis ac, tempor aliquam massa.
-
-            Suspendisse potenti. Nam at elit tempor, euismod dui non, pellentesque lorem. Aenean ac laoreet purus. In sodales nisl nunc, nec venenatis tortor facilisis vitae. Curabitur non arcu nisi. Vivamus non odio vel nibh ultrices pretium. Aenean fringilla nulla fringilla enim egestas, eu iaculis augue luctus. Nam rhoncus risus vel consequat vehicula. Curabitur diam risus, tempor nec nunc quis, ultricies faucibus tortor. Sed dolor diam, egestas vestibulum congue non, luctus quis leo. Curabitur ut nunc viverra, dignissim libero porta, ornare tortor. Proin eleifend arcu quis tortor ultricies ultricies.
-
-            Curabitur dignissim erat vel dolor congue blandit. Vestibulum lobortis non odio at condimentum. Morbi lobortis magna vitae placerat volutpat. Etiam suscipit, ipsum eget volutpat cursus, dolor eros bibendum metus, laoreet mollis augue quam id nibh. Phasellus et lacinia nisl. Etiam semper dui et metus molestie dictum. Ut suscipit et lorem non cursus. Curabitur fringilla porttitor ligula, vitae laoreet quam scelerisque et. Proin non sapien vitae ligula venenatis mollis in vitae urna. Vestibulum vel velit nec lorem hendrerit gravida sed eget nulla. Duis id sapien ante. Nam dictum quis neque a tristique.
-
-            Aliquam quis ornare ante, ac fermentum ipsum. Donec luctus lacus in arcu adipiscing, quis accumsan risus vestibulum. Donec non adipiscing tortor. Duis non gravida dolor. Donec vel tortor at felis mattis malesuada. Proin erat metus, rutrum in luctus sit amet, fermentum eget quam. Duis blandit lectus ut dolor condimentum accumsan. Fusce sit amet ultrices purus, in molestie lacus. Aliquam non sapien eleifend, posuere massa vitae, commodo nisi. Phasellus faucibus, est bibendum varius pretium, nunc ante ullamcorper enim, a porta arcu lorem ac dui.
-
-            In pretium dui neque, ac porta tortor sollicitudin a. Cras metus turpis, varius ut faucibus quis, vehicula sed urna. Suspendisse vel turpis faucibus, adipiscing magna non, venenatis nunc. Morbi aliquet lorem ac ligula tempor, in condimentum quam imperdiet. Nullam porttitor laoreet est ut bibendum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi metus tortor, facilisis eget justo sed, auctor blandit quam. Nulla facilisi. Integer tortor elit, interdum non tortor sollicitudin, volutpat tincidunt felis. Sed pellentesque metus sed faucibus fringilla. Mauris vel augue id arcu mollis placerat. Nullam faucibus, purus ut semper facilisis, mauris lorem tristique elit, eget ultrices nunc nisl ut est. In iaculis, lectus id fringilla dictum, lacus neque ornare lectus, at mollis nunc ligula in magna. Maecenas quis congue ante, eu vehicula tellus. Vivamus diam est, sollicitudin porttitor eros sed, blandit condimentum sem.
         </div>
-        <!--        <ui:include src="WEB-INF/comps/geral/rodape.xhtml" />-->
     </h:body>
 </html>
 

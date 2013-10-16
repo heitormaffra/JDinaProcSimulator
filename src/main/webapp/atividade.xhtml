@@ -13,71 +13,67 @@
 
         <ui:include src="WEB-INF/comps/geral/cabecalho.xhtml" />
         <ui:include src="WEB-INF/comps/geral/menu.xhtml" />
-        <p:layout id="layoutPrinc">
-            <p:layoutUnit position="center" styleClass="conteudo" id="layoutUnit">
-                <div>
-                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <h1 class="title ui-widget-header ui-corner-all">Cadastro de Atividades</h1>
-                    <h:form id="frmDesenv">
-                        <table style="padding-left: 5%;">
-                            <tr>
-                                <td>
-                                    <h:outputText value="Nome: "/>
-                                </td>
-                                <td>
-                                    <p:inputText value="#{atividade.nomeAtividade}"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h:outputText value="Duração: "/>
-                                </td>
-                                <td>
-                                    <p:inputText value="#{atividade.duracao}"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h:outputText value="Desenvolvedor Resp.: "/>
-                                </td>
-                                <td>
-                                    <p:selectOneMenu id="dese" 
-                                                     style="width: 200px;"
-                                                     value="#{atividade.idDesenvolvedor}" >
-                                        <f:selectItems value="#{desenvolvedorBean.listDesenv}" 
-                                                       var="desenv"
-                                                       itemValue="#{desenv.idDesenv}"
-                                                       itemLabel="#{desenv.nmDsenv}"/>
-                                    </p:selectOneMenu>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <h:outputText value="Projeto: "/>
-                                </td>
-                                <td>
-                                    <p:selectOneMenu id="prj" 
-                                                     style="width: 200px;"
-                                                     value="#{atividade.idProjeto}" >
-                                        <f:selectItems value="#{projetoBean.projetos}" 
-                                                       var="projs"
-                                                       itemValue="#{projs.idProjeto}"
-                                                       itemLabel="#{projs.nmProjeto}"/>
-                                    </p:selectOneMenu>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p:commandButton value="Salvar"
-                                                     actionListener="#{atividade.criarAtividade()}"/>
-                                </td>
-                            </tr>
-                        </table>
+        <h:form id="frmAtividades">
+            <p:dataTable var="desenv" 
+                         value="#{atividade.atividades}" 
+                         rowKey="#{desenv.nmAtivd}" 
+                         paginator="true"
+                         paginatorAlwaysVisible="false"
+                         paginatorPosition="bottom"
+                         rows="10"
+                         id="atividadesTable"
+                         style="padding-bottom: 10px; padding-top: 10px; width: 80%; padding-left: 10%;"
+                         emptyMessage="Não há nenhum desenvolvedor cadastrado.">
+                <p:column headerText="Nome" id="nomeAtv">  
+                    #{desenv.nmAtivd}
+                </p:column>
+                <p:column headerText="Duração" id="duracao">  
+                    #{desenv.duracaoAtivid}
+                </p:column>
+                <p:column headerText="Desenvolvedor" id="nmDesenv">  
+                    #{desenv.idDesenv.nmDsenv}
+                </p:column>
+                <p:column headerText="Adicionar" id="editar" style="text-align: center;">  
+                    <p:commandLink onclick="editDlg.show();">
+                        <p:graphicImage value="/imagens/add.png" width="16px" height="16" />
+                        <f:setPropertyActionListener value="#{desenv}" target="#{atividade.atividade}" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
 
-                    </h:form>
-                </div>
-            </p:layoutUnit>
-        </p:layout>
+        <h:form id="frmEdit">
+            <p:dialog widgetVar="editDlg"
+                      header = "Confirma inclusão"
+                      resizable="true"
+                      modal="false"> 
+                <h3>Deseja adicionar essa atividade?</h3>
+
+                <p:commandButton value="Sim" 
+                                 action="#{atividade.verifica()}"
+                                 process="@all"
+                                 update="@all"
+                                 oncomplete="editDlg.hide();"
+                                 styleClass="ui-confirmdialog-yes"
+                                 icon="ui-icon-check"/>
+                <p:commandButton value="Não" style="margin-right: 18px;"
+                                 onclick="editDlg.hide();"  
+                                 styleClass="ui-confirmdialog-no" 
+                                 icon="ui-icon-close"/>                
+            </p:dialog>
+
+            <h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+                <h:outputText value="Atividades: " />
+                <p:selectManyMenu  id="atividWizard"
+                                   style="width: 200px;"
+                                   value="#{atividade.ativdsSelecteds}">
+                    <f:selectItems value="#{atividade.ativdsSelecteds}"
+                                   var="atvsSelec"
+                                   itemLabel="#{atvsSelec.nmAtivd}"
+                                   itemValue="#{atvsSelec.idAtivd}"/>
+                </p:selectManyMenu>
+            </h:panelGrid>
+        </h:form>
     </h:body>
 </html>
 

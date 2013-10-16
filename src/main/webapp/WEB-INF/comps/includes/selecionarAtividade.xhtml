@@ -2,15 +2,5 @@
               xmlns:h="http://java.sun.com/jsf/html"
               xmlns:p="http://primefaces.org/ui"
               xmlns:f="http://java.sun.com/jsf/core">
-    <h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
-        <h:outputText value="Atividades: " />
-        <p:selectManyMenu  id="atividWizard"
-                           style="width: 200px;"
-                           value="#{indexBean.atividades}"
-                           showCheckbox="true">
-            <f:selectItem itemLabel="Desenvolver" itemValue="Desenvolver" />
-            <f:selectItem itemLabel="Projetar" itemValue="Projetar" />
-            <f:selectItem itemLabel="Quality Assurance" itemValue="Quality Assurance" />
-        </p:selectManyMenu>
-    </h:panelGrid>  
+    
 </ui:component>
