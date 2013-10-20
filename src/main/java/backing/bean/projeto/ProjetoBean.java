@@ -13,6 +13,7 @@ import br.cesjf.model.dao.ProjetoDao;
 import br.cesjf.model.entities.Atividade;
 import br.cesjf.model.entities.Desenvolvedor;
 import br.cesjf.model.entities.exceptions.PreexistingEntityException;
+import br.cesjf.view.ProjetoConverter;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,6 +36,7 @@ public class ProjetoBean {
      * Creates a new instance of ProjetoBean
      */
     public ProjetoBean() {
+        projetos = ProjetoConverter.prjetos;
     }
     private Projeto projeto;
     private List<Projeto> projetos;
@@ -77,8 +79,6 @@ public class ProjetoBean {
     }
 
     public List<Projeto> getProjetos() {
-        ProjetoDao projetoDao = new ProjetoDao();
-        projetos = projetoDao.findProjetoEntities();
         return projetos;
     }
 

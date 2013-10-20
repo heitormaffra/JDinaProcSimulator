@@ -49,7 +49,7 @@
                                 <h:outputText value="#{desenv.idDesenv.nmDsenv}" /> 
                             </p:column>
                             <p:column headerText="Atividade Prec." id="atvPrecedente">  
-                                #{desenv.atividadePrecedente}
+                                #{desenv.atividadePrecedente.nmAtivd}
                             </p:column>
                             <p:column headerText="Adicionar" id="adicionarAtv" style="text-align: center;">  
                                 <p:commandLink onclick="confAddAtv.show();">
@@ -75,8 +75,8 @@
 
                             <p:commandButton value="Sim" 
                                              action="#{atividade.verifica()}"
-                                             process="@all"
-                                             update="@all"
+                                             process="@this"
+                                             update="frmConfAddAtv"
                                              oncomplete="editDlg.hide();"
                                              styleClass="ui-confirmdialog-yes"
                                              icon="ui-icon-check"/>
@@ -91,6 +91,14 @@
                                      styleClass="grid" >
                             <h:outputText value="Atividades: " />
 
+                            <p:selectManyMenu value="#{atividade.atividadeSelecionada}" 
+                                              style="width:100%;">
+                                <f:selectItems value="#{atividade.ativdsSelecteds}"
+                                               var="dsv"
+                                               itemLabel="#{dsv.nmAtivd}"
+                                               itemValue="#{dsv.idAtivd}" />
+                            </p:selectManyMenu>
+
                         </h:panelGrid>
                     </h:form>
 
@@ -100,45 +108,36 @@
                                   resizable="true"
                                   modal="true"
                                   width="352px"
-                                  height="111px">  
-                            <table>
-                                <tr>
-                                    <td>
-                                        <h:outputText value="Desenvolvedor: "/>
-                                    </td>
-                                    <td>
-                                        <p:selectOneMenu value="#{atividade.desenv}" 
-                                                         style="width:100%">
-                                            <f:selectItems value="#{desenvolvedorBean.listDesenv}"
-                                                           var="dsv"
-                                                           itemLabel="#{dsv.nmDsenv}"
-                                                           itemValue="#{dsv.idDesenv}" />
-                                        </p:selectOneMenu>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h:outputText value="Ativ. Prece.: "/>
-                                    </td>
-                                    <td>
-                                        <p:selectManyMenu  id="edtAtvPrec"
-                                                           style="width: 200px;"
-                                                           value="#{atividade.atividadePredecessora}">
-                                            <f:selectItems value="#{atividade.atividades}"
-                                                           var="atvsSelec"
-                                                           itemLabel="#{atvsSelec.nmAtivd}"
-                                                           itemValue="#{atvsSelec.idAtivd}"/>
-                                        </p:selectManyMenu>
-                                    </td>
-                                </tr>
-                            </table>
+                                  height="111px">
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Desenvolvedor"/>
+                                <p:selectOneMenu id="dese" 
+                                                 style="width: 200px;"
+                                                 value="#{atividade.idDesenvolvedor}" >
+                                    <f:selectItems value="#{desenvolvedorBean.listDesenv}" 
+                                                   var="desenv"
+                                                   itemValue="#{desenv.idDesenv}"
+                                                   itemLabel="#{desenv.nmDsenv}"/>
+                                </p:selectOneMenu>
+                                
+                                <h:outputText value="Atividade"/>
+                                <p:selectOneMenu id="atvPrec" 
+                                                 style="width: 200px;"
+                                                 value="#{atividade.idAtivPrecedente}" >
+                                    <f:selectItems value="#{atividade.atividadesPredecessora}" 
+                                                   var="ativ"
+                                                   itemValue="#{ativ.idAtivd}"
+                                                   itemLabel="#{ativ.nmAtivd}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
                             <p:commandButton value="Salvar" 
-                                             action="#{atividade.editar()}"
+                                             actionListener="#{atividade.editar()}"
                                              process="@all"
-                                             update="frmAtividades"
-                                             oncomplete="editDlg.hide();"/>
-                            <p:commandButton value="Limpar" style="margin-right: 18px;"
-                                             type="reset"/>                
+                                             update="@(frmAtividades)"
+                                             oncomplete="editDlg.hide();" style="margin-right: 5px;"/>
+                            <p:commandButton value="Limpar" 
+                                             type="reset"/>
+
                         </p:dialog>
                     </h:form>
 

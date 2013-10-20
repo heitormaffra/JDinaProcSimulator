@@ -13,6 +13,7 @@ import backing.bean.TransferBean;
 import br.cesjf.model.dao.AtividadeDao;
 import br.cesjf.model.dao.DesenvolvedorDao;
 import br.cesjf.model.dao.ProjetoDao;
+import br.cesjf.view.AtividadeConverter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,10 @@ public class AtividadeBean {
 
     public AtividadeBean() {
         ativdsSelecteds = new ArrayList<Atividade>();
-        atividades = new ArrayList<Atividade>();
-        atividades.add(new Atividade(1, "Coding", 20.0, new Desenvolvedor(1, "Heitor")));
+        
+        atividades = AtividadeConverter.atividades;
+//        atividades = new ArrayList<Atividade>();
+//        atividades.add(new Atividade(1, "Coding", 20.0, new Desenvolvedor(1, "Heitor")));
     }
     private String nomeAtividade;
     private Double duracao;
@@ -48,7 +51,12 @@ public class AtividadeBean {
     private Atividade atividadePredecessora;
     private Atividade atividadeSelecionada;
     private List<Atividade> ativdsSelecteds;
+    private Integer idAtivPrecedente;
     TransferBean transfer;
+
+    public Integer getIdAtivPrecedente() {
+        return idAtivPrecedente;
+    }
 
     public List<Atividade> getAtivdsSelecteds() {
         return ativdsSelecteds;
@@ -109,8 +117,6 @@ public class AtividadeBean {
     }
 
     public List<Atividade> getAtividades() {
-        //AtividadeDao atividadeDao = new AtividadeDao();
-        //atividades = atividadeDao.findAtividadeEntities();
         return atividades;
     }
 
@@ -195,19 +201,15 @@ public class AtividadeBean {
      */
     public void criarAtividade() {
 
-        DesenvolvedorDao desenvDao = new DesenvolvedorDao();
-        desenv = desenvDao.findDesenvolvedor(idDesenvolvedor);
-
-
         Atividade atividad = new Atividade();
         atividad.setNmAtivd(nomeAtividade);
         atividad.setIdDesenv(desenv);
         atividad.setDuracaoAtivid(duracao);
-        atividad.setIdProjeto(null);
+        atividad.setIdProjeto(projeto);
         atividad.setAtividadePrecedente(atividadePredecessora);
 
         AtividadeDao ativdDao = new AtividadeDao();
-
+        
         boolean status = ativdDao.create(atividad);
         if (status == false) {
             FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao salvar registro."));
@@ -253,9 +255,6 @@ public class AtividadeBean {
     }
 
     public void editar() {
-        int i = atividades.indexOf(atividadeSelecionada);
-
-        atividades.get(i).setIdDesenv(desenv);
-        atividades.get(i).setAtividadePrecedente(atividadePredecessora);
+        System.out.println("teste");
     }
 }

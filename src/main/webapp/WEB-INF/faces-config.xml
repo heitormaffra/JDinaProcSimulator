@@ -17,6 +17,22 @@
             <to-view-id>/desenvolvedor.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    <converter>
+        <converter-id>atvPredc</converter-id>
+        <converter-class>br.cesjf.view.AtividadeConverter</converter-class>
+    </converter>
+    <converter>
+        <converter-id>desenv</converter-id>
+        <converter-class>br.cesjf.view.DesenvolvedorConverter</converter-class>
+    </converter>
+    <converter>
+        <converter-id>projeto</converter-id>
+        <converter-class>br.cesjf.view.ProjetoConverter</converter-class>
+    </converter>
+    <converter>
+        <converter-id>equipe</converter-id>
+        <converter-class>br.cesjf.view.EquipeConverter</converter-class>
+    </converter>
     <managed-bean>
         <description>Bean para ações de Projeto.</description>
         <managed-bean-name>projetoBean</managed-bean-name>
@@ -26,6 +42,22 @@
     <managed-bean>
         <managed-bean-name>desenvolvedorBean</managed-bean-name>
         <managed-bean-class>backing.bean.desenvolvedor.DesenvolvedorBean</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>indexBean</managed-bean-name>
+        <managed-bean-class>backing.bean.IndexBean</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>simulacaoBean</managed-bean-name>
+        <managed-bean-class>backing.bean.SimulacaoBean</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>atividade</managed-bean-name>
+        <managed-bean-class>backing.bean.atividade.AtividadeBean</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 </faces-config>

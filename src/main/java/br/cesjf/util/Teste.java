@@ -5,8 +5,12 @@
 package br.cesjf.util;
 
 import backing.bean.desenvolvedor.DesenvolvedorBean;
+import br.cesjf.model.dao.AtividadeDao;
 import br.cesjf.model.dao.DesenvolvedorDao;
+import br.cesjf.model.dao.ProjetoDao;
+import br.cesjf.model.entities.Atividade;
 import br.cesjf.model.entities.Desenvolvedor;
+import br.cesjf.model.entities.Projeto;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -25,16 +29,27 @@ public class Teste {
         String nomeDesenv = "Heitor";
         Double artefato = 1.0d;
 
-        Desenvolvedor desenvolvedor = new Desenvolvedor();
-        desenvolvedor.setNmDsenv(nomeDesenv);
-        desenvolvedor.setExpDesenv(artefato.floatValue());
-
         DesenvolvedorDao desenvDao = new DesenvolvedorDao();
-        try {
-            desenvDao.create(desenvolvedor);
+        Desenvolvedor desenv = desenvDao.findDesenvolvedor(10);
+        ProjetoDao projDao = new ProjetoDao();
+        Projeto projetoAtv = projDao.findProjeto(4);
+        
+        Atividade atividadePredecessora;
 
-        } catch (Exception ex) {
-            Logger.getLogger(DesenvolvedorBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        Atividade atividad = new Atividade();
+        atividad.setNmAtivd("qa");
+        atividad.setIdDesenv(desenv);
+        atividad.setDuracaoAtivid(20.0);
+        atividad.setIdProjeto(projetoAtv);
+        
+
+        AtividadeDao ativdDao = new AtividadeDao();
+        
+        atividadePredecessora = ativdDao.findAtividade(1);
+        
+        atividad.setAtividadePrecedente(atividadePredecessora);
+        
+        boolean status = ativdDao.create(atividad);
     }
 }
