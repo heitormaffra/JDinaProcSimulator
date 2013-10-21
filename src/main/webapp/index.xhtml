@@ -113,21 +113,21 @@
                                 <h:outputText value="Desenvolvedor"/>
                                 <p:selectOneMenu id="dese" 
                                                  style="width: 200px;"
-                                                 value="#{atividade.idDesenvolvedor}" >
+                                                 value="#{atividade.desenv}"
+                                                 converter="desenv">
                                     <f:selectItems value="#{desenvolvedorBean.listDesenv}" 
                                                    var="desenv"
-                                                   itemValue="#{desenv.idDesenv}"
+                                                   itemValue="#{desenv}"
                                                    itemLabel="#{desenv.nmDsenv}"/>
                                 </p:selectOneMenu>
-                                
+
                                 <h:outputText value="Atividade"/>
-                                <p:selectOneMenu id="atvPrec" 
-                                                 style="width: 200px;"
-                                                 value="#{atividade.idAtivPrecedente}" >
-                                    <f:selectItems value="#{atividade.atividadesPredecessora}" 
-                                                   var="ativ"
-                                                   itemValue="#{ativ.idAtivd}"
-                                                   itemLabel="#{ativ.nmAtivd}"/>
+                                <p:selectOneMenu value="#{atividade.atividadePredecessora}" effect="fade" converter="atvPredc">  
+                                    <f:selectItem itemLabel="Select One" itemValue="" />  
+                                    <f:selectItems value="#{atividade.atividades}" 
+                                                   var="atvPredc"
+                                                   itemValue="#{atvPredc}"
+                                                   itemLabel="#{atvPredc.nmAtivd}"/>
                                 </p:selectOneMenu>
                             </h:panelGrid>
                             <p:commandButton value="Salvar" 

@@ -29,6 +29,7 @@ import br.ufjf.mmc.jynacore.metamodel.MetaModelRelation;
 import br.ufjf.mmc.jynacore.metamodel.MetaModelScenario;
 import br.ufjf.mmc.jynacore.metamodel.MetaModelScenarioAffect;
 import br.ufjf.mmc.jynacore.metamodel.MetaModelScenarioConnection;
+import br.ufjf.mmc.jynacore.metamodel.exceptions.instance.MetaModelInstanceInvalidPropertyException;
 import br.ufjf.mmc.jynacore.metamodel.impl.DefaultMetaModel;
 import br.ufjf.mmc.jynacore.metamodel.impl.DefaultMetaModelClass;
 import br.ufjf.mmc.jynacore.metamodel.impl.DefaultMetaModelClassAuxiliary;
@@ -48,6 +49,7 @@ import br.ufjf.mmc.jynacore.metamodel.simulator.impl.DefaultMetaModelInstanceSim
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -60,8 +62,11 @@ import javax.faces.model.ListDataModel;
 import org.jfree.data.xy.XYSeries;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.FlowEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.LineChartSeries;
+import org.primefaces.model.mindmap.DefaultMindmapNode;
+import org.primefaces.model.mindmap.MindmapNode;
 
 /**
  *
@@ -83,10 +88,12 @@ public class IndexBean {
         atvsToAdd.add(new Atividade(4, "Projetar", 10d, new Desenvolvedor(4, "João")));
         atvsToAdd.add(new Atividade(5, "Homologar", 10d, new Desenvolvedor(5, "Diogo")));
 
-        
+
         ativdsSelecteds = new ArrayList<Atividade>();
-        
+
 //        ativSelecionada = new Atividade();
+
+
     }
     private static final Logger logger = Logger.getLogger(IndexBean.class.getName());
     private String nomeProjeto;
@@ -109,6 +116,34 @@ public class IndexBean {
     private Double duracaoAtividade;
     private Desenvolvedor desenvRespAtv;
     private Atividade ativSelecionada;
+    private MindmapNode root;
+    private MindmapNode selectedNode;
+    private MetaModelInstance instanceModel;
+    DefaultMetaModel domainModel;
+
+    public MetaModelInstance getInstanceModel() {
+        return instanceModel;
+    }
+
+    public void setInstanceModel(MetaModelInstance instanceModel) {
+        this.instanceModel = instanceModel;
+    }
+
+    public MindmapNode getSelectedNode() {
+        return selectedNode;
+    }
+
+    public void setSelectedNode(MindmapNode selectedNode) {
+        this.selectedNode = selectedNode;
+    }
+
+    public MindmapNode getRoot() {
+        return root;
+    }
+
+    public void setRoot(MindmapNode root) {
+        this.root = root;
+    }
 
     public Atividade getAtivSelecionada() {
         return ativSelecionada;
@@ -309,7 +344,8 @@ public class IndexBean {
             JynaSimulationMethod method = new DefaultMetaModelInstanceEulerMethod();
 
             // Modelo de Domínio
-            br.ufjf.mmc.jynacore.metamodel.MetaModel domainModel = new DefaultMetaModel();
+            domainModel = new DefaultMetaModel();
+
             domainModel.setName("Projeto de Software Simples");
 
             // Desenvolvedor Class
@@ -374,7 +410,7 @@ public class IndexBean {
             domainModel.put(precedence);
 
             // Modelo de Instância
-            MetaModelInstance instanceModel = new DefaultMetaModelInstance();
+            instanceModel = new DefaultMetaModelInstance();
             instanceModel.setMetaModel(domainModel);
             instanceModel.setName("Instância de Projeto com Cenários");
 
@@ -399,7 +435,7 @@ public class IndexBean {
             coding.setProperty("duração", 15.0);
             coding.setLink("Precedente", "Projeto");
             coding.setLink("Equipe", "D2");
-            
+
             profile.setTimeLimits(50, 50.0);
 
             // Modelo de Cenário
@@ -488,6 +524,20 @@ public class IndexBean {
                 columns.add(column);
             }
             generateChart(data);
+
+            root = new DefaultMindmapNode(instanceModel.getName(), domainModel.getName(), "FFCC00", false);
+
+            MindmapNode desenvol = new DefaultMindmapNode("Desenvolvedores", "Desenvolvedores", "6e9ebf", true);
+            MindmapNode atvds = new DefaultMindmapNode("Atividades", "Atividades", "6e9ebf", true);
+            MindmapNode equipe = new DefaultMindmapNode("Equipe", "Equipe", "6e9ebf", true);
+
+            root.addNode(desenvol);
+            root.addNode(atvds);
+            root.addNode(equipe);
+
+//            for (String c : instanceModel.getMetaModel().getScenarios().keySet()) {
+//                root.addNode(new DefaultMindmapNode(domainModel.getScenarios().get(c).getName(), domainModel.getScenarios().get(c).getName(), "82c542"));
+//            }
         } catch (Exception e) {
             System.err.println(e.getCause());
             e.printStackTrace();
@@ -560,15 +610,50 @@ public class IndexBean {
             return property;
         }
     }
-    
-    public void onCellEdit(CellEditEvent event) {  
-        Object oldValue = event.getOldValue();  
-        Object newValue = event.getNewValue();  
-          
-        if(newValue != null && !newValue.equals(oldValue)) {  
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);  
-            FacesContext.getCurrentInstance().addMessage(null, msg);  
-        }  
+
+    public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+
+        if (newValue != null && !newValue.equals(oldValue)) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
     }
-    
+
+    public void onNodeSelect(SelectEvent event) {
+        MindmapNode node = (MindmapNode) event.getObject();
+
+        //populate if not already loaded  
+        if (node.getChildren().isEmpty()) {
+            Object label = node.getLabel();
+
+            if (label.equals("Desenvolvedores")) {
+                for (String d : domainModel.keySet()) {
+                    for (String c : instanceModel.getClassInstances().keySet()) {
+                        if (d.equals("Desenvolvedor")) {
+                            node.addNode(new DefaultMindmapNode(instanceModel.getClassInstances().get(c).getName(), instanceModel.getClassInstances().get(c).getName(), "82c542"));
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            } else if (label.equals("IPs")) {
+                for (int i = 0; i < 18; i++) {
+                    node.addNode(new DefaultMindmapNode("1.1.1." + i, "IP Number: 1.1.1." + i, "fce24f"));
+                }
+
+            } else if (label.equals("Malware")) {
+                for (int i = 0; i < 18; i++) {
+                    String random = UUID.randomUUID().toString();
+                    node.addNode(new DefaultMindmapNode("Malware-" + random, "Malicious Software: " + random, "3399ff", false));
+                }
+            }
+        }
+
+    }
+
+    public void onNodeDblselect(SelectEvent event) {
+        this.selectedNode = (MindmapNode) event.getObject();
+    }
 }

@@ -9,19 +9,12 @@ import br.cesjf.model.entities.Desenvolvedor;
 import br.cesjf.model.entities.Projeto;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import backing.bean.TransferBean;
 import br.cesjf.model.dao.AtividadeDao;
-import br.cesjf.model.dao.DesenvolvedorDao;
-import br.cesjf.model.dao.ProjetoDao;
 import br.cesjf.view.AtividadeConverter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
 
 /**
  *
@@ -33,10 +26,7 @@ public class AtividadeBean {
 
     public AtividadeBean() {
         ativdsSelecteds = new ArrayList<Atividade>();
-        
         atividades = AtividadeConverter.atividades;
-//        atividades = new ArrayList<Atividade>();
-//        atividades.add(new Atividade(1, "Coding", 20.0, new Desenvolvedor(1, "Heitor")));
     }
     private String nomeAtividade;
     private Double duracao;
@@ -44,76 +34,41 @@ public class AtividadeBean {
     private Projeto projeto;
     private List<Atividade> atividades;
     private Integer idAtividade;
-    private Integer idDesenvolvedor;
-    private Integer idProjeto;
     private Atividade atividade;
-    private List<Atividade> atividadesPredecessora;
     private Atividade atividadePredecessora;
     private Atividade atividadeSelecionada;
     private List<Atividade> ativdsSelecteds;
-    private Integer idAtivPrecedente;
-    TransferBean transfer;
 
-    public Integer getIdAtivPrecedente() {
-        return idAtivPrecedente;
+    public String getNomeAtividade() {
+        return nomeAtividade;
     }
 
-    public List<Atividade> getAtivdsSelecteds() {
-        return ativdsSelecteds;
+    public void setNomeAtividade(String nomeAtividade) {
+        this.nomeAtividade = nomeAtividade;
     }
 
-    public void setAtivdsSelecteds(List<Atividade> AtivdsSelecteds) {
-        this.ativdsSelecteds = AtivdsSelecteds;
+    public Double getDuracao() {
+        return duracao;
     }
 
-    public Atividade getAtividadeSelecionada() {
-        return atividadeSelecionada;
+    public void setDuracao(Double duracao) {
+        this.duracao = duracao;
     }
 
-    public void setAtividadeSelecionada(Atividade atividadeSelecionada) {
-        this.atividadeSelecionada = atividadeSelecionada;
+    public Desenvolvedor getDesenv() {
+        return desenv;
     }
 
-    public Atividade getAtividadePredecessora() {
-        return atividadePredecessora;
+    public void setDesenv(Desenvolvedor desenv) {
+        this.desenv = desenv;
     }
 
-    public void setAtividadePredecessora(Atividade atividadePredecessora) {
-        this.atividadePredecessora = atividadePredecessora;
+    public Projeto getProjeto() {
+        return projeto;
     }
 
-    public List<Atividade> getAtividadesPredecessora() {
-        AtividadeDao atvDao = new AtividadeDao();
-        atividadesPredecessora = atvDao.findAtividadeEntities();
-        return atividadesPredecessora;
-    }
-
-    public void setAtividadesPredecessora(List<Atividade> atividadesPredecessora) {
-        this.atividadesPredecessora = atividadesPredecessora;
-    }
-
-    public Atividade getAtividade() {
-        return atividade;
-    }
-
-    public void setAtividade(Atividade atividade) {
-        this.atividade = atividade;
-    }
-
-    public Integer getIdProjeto() {
-        return idProjeto;
-    }
-
-    public void setIdProjeto(Integer idProjeto) {
-        this.idProjeto = idProjeto;
-    }
-
-    public Integer getIdDesenvolvedor() {
-        return idDesenvolvedor;
-    }
-
-    public void setIdDesenvolvedor(Integer idDesenvolvedor) {
-        this.idDesenvolvedor = idDesenvolvedor;
+    public void setProjeto(Projeto projeto) {
+        this.projeto = projeto;
     }
 
     public List<Atividade> getAtividades() {
@@ -132,73 +87,38 @@ public class AtividadeBean {
         this.idAtividade = idAtividade;
     }
 
-    /**
-     *
-     * @return
-     */
-    public String getNomeAtividade() {
-        return nomeAtividade;
+    public Atividade getAtividade() {
+        return atividade;
     }
 
-    /**
-     *
-     * @param nomeAtividade
-     */
-    public void setNomeAtividade(String nomeAtividade) {
-        this.nomeAtividade = nomeAtividade;
+    public void setAtividade(Atividade atividade) {
+        this.atividade = atividade;
     }
 
-    /**
-     *
-     * @return
-     */
-    public Double getDuracao() {
-        return duracao;
+    public Atividade getAtividadePredecessora() {
+        return atividadePredecessora;
     }
 
-    /**
-     *
-     * @param duracao
-     */
-    public void setDuracao(Double duracao) {
-        this.duracao = duracao;
+    public void setAtividadePredecessora(Atividade atividadePredecessora) {
+        this.atividadePredecessora = atividadePredecessora;
     }
 
-    /**
-     *
-     * @return
-     */
-    public Desenvolvedor getDesenv() {
-        return desenv;
+    public Atividade getAtividadeSelecionada() {
+        return atividadeSelecionada;
     }
 
-    /**
-     *
-     * @param desenv
-     */
-    public void setDesenv(Desenvolvedor desenv) {
-        this.desenv = desenv;
+    public void setAtividadeSelecionada(Atividade atividadeSelecionada) {
+        this.atividadeSelecionada = atividadeSelecionada;
     }
 
-    /**
-     *
-     * @return
-     */
-    public Projeto getProjeto() {
-        return projeto;
+    public List<Atividade> getAtivdsSelecteds() {
+        return ativdsSelecteds;
     }
 
-    /**
-     *
-     * @param projeto
-     */
-    public void setProjeto(Projeto projeto) {
-        this.projeto = projeto;
+    public void setAtivdsSelecteds(List<Atividade> ativdsSelecteds) {
+        this.ativdsSelecteds = ativdsSelecteds;
     }
 
-    /**
-     *
-     */
     public void criarAtividade() {
 
         Atividade atividad = new Atividade();
@@ -209,7 +129,7 @@ public class AtividadeBean {
         atividad.setAtividadePrecedente(atividadePredecessora);
 
         AtividadeDao ativdDao = new AtividadeDao();
-        
+
         boolean status = ativdDao.create(atividad);
         if (status == false) {
             FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao salvar registro."));
@@ -218,43 +138,8 @@ public class AtividadeBean {
         }
     }
 
-    public String findAtividadefindById(ValueChangeEvent event) {
-
-        Integer idAtividade = event != null ? (Integer) event.getNewValue() : null;
-        AtividadeDao atividadeDao = new AtividadeDao();
-        if (idAtividade != null) {
-            setAtividade(atividadeDao.findAtividade(idAtividade));
-        } else {
-            setAtividade(null);
-        }
-        return null;
-    }
-
     public void verifica() {
         getAtivdsSelecteds().add(atividade);
-    }
-
-    public void nextStep() {
-        transfer = new TransferBean();
-        transfer.setAtividades(getAtivdsSelecteds());
-        try {
-            FacesContext.getCurrentInstance().
-                    getExternalContext().
-                    redirect("equipe.xhtml");
-        } catch (IOException ex) {
-            Logger.getLogger(AtividadeBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public boolean renderedAtividadesSelec() {
-        if (getAtivdsSelecteds().isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public void editar() {
-        System.out.println("teste");
+        //getAtividades().remove(atividade);
     }
 }

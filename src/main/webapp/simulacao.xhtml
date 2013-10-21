@@ -4,7 +4,6 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <link type="text/css" rel="stylesheet" href="css/default.css"/>
@@ -69,9 +68,12 @@
                                  title="Gráfico da Simulação"
                                  style="height:300px; width: 90%; margin-top: 30px; margin-left: 5%"
                                  rendered="#{indexBean.linearModel != null}"/>
+
+                    <p:mindmap value="#{indexBean.root}" style="width:60%;height:400px;border:1px solid black;" rendered="#{indexBean.linearModel != null}">  
+                        <p:ajax event="select" listener="#{indexBean.onNodeSelect}" />  
+                    </p:mindmap>  
                 </h:form>
             </p:layoutUnit>
         </p:layout>
     </h:body>
 </html>
-
