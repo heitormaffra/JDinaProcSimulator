@@ -60,9 +60,9 @@ public class DesenvolvedorBean {
     }
 
     public List<Desenvolvedor> getListDesenv() {
-        listDesenv = new ArrayList<Desenvolvedor>();
-        DesenvolvedorDao desvDao = new DesenvolvedorDao();
-        listDesenv = desvDao.findDesenvolvedorEntities();
+//        listDesenv = new ArrayList<Desenvolvedor>();
+//        DesenvolvedorDao desvDao = new DesenvolvedorDao();
+//        listDesenv = desvDao.findDesenvolvedorEntities();
         return listDesenv;
     }
 

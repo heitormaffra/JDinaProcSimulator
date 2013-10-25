@@ -18,11 +18,11 @@ public class DesenvolvedorConverter implements Converter {
 
     public static List<Desenvolvedor> desenvolvedores;
 
-    static {
-        desenvolvedores = new ArrayList<Desenvolvedor>();
-        DesenvolvedorDao atvdDao = new DesenvolvedorDao();
-        desenvolvedores = atvdDao.findDesenvolvedorEntities();
-    }
+//    static {
+//        desenvolvedores = new ArrayList<Desenvolvedor>();
+//        DesenvolvedorDao atvdDao = new DesenvolvedorDao();
+//        desenvolvedores = atvdDao.findDesenvolvedorEntities();
+//    }
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {

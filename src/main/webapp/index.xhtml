@@ -27,7 +27,7 @@
 
                 <p:tab title="Atividades">  
                     <h:form id="frmAtividades">
-                        <p:dataTable var="desenv" 
+                        <p:dataTable var="atvd" 
                                      value="#{atividade.atividades}" 
                                      rowKey="#{desenv.nmAtivd}" 
                                      paginator="true"
@@ -36,17 +36,17 @@
                                      rows="10"
                                      id="atividadesTable"
                                      style="padding-bottom: 10px; padding-top: 10px; width: 80%; padding-left: 10%;"
-                                     emptyMessage="Não há nenhum desenvolvedor cadastrado."
+                                     emptyMessage="Não há nenhuma atividade cadastrada."
                                      editable="true" 
                                      editMode="cell">
                             <p:column headerText="Nome" id="nomeAtv">  
-                                #{desenv.nmAtivd}
+                                #{atvd.nmAtivd}
                             </p:column>
                             <p:column headerText="Duração" id="duracao">  
-                                #{desenv.duracaoAtivid}
+                                #{atvd.duracaoAtivid}
                             </p:column>
                             <p:column headerText="Desenvolvedor" id="nmDesenv"> 
-                                <h:outputText value="#{desenv.idDesenv.nmDsenv}" /> 
+                                <h:outputText value="#{atvd.idDesenv.nmDsenv}" /> 
                             </p:column>
                             <p:column headerText="Atividade Prec." id="atvPrecedente">  
                                 #{desenv.atividadePrecedente.nmAtivd}
@@ -54,13 +54,13 @@
                             <p:column headerText="Adicionar" id="adicionarAtv" style="text-align: center;">  
                                 <p:commandLink onclick="confAddAtv.show();">
                                     <p:graphicImage value="/imagens/add.png" width="16px" height="16" />
-                                    <f:setPropertyActionListener value="#{desenv}" target="#{atividade.atividade}" />
+                                    <f:setPropertyActionListener value="#{atvd}" target="#{indexBean.ativSelecionada}" />
                                 </p:commandLink>
                             </p:column>
                             <p:column headerText="Editar" id="editarAtv" style="text-align: center;">  
                                 <p:commandLink onclick="editDlg.show();">
                                     <p:graphicImage value="/imagens/edit.png" width="16px" height="16" />
-                                    <f:setPropertyActionListener value="#{desenv}" target="#{atividade.atividadeSelecionada}" />
+                                    <f:setPropertyActionListener value="#{atvd}" target="#{indexBean.ativSelecionada}" />
                                 </p:commandLink>
                             </p:column>
                         </p:dataTable>
@@ -74,7 +74,7 @@
                             <h3>Deseja adicionar essa atividade?</h3>
 
                             <p:commandButton value="Sim" 
-                                             action="#{atividade.verifica()}"
+                                             action="#{indexBean.adicionarAtividade()}"
                                              process="@this"
                                              update="frmConfAddAtv"
                                              oncomplete="editDlg.hide();"
@@ -91,13 +91,39 @@
                                      styleClass="grid" >
                             <h:outputText value="Atividades: " />
 
-                            <p:selectManyMenu value="#{atividade.atividadeSelecionada}" 
+                            <p:dataTable var="ativd" 
+                                         value="#{indexBean.atividades}" 
+                                         rowKey="#{ativd.nmAtivd}" 
+                                         paginator="true"
+                                         paginatorAlwaysVisible="false"
+                                         paginatorPosition="bottom"
+                                         rows="10"
+                                         id="atividadesTable"
+                                         style="padding-bottom: 10px; padding-top: 10px; width: 80%; padding-left: 10%;"
+                                         emptyMessage="Não há nenhuma atividade cadastrada."
+                                         editable="true" 
+                                         editMode="cell">
+                                <p:column headerText="Nome" id="nomeAtv">  
+                                    #{ativd.nmAtivd}
+                                </p:column>
+                                <p:column headerText="Duração" id="duracao">  
+                                    #{ativd.duracaoAtivid}
+                                </p:column>
+                                <p:column headerText="Desenvolvedor" id="nmDesenv"> 
+                                    <h:outputText value="#{ativd.idDesenv.nmDsenv}" /> 
+                                </p:column>
+                                <p:column headerText="Atividade Prec." id="atvPrecedente">  
+                                    #{ativd.atividadePrecedente.nmAtivd}
+                                </p:column>
+                            </p:dataTable>
+
+<!--                            <p:selectManyMenu value="#{atividade.atividadeSelecionada}" 
                                               style="width:100%;">
                                 <f:selectItems value="#{atividade.ativdsSelecteds}"
                                                var="dsv"
                                                itemLabel="#{dsv.nmAtivd}"
                                                itemValue="#{dsv.idAtivd}" />
-                            </p:selectManyMenu>
+                            </p:selectManyMenu>-->
 
                         </h:panelGrid>
                     </h:form>
@@ -139,23 +165,19 @@
                                              type="reset"/>
 
                         </p:dialog>
+                        
+                        <p:commandButton actionListener="#{indexBean.realizaSimulacao()}" 
+                                         process="@all" 
+                                         update="@this"
+                                         value="Simular"/>
+                        
+                        <p:lineChart id="linear" value="#{indexBean.linearModel}"
+                                 legendPosition="e"  
+                                 title="Gráfico da Simulação"
+                                 style="height:300px; width: 90%; margin-top: 30px; margin-left: 5%"
+                                 rendered="#{indexBean.linearModel != null}"/>
                     </h:form>
 
-                </p:tab>  
-                <p:tab title="Godfather Part II">  
-                    <h:panelGrid columns="2" cellpadding="10">  
-                        <p:graphicImage value="/images/godfather/godfather2.jpg" />  
-                        <h:outputText value="Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather, parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream.   
-                                      In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy,   
-                                      killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows."></h:outputText>  
-                    </h:panelGrid>
-                </p:tab>  
-                <p:tab title="Godfather Part III">  
-                    <h:panelGrid columns="2" cellpadding="10">  
-                        <p:graphicImage value="/images/godfather/godfather3.jpg" />  
-                        <h:outputText value="After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family.   
-                                      Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate."></h:outputText>  
-                    </h:panelGrid>  
                 </p:tab>  
 
             </p:tabView> 

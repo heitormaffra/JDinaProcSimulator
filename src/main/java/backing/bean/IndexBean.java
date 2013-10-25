@@ -29,7 +29,6 @@ import br.ufjf.mmc.jynacore.metamodel.MetaModelRelation;
 import br.ufjf.mmc.jynacore.metamodel.MetaModelScenario;
 import br.ufjf.mmc.jynacore.metamodel.MetaModelScenarioAffect;
 import br.ufjf.mmc.jynacore.metamodel.MetaModelScenarioConnection;
-import br.ufjf.mmc.jynacore.metamodel.exceptions.instance.MetaModelInstanceInvalidPropertyException;
 import br.ufjf.mmc.jynacore.metamodel.impl.DefaultMetaModel;
 import br.ufjf.mmc.jynacore.metamodel.impl.DefaultMetaModelClass;
 import br.ufjf.mmc.jynacore.metamodel.impl.DefaultMetaModelClassAuxiliary;
@@ -53,8 +52,6 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
@@ -75,27 +72,12 @@ import org.primefaces.model.mindmap.MindmapNode;
 public class IndexBean {
 
     public IndexBean() {
-        desenvolvedores = new ArrayList<MetaModel>();
-        data = new DefaultSimulationData();
-
-
-        atvsToAdd = new ArrayList<Atividade>();
-        atvsToAdd.add(new Atividade(1, "Codificar", 10d, new Desenvolvedor(1, "Heitor")));
-        atvsToAdd.add(new Atividade(2, "QA", 10d, new Desenvolvedor(2, "Ramon")));
-        atvsToAdd.add(new Atividade(3, "Arquitetar", 10d, new Desenvolvedor(3, "Lucas")));
-        atvsToAdd.add(new Atividade(4, "Projetar", 10d, new Desenvolvedor(4, "João")));
-        atvsToAdd.add(new Atividade(5, "Homologar", 10d, new Desenvolvedor(5, "Diogo")));
-
-
-        ativdsSelecteds = new ArrayList<Atividade>();
-
-//        ativSelecionada = new Atividade();
-
-
+        atividades = new ArrayList<Atividade>();
+        
     }
     private static final Logger logger = Logger.getLogger(IndexBean.class.getName());
     private String nomeProjeto;
-    private List<String> atividades;
+    private List<Atividade> atividades;
     private List<MetaModel> desenvolvedores;
     private DataModel desenvModel;
     private String nomeDesenv;
@@ -107,8 +89,6 @@ public class IndexBean {
     private List<String> tempValues;
     private Double expDes1;
     private Double expDes2;
-    private List<Atividade> ativdsSelecteds;
-    private List<Atividade> atvsToAdd;
     private DataModel rowsData;
     private String nomeAtividade;
     private Double duracaoAtividade;
@@ -182,27 +162,7 @@ public class IndexBean {
     public void setRowsData(DataModel rowsData) {
         this.rowsData = rowsData;
     }
-
-    public List<Atividade> getAtvsToAdd() {
-        return atvsToAdd;
-    }
-
-    public void setAtvsToAdd(List<Atividade> atvsToAdd) {
-        this.atvsToAdd = atvsToAdd;
-    }
-
-    public List<Atividade> getAtivdsSelecteds() {
-        return ativdsSelecteds;
-    }
-
-    public void setAtivdsSelecteds(List<Atividade> ativdsSelecteds) {
-        this.ativdsSelecteds = ativdsSelecteds;
-    }
-
-    public void verifica() {
-        getAtivdsSelecteds().add(ativSelecionada);
-    }
-
+    
     public Double getExpDes1() {
         return expDes1;
     }
@@ -283,11 +243,11 @@ public class IndexBean {
         this.desenvolvedores = desenvolvedores;
     }
 
-    public List<String> getAtividades() {
+    public List<Atividade> getAtividades() {
         return atividades;
     }
 
-    public void setAtividades(List<String> atividades) {
+    public void setAtividades(List<Atividade> atividades) {
         this.atividades = atividades;
     }
 
@@ -411,28 +371,48 @@ public class IndexBean {
             instanceModel = new DefaultMetaModelInstance();
             instanceModel.setMetaModel(domainModel);
             instanceModel.setName("Instância de Projeto com Cenários");
+            
+            for(Atividade atv : atividades){
+                instanceModel.addNewClassInstance(atv.getNmAtivd(), "Atividade");
+            }
+            
+            for(Atividade atv : atividades){
+                instanceModel.addNewClassInstance(atv.getIdDesenv().getNmDsenv(), "Desenvolvedor");
+            }
+            
+            for(Atividade atv : atividades){
+                instanceModel.getClassInstances().get(atv.getIdDesenv().getNmDsenv()).setProperty(
+                    "experiência", atv.getIdDesenv().getExpDesenv().doubleValue());
+            }
 
-            instanceModel.addNewClassInstance("D1", "Desenvolvedor");
-            instanceModel.addNewClassInstance("D2", "Desenvolvedor");
+//            instanceModel.addNewClassInstance("D1", "Desenvolvedor");
+//            instanceModel.addNewClassInstance("D2", "Desenvolvedor");
+//
+//            instanceModel.getClassInstances().get("D1").setProperty(
+//                    "experiência", expDes1);
+//            instanceModel.getClassInstances().get("D2").setProperty(
+//                    "experiência", expDes2);
+//
+//            instanceModel.addNewClassInstance("Projeto", "Atividade");
+//            instanceModel.addNewClassInstance("Codificação", "Atividade");
+            List<ClassInstance> atvds = new ArrayList<ClassInstance>();
+            for(Atividade atv : atividades){
+                ClassInstance atvdInstance = instanceModel.getClassInstances().get(atv.getNmAtivd());
+                atvdInstance.setProperty("duração", atv.getDuracaoAtivid());
+                atvdInstance.setLink("Equipe", atv.getIdDesenv().getNmDsenv());
+                atvds.add(atvdInstance);
+            }
 
-            instanceModel.getClassInstances().get("D1").setProperty(
-                    "experiência", expDes1);
-            instanceModel.getClassInstances().get("D2").setProperty(
-                    "experiência", expDes2);
-
-            instanceModel.addNewClassInstance("Projeto", "Atividade");
-            instanceModel.addNewClassInstance("Codificação", "Atividade");
-
-            ClassInstance design = instanceModel.getClassInstances().get(
-                    "Projeto");
-            design.setProperty("duração", 20.0);
-            design.setLink("Equipe", "D1");
-
-            ClassInstance coding = instanceModel.getClassInstances().get(
-                    "Codificação");
-            coding.setProperty("duração", 15.0);
-            coding.setLink("Precedente", "Projeto");
-            coding.setLink("Equipe", "D2");
+//            ClassInstance design = instanceModel.getClassInstances().get(
+//                    "Projeto");
+//            design.setProperty("duração", 20.0);
+//            design.setLink("Equipe", "D1");
+//
+//            ClassInstance coding = instanceModel.getClassInstances().get(
+//                    "Codificação");
+//            coding.setProperty("duração", 15.0);
+//            coding.setLink("Precedente", "Projeto");
+//            coding.setLink("Equipe", "D2");
 
             profile.setTimeLimits(50, 50.0);
 
@@ -452,10 +432,15 @@ public class IndexBean {
 
             sceActTeam.put(connProdByTeam);
             domainModel.putScenario(sceActTeam);
-            coding.setScenarioConnection("Produção Baseada na Equipe",
+            
+            for(ClassInstance c : atvds){
+                c.setScenarioConnection("Produção Baseada na Equipe",
                     "AAtividade");
-            design.setScenarioConnection("Produção Baseada na Equipe",
-                    "AAtividade");
+            }
+//            coding.setScenarioConnection("Produção Baseada na Equipe",
+//                    "AAtividade");
+//            design.setScenarioConnection("Produção Baseada na Equipe",
+//                    "AAtividade");
 
 
 
@@ -483,10 +468,15 @@ public class IndexBean {
 
             sceActPreced.put(connTaskPred);
             domainModel.putScenario(sceActPreced);
-            coding.setScenarioConnection("Precedência de Atividades",
+            
+            for(ClassInstance c : atvds){
+                c.setScenarioConnection("Precedência de Atividades",
                     "AAtividade");
-            design.setScenarioConnection("Precedência de Atividades",
-                    "AAtividade");
+            }
+//            coding.setScenarioConnection("Precedência de Atividades",
+//                    "AAtividade");
+//            design.setScenarioConnection("Precedência de Atividades",
+//                    "AAtividade");
 
 
 
@@ -526,11 +516,11 @@ public class IndexBean {
             root = new DefaultMindmapNode(instanceModel.getName(), domainModel.getName(), "FFCC00", false);
 
             MindmapNode desenvol = new DefaultMindmapNode("Desenvolvedores", "Desenvolvedores", "6e9ebf", true);
-            MindmapNode atvds = new DefaultMindmapNode("Atividades", "Atividades", "6e9ebf", true);
+//            MindmapNode atvds = new DefaultMindmapNode("Atividades", "Atividades", "6e9ebf", true);
             MindmapNode equipe = new DefaultMindmapNode("Equipe", "Equipe", "6e9ebf", true);
 
             root.addNode(desenvol);
-            root.addNode(atvds);
+//            root.addNode(atvds);
             root.addNode(equipe);
 
 //            for (String c : instanceModel.getMetaModel().getScenarios().keySet()) {
@@ -653,5 +643,9 @@ public class IndexBean {
 
     public void onNodeDblselect(SelectEvent event) {
         this.selectedNode = (MindmapNode) event.getObject();
+    }
+    
+    public void adicionarAtividade(){
+        getAtividades().add(ativSelecionada);
     }
 }

@@ -17,10 +17,10 @@ public class ProjetoConverter implements Converter {
 
     public static List<Projeto> prjetos;
 
-    static {
-        ProjetoDao atvdDao = new ProjetoDao();
-        prjetos = atvdDao.findProjetoEntities();
-    }
+//    static {
+//        ProjetoDao atvdDao = new ProjetoDao();
+//        prjetos = atvdDao.findProjetoEntities();
+//    }
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {

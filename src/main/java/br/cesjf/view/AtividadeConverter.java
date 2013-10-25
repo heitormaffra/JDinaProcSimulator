@@ -23,10 +23,10 @@ public class AtividadeConverter implements Converter {
     }
     public static List<Atividade> atividades;
 
-    static {
-        AtividadeDao atvdDao = new AtividadeDao();
-        atividades = atvdDao.findAtividadeEntities();
-    }
+//    static {
+//        AtividadeDao atvdDao = new AtividadeDao();
+//        atividades = atvdDao.findAtividadeEntities();
+//    }
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
