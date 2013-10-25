@@ -20,8 +20,6 @@ import javax.faces.bean.SessionScoped;
  *
  * @author heitormaffra
  */
-@SessionScoped
-@ManagedBean(name = "transferBean")
 public class TransferBean implements Serializable {
     private List<Atividade> atividades;
     private Projeto projeto;

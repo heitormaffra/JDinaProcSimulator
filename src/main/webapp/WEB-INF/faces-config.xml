@@ -42,7 +42,7 @@
     <managed-bean>
         <managed-bean-name>desenvolvedorBean</managed-bean-name>
         <managed-bean-class>backing.bean.desenvolvedor.DesenvolvedorBean</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     
     <managed-bean>

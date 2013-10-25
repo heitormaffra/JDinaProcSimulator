@@ -28,8 +28,6 @@ import javax.faces.event.ValueChangeEvent;
  *
  * @author heitormaffra
  */
-@ViewScoped
-@ManagedBean(name = "projetoBean")
 public class ProjetoBean {
 
     /**

@@ -23,15 +23,11 @@ import javax.faces.model.ListDataModel;
  *
  * @author heitormaffra
  */
-@ViewScoped
-@ManagedBean(name = "desenvolvedorBean")
 public class DesenvolvedorBean {
 
     public DesenvolvedorBean() {
-        
-        listDesenv = DesenvolvedorConverter.desenvolvedores;
+//        listDesenv = DesenvolvedorConverter.desenvolvedores;
     }
-    
     private String nomeDesenv;
     private Double artefato;
     private List<Desenvolvedor> listDesenv;
@@ -64,6 +60,9 @@ public class DesenvolvedorBean {
     }
 
     public List<Desenvolvedor> getListDesenv() {
+        listDesenv = new ArrayList<Desenvolvedor>();
+        DesenvolvedorDao desvDao = new DesenvolvedorDao();
+        listDesenv = desvDao.findDesenvolvedorEntities();
         return listDesenv;
     }
 
@@ -114,7 +113,9 @@ public class DesenvolvedorBean {
             FacesContext.getCurrentInstance().addMessage("sucesso", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + desenvSelcionado.getNmDsenv() + " deletado com sucesso!"));
         } catch (NonexistentEntityException ex) {
             FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao deletar registro." + ex.getMessage()));
-            Logger.getLogger(DesenvolvedorBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger
+                    .getLogger(DesenvolvedorBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -130,7 +131,15 @@ public class DesenvolvedorBean {
             FacesContext.getCurrentInstance().addMessage("sucesso", new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Desenvolvedor " + desenvSelcionado.getNmDsenv() + " editado com sucesso!"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage("erro", new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Erro ao editar registro." + ex.getMessage()));
-            Logger.getLogger(DesenvolvedorBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger
+                    .getLogger(DesenvolvedorBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public List<Desenvolvedor> preencheDesenvDataGrid() {
+        List<Desenvolvedor> listDt = new ArrayList<Desenvolvedor>();
+        listDt.addAll(DesenvolvedorConverter.desenvolvedores);
+        return listDt;
     }
 }

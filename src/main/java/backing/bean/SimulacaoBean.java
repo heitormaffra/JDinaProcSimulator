@@ -59,8 +59,6 @@ import org.primefaces.model.chart.CartesianChartModel;
  *
  * @author heitormaffra
  */
-@ManagedBean(name = "simulacaoBean")
-@ViewScoped
 public class SimulacaoBean {
 
     private static final Logger logger = Logger.getLogger(IndexBean.class.getName());

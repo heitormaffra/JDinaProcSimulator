@@ -271,7 +271,7 @@ img.right {
     padding-bottom: 100px !important;
     border-top-left-radius: 15px !important;
     border-top-right-radius: 15px !important;
-    
+
     background: #FFF !important;
     border: 1px solid #CCC !important;
     box-shadow: 10px 10px 5px rgb(50, 50, 50) !important;
@@ -291,3 +291,22 @@ html{
 .message {
     width: 90%;
 }
+
+.cadastrar, nav a {
+    background-color: #99cccc;
+    border: none;
+    border-radius: 0.5em;
+    box-shadow: inset 0 -0.1em 0 #bd4125;
+    color: #f3f2ee;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.5em;
+    margin: 0 0.5em 0 0;
+    outline: none;
+    padding: 0.2em 1em;
+    text-decoration: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none; }

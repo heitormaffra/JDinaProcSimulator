@@ -85,7 +85,9 @@
                             <tr>
                                 <td>
                                     <p:commandButton value="Salvar"
-                                                     action="#{atividade.criarAtividade()}"/>
+                                                     actionListener="#{atividade.criarAtividade()}"
+                                                     process="@all"
+                                                     update="@all"/>
                                 </td>
                             </tr>
                         </table>

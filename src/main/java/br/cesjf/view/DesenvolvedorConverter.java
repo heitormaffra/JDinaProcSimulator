@@ -2,6 +2,7 @@ package br.cesjf.view;
 
 import br.cesjf.model.dao.DesenvolvedorDao;
 import br.cesjf.model.entities.Desenvolvedor;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -18,6 +19,7 @@ public class DesenvolvedorConverter implements Converter {
     public static List<Desenvolvedor> desenvolvedores;
 
     static {
+        desenvolvedores = new ArrayList<Desenvolvedor>();
         DesenvolvedorDao atvdDao = new DesenvolvedorDao();
         desenvolvedores = atvdDao.findDesenvolvedorEntities();
     }

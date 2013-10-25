@@ -72,8 +72,6 @@ import org.primefaces.model.mindmap.MindmapNode;
  *
  * @author heitor.filho
  */
-@ViewScoped
-@ManagedBean(name = "indexBean")
 public class IndexBean {
 
     public IndexBean() {

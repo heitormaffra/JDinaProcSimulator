@@ -14,19 +14,18 @@ import br.cesjf.view.AtividadeConverter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
 /**
  *
  * @author heitormaffra
  */
-@ViewScoped
-@ManagedBean(name = "atividade")
 public class AtividadeBean {
 
     public AtividadeBean() {
         ativdsSelecteds = new ArrayList<Atividade>();
-        atividades = AtividadeConverter.atividades;
+//        atividades = AtividadeConverter.atividades;
     }
     private String nomeAtividade;
     private Double duracao;
@@ -72,6 +71,9 @@ public class AtividadeBean {
     }
 
     public List<Atividade> getAtividades() {
+        atividades = new ArrayList<Atividade>();
+        AtividadeDao atvdDao = new AtividadeDao();
+        atividades = atvdDao.findAtividadeEntities();
         return atividades;
     }
 
