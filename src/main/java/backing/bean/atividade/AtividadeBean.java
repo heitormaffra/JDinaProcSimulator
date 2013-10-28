@@ -25,6 +25,13 @@ public class AtividadeBean {
 
     public AtividadeBean() {
         ativdsSelecteds = new ArrayList<Atividade>();
+        atividades = new ArrayList<Atividade>();
+        atividades.add(new Atividade(1, "Coding", 50d, new Desenvolvedor(1, "Heitor", 1.5f)));
+        atividades.add(new Atividade(2, "QA", 50d, new Desenvolvedor(1, "Lucas", 1.5f)));
+        atividades.add(new Atividade(3, "Homolog", 50d, new Desenvolvedor(1, "Thiago", 1.5f)));
+        atividades.get(1).setAtividadePrecedente(atividades.get(0));
+        atividades.get(2).setAtividadePrecedente(atividades.get(1));
+        
 //        atividades = AtividadeConverter.atividades;
     }
     private String nomeAtividade;
@@ -71,9 +78,9 @@ public class AtividadeBean {
     }
 
     public List<Atividade> getAtividades() {
-        atividades = new ArrayList<Atividade>();
-        AtividadeDao atvdDao = new AtividadeDao();
-        atividades = atvdDao.findAtividadeEntities();
+//        atividades = new ArrayList<Atividade>();
+//        AtividadeDao atvdDao = new AtividadeDao();
+//        atividades = atvdDao.findAtividadeEntities();
         return atividades;
     }
 

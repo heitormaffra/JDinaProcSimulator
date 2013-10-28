@@ -64,6 +64,12 @@ public class Desenvolvedor implements Serializable {
         this.idDesenv = idDesenv;
         this.nmDsenv = nmDsenv;
     }
+    
+    public Desenvolvedor(Integer idDesenv, String nmDsenv, Float expDesenv) {
+        this.idDesenv = idDesenv;
+        this.nmDsenv = nmDsenv;
+        this.expDesenv = expDesenv;
+    }
 
     public Integer getIdDesenv() {
         return idDesenv;

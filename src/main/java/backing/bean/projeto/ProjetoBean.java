@@ -34,7 +34,7 @@ public class ProjetoBean {
      * Creates a new instance of ProjetoBean
      */
     public ProjetoBean() {
-        projetos = ProjetoConverter.prjetos;
+//        projetos = ProjetoConverter.prjetos;
     }
     private Projeto projeto;
     private List<Projeto> projetos;
@@ -86,8 +86,8 @@ public class ProjetoBean {
 
     public List<Projeto> preencheProjetos() {
 
-        ProjetoDao projetoDao = new ProjetoDao();
-        projetos = projetoDao.findProjetoEntities();
+//        ProjetoDao projetoDao = new ProjetoDao();
+//        projetos = projetoDao.findProjetoEntities();
         return projetos;
     }
 
