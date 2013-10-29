@@ -21,7 +21,15 @@
                         <h3>Primeiro selecione o projeto desejado</h3>
 
                         <h:outputText value="Projeto"/>
-                        <p:inputText value="#{projetoBean.nomeProjeto}"/>
+                        <p:selectOneMenu id="prj" 
+                                         style="width: 200px;"
+                                         value="#{atividade.projeto}"
+                                         converter="projeto">
+                            <f:selectItems value="#{projetoBean.projetos}" 
+                                           var="projs"
+                                           itemValue="#{projs}"
+                                           itemLabel="#{projs.nmProjeto}"/>
+                        </p:selectOneMenu>
                     </h:form>
                 </p:tab>
 
@@ -49,7 +57,7 @@
                                 <h:outputText value="#{atvd.idDesenv.nmDsenv}" /> 
                             </p:column>
                             <p:column headerText="Atividade Prec." id="atvPrecedente">  
-                                #{desenv.atividadePrecedente.nmAtivd}
+                                #{atvd.atividadePrecedente.nmAtivd}
                             </p:column>
                             <p:column headerText="Adicionar" id="adicionarAtv" style="text-align: center;">  
                                 <p:commandLink onclick="confAddAtv.show();">
@@ -165,22 +173,25 @@
                                              type="reset"/>
 
                         </p:dialog>
-                        
-                        <p:commandButton actionListener="#{indexBean.realizaSimulacao()}" 
-                                         process="@all" 
-                                         update="@this"
-                                         value="Simular"/>
-                        
-                        <p:lineChart id="linear" value="#{indexBean.linearModel}"
-                                 legendPosition="e"  
-                                 title="Gráfico da Simulação"
-                                 style="height:300px; width: 90%; margin-top: 30px; margin-left: 5%"
-                                 rendered="#{indexBean.linearModel != null}"/>
                     </h:form>
 
                 </p:tab>  
 
             </p:tabView> 
+            <h:form id="realizaSimu">
+
+
+                <p:lineChart id="linear" value="#{indexBean.linearModel}"
+                             legendPosition="ne"  
+                             title="Gráfico da Simulação"
+                             style="height:300px; width: 90%; margin-top: 30px; margin-left: 5%"
+                             rendered="#{indexBean.linearModel != null}"/>
+
+                <p:commandButton actionListener="#{indexBean.realizaSimulacao()}" 
+                                 process="@all" 
+                                 update="@all"
+                                 value="Simular"/>
+            </h:form>
 
         </div>
     </h:body>

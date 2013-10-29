@@ -73,7 +73,7 @@ public class IndexBean {
 
     public IndexBean() {
         atividades = new ArrayList<Atividade>();
-        
+
     }
     private static final Logger logger = Logger.getLogger(IndexBean.class.getName());
     private String nomeProjeto;
@@ -162,7 +162,7 @@ public class IndexBean {
     public void setRowsData(DataModel rowsData) {
         this.rowsData = rowsData;
     }
-    
+
     public Double getExpDes1() {
         return expDes1;
     }
@@ -371,18 +371,18 @@ public class IndexBean {
             instanceModel = new DefaultMetaModelInstance();
             instanceModel.setMetaModel(domainModel);
             instanceModel.setName("Instância de Projeto com Cenários");
-            
-            for(Atividade atv : atividades){
+
+            for (Atividade atv : atividades) {
                 instanceModel.addNewClassInstance(atv.getNmAtivd(), "Atividade");
             }
-            
-            for(Atividade atv : atividades){
+
+            for (Atividade atv : atividades) {
                 instanceModel.addNewClassInstance(atv.getIdDesenv().getNmDsenv(), "Desenvolvedor");
             }
-            
-            for(Atividade atv : atividades){
+
+            for (Atividade atv : atividades) {
                 instanceModel.getClassInstances().get(atv.getIdDesenv().getNmDsenv()).setProperty(
-                    "experiência", atv.getIdDesenv().getExpDesenv().doubleValue());
+                        "experiência", atv.getIdDesenv().getExpDesenv().doubleValue());
             }
 
 //            instanceModel.addNewClassInstance("D1", "Desenvolvedor");
@@ -396,9 +396,12 @@ public class IndexBean {
 //            instanceModel.addNewClassInstance("Projeto", "Atividade");
 //            instanceModel.addNewClassInstance("Codificação", "Atividade");
             List<ClassInstance> atvds = new ArrayList<ClassInstance>();
-            for(Atividade atv : atividades){
+            for (Atividade atv : atividades) {
                 ClassInstance atvdInstance = instanceModel.getClassInstances().get(atv.getNmAtivd());
                 atvdInstance.setProperty("duração", atv.getDuracaoAtivid());
+                if (atv.getAtividadePrecedente() != null) {
+                    atvdInstance.setLink("Precedente", atv.getAtividadePrecedente().getNmAtivd());
+                }
                 atvdInstance.setLink("Equipe", atv.getIdDesenv().getNmDsenv());
                 atvds.add(atvdInstance);
             }
@@ -414,7 +417,7 @@ public class IndexBean {
 //            coding.setLink("Precedente", "Projeto");
 //            coding.setLink("Equipe", "D2");
 
-            profile.setTimeLimits(50, 50.0);
+            profile.setTimeLimits(80, 80.0);
 
             // Modelo de Cenário
             MetaModelScenario sceActTeam = new DefaultMetaModelScenario();
@@ -432,10 +435,10 @@ public class IndexBean {
 
             sceActTeam.put(connProdByTeam);
             domainModel.putScenario(sceActTeam);
-            
-            for(ClassInstance c : atvds){
+
+            for (ClassInstance c : atvds) {
                 c.setScenarioConnection("Produção Baseada na Equipe",
-                    "AAtividade");
+                        "AAtividade");
             }
 //            coding.setScenarioConnection("Produção Baseada na Equipe",
 //                    "AAtividade");
@@ -468,10 +471,10 @@ public class IndexBean {
 
             sceActPreced.put(connTaskPred);
             domainModel.putScenario(sceActPreced);
-            
-            for(ClassInstance c : atvds){
+
+            for (ClassInstance c : atvds) {
                 c.setScenarioConnection("Precedência de Atividades",
-                    "AAtividade");
+                        "AAtividade");
             }
 //            coding.setScenarioConnection("Precedência de Atividades",
 //                    "AAtividade");
@@ -556,7 +559,8 @@ public class IndexBean {
 //        linearModel.addSeries(trabalho);
 
         for (LineChartSeries line : lines) {
-            linearModel.addSeries(line);
+            if(line.getLabel().contains("Tempo para Concluir"))
+                linearModel.addSeries(line);
         }
 //        linearModel.addSeries(lines.get(1));
 //        linearModel.addSeries(lines.get(5));
@@ -644,8 +648,8 @@ public class IndexBean {
     public void onNodeDblselect(SelectEvent event) {
         this.selectedNode = (MindmapNode) event.getObject();
     }
-    
-    public void adicionarAtividade(){
+
+    public void adicionarAtividade() {
         getAtividades().add(ativSelecionada);
     }
 }
